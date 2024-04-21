@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             panel1 = new Panel();
             lineLiveGroupBox = new GroupBox();
-            ExclusiveRadioButton = new RadioButton();
+            statisticCheckBox = new CheckBox();
             liveRadioButton = new RadioButton();
             lineRadioButton = new RadioButton();
             refreshButton = new Button();
@@ -59,6 +59,7 @@
             MatchingToolStripMenuItem = new ToolStripMenuItem();
             HideEventToolStripMenuItem = new ToolStripMenuItem();
             EventContextMenuStrip = new ContextMenuStrip(components);
+            toolTip1 = new ToolTip(components);
             panel1.SuspendLayout();
             lineLiveGroupBox.SuspendLayout();
             timeIntervalGroupBox.SuspendLayout();
@@ -77,36 +78,35 @@
             panel1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(200, 901);
+            panel1.Size = new Size(221, 861);
             panel1.TabIndex = 1;
             // 
             // lineLiveGroupBox
             // 
-            lineLiveGroupBox.Controls.Add(ExclusiveRadioButton);
+            lineLiveGroupBox.Controls.Add(statisticCheckBox);
             lineLiveGroupBox.Controls.Add(liveRadioButton);
             lineLiveGroupBox.Controls.Add(lineRadioButton);
-            lineLiveGroupBox.Location = new Point(13, 74);
+            lineLiveGroupBox.Location = new Point(3, 73);
             lineLiveGroupBox.Name = "lineLiveGroupBox";
-            lineLiveGroupBox.Size = new Size(167, 131);
+            lineLiveGroupBox.Size = new Size(215, 95);
             lineLiveGroupBox.TabIndex = 5;
             lineLiveGroupBox.TabStop = false;
             // 
-            // ExclusiveRadioButton
+            // statisticCheckBox
             // 
-            ExclusiveRadioButton.AutoSize = true;
-            ExclusiveRadioButton.Location = new Point(7, 93);
-            ExclusiveRadioButton.Name = "ExclusiveRadioButton";
-            ExclusiveRadioButton.Size = new Size(106, 25);
-            ExclusiveRadioButton.TabIndex = 2;
-            ExclusiveRadioButton.TabStop = true;
-            ExclusiveRadioButton.Text = "Эксклюзив";
-            ExclusiveRadioButton.UseVisualStyleBackColor = true;
-            ExclusiveRadioButton.Visible = false;
+            statisticCheckBox.AutoSize = true;
+            statisticCheckBox.Location = new Point(7, 60);
+            statisticCheckBox.Name = "statisticCheckBox";
+            statisticCheckBox.Size = new Size(109, 25);
+            statisticCheckBox.TabIndex = 6;
+            statisticCheckBox.Text = "Статистика";
+            statisticCheckBox.UseVisualStyleBackColor = true;
+            statisticCheckBox.CheckedChanged += statisticCheckBox_CheckedChanged;
             // 
             // liveRadioButton
             // 
             liveRadioButton.AutoSize = true;
-            liveRadioButton.Location = new Point(7, 61);
+            liveRadioButton.Location = new Point(107, 29);
             liveRadioButton.Name = "liveRadioButton";
             liveRadioButton.Size = new Size(64, 25);
             liveRadioButton.TabIndex = 1;
@@ -128,9 +128,9 @@
             // 
             // refreshButton
             // 
-            refreshButton.Location = new Point(13, 12);
+            refreshButton.Location = new Point(3, 12);
             refreshButton.Name = "refreshButton";
-            refreshButton.Size = new Size(167, 55);
+            refreshButton.Size = new Size(215, 55);
             refreshButton.TabIndex = 4;
             refreshButton.Text = "Обновить";
             refreshButton.UseVisualStyleBackColor = true;
@@ -147,9 +147,9 @@
             timeIntervalGroupBox.Controls.Add(ThreeHoursRadioButton);
             timeIntervalGroupBox.Controls.Add(OneHourRadioButton);
             timeIntervalGroupBox.ForeColor = SystemColors.WindowText;
-            timeIntervalGroupBox.Location = new Point(3, 606);
+            timeIntervalGroupBox.Location = new Point(3, 574);
             timeIntervalGroupBox.Name = "timeIntervalGroupBox";
-            timeIntervalGroupBox.Size = new Size(181, 290);
+            timeIntervalGroupBox.Size = new Size(215, 284);
             timeIntervalGroupBox.TabIndex = 3;
             timeIntervalGroupBox.TabStop = false;
             timeIntervalGroupBox.Text = "Временной интервал";
@@ -239,9 +239,9 @@
             // 
             // label1
             // 
-            label1.Location = new Point(10, 233);
+            label1.Location = new Point(3, 191);
             label1.Name = "label1";
-            label1.Size = new Size(182, 22);
+            label1.Size = new Size(215, 22);
             label1.TabIndex = 1;
             label1.Text = "Виды спорта";
             label1.TextAlign = ContentAlignment.TopCenter;
@@ -252,34 +252,34 @@
             sportTypesCheckedListBox.BorderStyle = BorderStyle.None;
             sportTypesCheckedListBox.CheckOnClick = true;
             sportTypesCheckedListBox.FormattingEnabled = true;
-            sportTypesCheckedListBox.Items.AddRange(new object[] { "Футбол", "Теннис", "Баскетбол", "Единоборства", "Бокс", "Гандбол", "Хоккей", "Волейбол", "Футзал", "Бейсбол", "Шахматы", "Хоккей с мячом", "Пляжный футбол", "Все виды спорта" });
-            sportTypesCheckedListBox.Location = new Point(10, 258);
+            sportTypesCheckedListBox.Items.AddRange(new object[] { "Все виды спорта", "Футбол", "Хоккей", "Баскетбол", "Теннис", "Волейбол", "Гандбол", "Бейсбол", "Бокс", "Единоборства", "Австралийский футбол", "Авто-Мотоспорт", "Американский футбол", "Бадминтон", "Баскетбол 3х3", "Биатлон", "Бильярд", "Велоспорт", "Водное поло", "Горные лыжи", "Керлинг", "Лыжи", "Настольный теннис", "Нетбол", "Пляжный волейбол", "Пляжный футбол", "Прыжки с трамплина", "Регби", "Снукер", "Софтбол", "Флорбол", "Формула 1", "Футзал", "Хоккей на траве", "Хоккей с мячом", "Шары", "Шахматы" });
+            sportTypesCheckedListBox.Location = new Point(3, 216);
             sportTypesCheckedListBox.Name = "sportTypesCheckedListBox";
-            sportTypesCheckedListBox.Size = new Size(182, 336);
+            sportTypesCheckedListBox.Size = new Size(215, 336);
             sportTypesCheckedListBox.TabIndex = 0;
             // 
             // dataGridView1
             // 
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
+            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { SourceColumn, IDColumn, StartTimeColumn, BranchColumn, Team1Column, Team2Column });
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
-            dataGridView1.Dock = DockStyle.Fill;
-            dataGridView1.Location = new Point(200, 0);
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
+            dataGridView1.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridView1.Location = new Point(227, 0);
             dataGridView1.MultiSelect = false;
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowTemplate.Height = 25;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new Size(1284, 901);
+            dataGridView1.Size = new Size(1257, 860);
             dataGridView1.TabIndex = 0;
             dataGridView1.ColumnHeaderMouseClick += dataGridView1_ColumnHeaderMouseClick;
             dataGridView1.RowContextMenuStripNeeded += dataGridView1_RowContextMenuStripNeeded;
@@ -340,9 +340,9 @@
             panel2.AutoSize = true;
             panel2.BackColor = SystemColors.ActiveCaption;
             panel2.Dock = DockStyle.Top;
-            panel2.Location = new Point(200, 0);
+            panel2.Location = new Point(221, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1284, 0);
+            panel2.Size = new Size(1263, 0);
             panel2.TabIndex = 2;
             // 
             // SaveIDToolStripMenuItem
@@ -377,7 +377,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
-            ClientSize = new Size(1484, 901);
+            ClientSize = new Size(1484, 861);
             Controls.Add(dataGridView1);
             Controls.Add(panel2);
             Controls.Add(panel1);
@@ -424,7 +424,8 @@
         private System.Windows.Forms.GroupBox lineLiveGroupBox;
         private System.Windows.Forms.RadioButton liveRadioButton;
         private System.Windows.Forms.RadioButton lineRadioButton;
-        private RadioButton ExclusiveRadioButton;
         private RadioButton SixHoursRadioButton;
+        private ToolTip toolTip1;
+        private CheckBox statisticCheckBox;
     }
 }

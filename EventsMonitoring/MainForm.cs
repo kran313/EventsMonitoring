@@ -16,7 +16,8 @@ namespace EventsMonitoring
         public Dictionary<(string, string), List<Event>> baltBetMatchesConverted;
         public Dictionary<(string, string), List<Event>> fonBetMatchesConverted;
         public DateTime savedTime;
-        public string lineLive;
+        public bool isLive;
+        public bool isStatistic;
         public bool flag;
         public int sortIndex = -1;
 
@@ -24,20 +25,20 @@ namespace EventsMonitoring
         {
             InitializeComponent();
             hiddenMatches = new List<string>();
-            lineLive = "line";
+            isLive = false;
+            isStatistic = false;
             flag = false;
-
-            //var xxx = BetcityParsing.GetMatches("line");
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = GetMatchesToDisplay(lineLive, sortIndex);
+            dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
         }
+
 
         private void refreshButton_Click(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = GetMatchesToDisplay(lineLive, sortIndex);
+            dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
             if (lineRadioButton.Checked)
             {
                 timeIntervalGroupBox.Visible = true;
@@ -49,33 +50,23 @@ namespace EventsMonitoring
         }
 
 
-        public List<Event> GetMatchesToDisplay(string lineLive, int sortIndex)
+        public List<Event> GetMatchesToDisplay(bool isLive, int sortIndex, bool isStatistic)
         {
             DateTime currentTime = DateTime.Now;
 
-            if (Math.Abs(savedTime.Subtract(currentTime).TotalSeconds) > 10 || flag == true)
+            if (Math.Abs(savedTime.Subtract(currentTime).TotalSeconds) > 3 || flag == true)
             {
                 savedTime = currentTime;
-                baltBetMatches = BaltBetParsing.GetMatches(lineLive);
+                baltBetMatches = BaltBetParsing.GetMatches(isLive, isStatistic);
                 baltBetMatchesConverted = Converter.Convert(baltBetMatches);
 
-                fonBetMatches = FonBetParsing.GetMatches(lineLive);
+                fonBetMatches = FonBetParsing.GetMatches(isLive, isStatistic);
                 fonBetMatchesConverted = Converter.ConvertAndChangeIDs(fonBetMatches, "fonbet");
 
                 flag = false;
             }
 
 
-            //if (lineLive == "exclusive")
-            //{
-            //    matchesToDisplay = BaltbetMissingEvents.GetMatches(baltBetMatchesConverted, fonBetMatchesConverted);
-
-            //    if (!(sportTypesCheckedListBox.CheckedItems.Contains("Все виды спорта") || sportTypesCheckedListBox.CheckedItems.Count == 0))
-            //    {
-            //        matchesToDisplay = matchesToDisplay.Where(t => sportTypesCheckedListBox.CheckedItems.Contains(t.sport)).ToList();
-            //    }
-            //    return matchesToDisplay.Where(t => !hiddenMatches.Contains(t.matchID)).ToList();
-            //}
 
             matchesToDisplay = FonbetMissingEvents.GetMatches(baltBetMatchesConverted, fonBetMatchesConverted);
 
@@ -86,7 +77,7 @@ namespace EventsMonitoring
                 matchesToDisplay = matchesToDisplay.Where(t => sportTypesCheckedListBox.CheckedItems.Contains(t.sport)).ToList();
             }
 
-            if (lineLive == "live")
+            if (isLive)
             {
                 matchesToDisplay = matchesToDisplay.Where(t => t.status != "Ок" && !t.status.Contains("Время")).ToList();
 
@@ -111,6 +102,7 @@ namespace EventsMonitoring
                         timeDelta = 60 * 60 * 48;
                     else if (OneWeekRadioButton.Checked)
                         timeDelta = 60 * 60 * 24 * 7;
+
 
                     DateTime timeToWatch = DateTime.UtcNow.AddSeconds(60 * 60 * 3 + timeDelta);
                     matchesToDisplay = matchesToDisplay.Where(t => t.startTime <= timeToWatch).ToList();
@@ -217,7 +209,7 @@ namespace EventsMonitoring
                     if (form.ShowDialog() == DialogResult.OK)
                     {
                         // dataGridView1.DataSource = new List<Event>();
-                        dataGridView1.DataSource = GetMatchesToDisplay(lineLive, sortIndex);
+                        dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
 
                         if (dataGridView1.RowCount <= 1)
                         {
@@ -250,7 +242,7 @@ namespace EventsMonitoring
             hiddenMatches.Add(selectedMatch.matchID);
 
             // dataGridView1.DataSource = new List<Event>();
-            dataGridView1.DataSource = GetMatchesToDisplay(lineLive, sortIndex);
+            dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
 
 
             if (dataGridView1.RowCount <= 1)
@@ -274,17 +266,12 @@ namespace EventsMonitoring
         {
             if (lineRadioButton.Checked)
             {
-                lineLive = "line";
+                isLive = false;
                 timeIntervalGroupBox.Enabled = true;
-            }
-            else if (liveRadioButton.Checked)
-            {
-                lineLive = "live";
-                timeIntervalGroupBox.Enabled = false;
             }
             else
             {
-                lineLive = "exclusive";
+                isLive = true; ;
                 timeIntervalGroupBox.Enabled = false;
             }
 
@@ -296,22 +283,34 @@ namespace EventsMonitoring
             if (e.ColumnIndex == 5)
             {
                 sortIndex = 5;
-                dataGridView1.DataSource = GetMatchesToDisplay(lineLive, sortIndex);
+                dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
             }
             else if (e.ColumnIndex == 2)
             {
                 sortIndex = 2;
-                dataGridView1.DataSource = GetMatchesToDisplay(lineLive, sortIndex);
+                dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
             }
             else if (e.ColumnIndex == 0)
             {
                 sortIndex = 0;
-                dataGridView1.DataSource = GetMatchesToDisplay(lineLive, sortIndex);
+                dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
             }
             else
             {
                 sortIndex = -1;
-                dataGridView1.DataSource = GetMatchesToDisplay(lineLive, sortIndex);
+                dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
+            }
+        }
+
+        private void statisticCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (statisticCheckBox.Checked)
+            {
+                isStatistic = true;
+            }
+            else
+            {
+                isStatistic = false; ;
             }
         }
     }

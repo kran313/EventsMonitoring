@@ -1,4 +1,7 @@
 ﻿using EventsMonitoring.CommonClasses;
+using Grpc.Net.Client;
+using Parser.Contracts.FonbetService;
+using System.IO.Compression;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,96 +10,155 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.Threading.Channels;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FonbetMonitoring
 {
+
     public static class FonBetParsing
     {
-        public static Dictionary<string, Event> GetMatches(string lineLive)
+        public static FonBetEventFon GetEvents()
         {
-            if (lineLive == "exclusive")
-            {
-                lineLive = "line";
+            var data = string.Empty;
+            var fonbetProviderUri = "http://172.16.1.187:5007";
+            var channel = GrpcChannel.ForAddress(fonbetProviderUri);
+            var client = new FonbetDataService.FonbetDataServiceClient(channel);
+
+            var response = client.GetData(new Google.Protobuf.WellKnownTypes.Empty());
+
+            if (response.Algorithm.Equals("gzip")) 
+            {   
+                data = Decompress(Convert.FromBase64String(response.Data), Encoding.Unicode);
             }
-            using (ZipWebClient wc = new ZipWebClient())
+
+
+            static string Decompress(byte[] buf, Encoding encoding)
             {
-                wc.Encoding = Encoding.UTF8;
-                var jsonText = wc.DownloadString(@"https://line02w.bk6bba-resources.com/events/listBase?lang=ru&scopeMarket=1600");
-                var fonBetEvents = JsonConvert.DeserializeObject<FonBetEventFon>(jsonText);
-
-                Dictionary<string, SportFonBet> sportFonBet = new Dictionary<string, SportFonBet>();
-                foreach (var item in fonBetEvents.sports)
-                    sportFonBet[item.id] = new SportFonBet(item.id, item.parentId, item.name);
-
-                Dictionary<string, Event> allFonbetMatches = new Dictionary<string, Event>();
-                Dictionary<string, Event> filteredFonbetMatches = new Dictionary<string, Event>();
-
-                foreach (var item in fonBetEvents.events)
+                string result = string.Empty;
+                MemoryStream decompressedStream = new MemoryStream();
+                using (MemoryStream ms = new MemoryStream(buf))
                 {
-                    string sport = sportFonBet[sportFonBet[item.sportId].parentId].name;
-                    string branch;
-                    Team? teamHome = null;
-                    Team? teamAway = null;
+                    using (GZipStream decompressionStream = new GZipStream(ms, CompressionMode.Decompress))
+                        decompressionStream.CopyTo(decompressedStream);
 
-                    if (item.parentId == null)
-                    {
-                        branch = string.Join(". ", sportFonBet[item.sportId].name, item.name).Trim();
-                        teamHome = new Team(sport, item.team1Id, item.team1);
-                        teamAway = new Team(sport, item.team2Id, item.team2);
-                    }
-                    else
-                    {
-                        branch = string.Join(". ", allFonbetMatches[item.parentId].branch, item.name).Trim();
-                        teamHome = allFonbetMatches[item.parentId].team1;
-                        teamAway = allFonbetMatches[item.parentId].team2;
-                    }
-
-                    if (sport == "Волейбол" && new List<string>() { "эйсы", "ошибки на подаче", "блоки" }.Any(t => branch.Contains(t)))
-                    {
-                        allFonbetMatches[item.id] = new Event(
-                            item.id, 
-                            sport, 
-                            branch, 
-                            new Team(sport, teamHome.teamId + "(" + item.name + ")", teamHome.teamName + "(" + item.name + ")"),
-                            new Team(sport, teamAway.teamId + "(" + item.name + ")", teamAway.teamName + "(" + item.name + ")"), 
-                            item.startTime, 
-                            item.sportId, 
-                            item.name, 
-                            item.place, 
-                            "Fonbet"
-                            );
-                    }
-                    else
-                    {
-                        allFonbetMatches[item.id] = new Event(
-                            item.id, 
-                            sport, 
-                            branch, 
-                            teamHome, 
-                            teamAway, 
-                            item.startTime, 
-                            item.sportId, 
-                            item.name, 
-                            item.place, 
-                            "Fonbet"
-                            );
-                    }
-
-
-                    if ((sport == "Волейбол" && 
-                        item.place == lineLive && 
-                        new List<string>() { "эйсы", "ошибки на подаче", "блоки" }.Any(t => branch.Contains(t))) ||
-                        
-                        (ForbiddenSubStrings.isAllowed(branch, lineLive) && 
-                        item.place == lineLive &&
-                        teamAway.teamId != "0" && 
-                        item.level == 1))
-                    {
-                        filteredFonbetMatches[item.id] = allFonbetMatches[item.id];
-                    }
+                    result = encoding.GetString(decompressedStream.ToArray(), 0, (int)decompressedStream.Length);
                 }
-                return filteredFonbetMatches;
+                return result;
             }
+
+            return JsonConvert.DeserializeObject<FonBetEventFon>(data);
+        }
+
+
+
+        public static Dictionary<string, Event> GetMatches(bool isLive, bool isStatistic)
+        {
+            var fonBetEvents = GetEvents();
+
+
+            Dictionary<string, SportFonBet> sportFonBet = new Dictionary<string, SportFonBet>();
+            foreach (var item in fonBetEvents.sports)
+                sportFonBet[item.id] = new SportFonBet(item.id, item.parentId, item.name);
+
+            Dictionary<string, Event> allFonbetMatches = new Dictionary<string, Event>();
+            Dictionary<string, Event> filteredFonbetMatches = new Dictionary<string, Event>();
+
+
+            var LineForbiddenStrings = ForbiddenSubStrings.GetForbiddenStrings("Line");
+            var LiveForbiddenStrings = ForbiddenSubStrings.GetForbiddenStrings("Live");
+
+            foreach (var item in fonBetEvents.events)
+            {
+                string sport = sportFonBet[sportFonBet[item.sportId].parentId].name;
+
+
+                string branch;
+                Team? teamHome = null;
+                Team? teamAway = null;
+                int level = item.level;
+
+                if (level > 2)
+                {
+                    continue;
+                }
+
+
+                if (item.parentId == null)
+                {
+                    branch = string.Join(". ", sportFonBet[item.sportId].name, item.name).Trim();
+                    teamHome = new Team(sport, item.team1Id, item.team1);
+                    teamAway = new Team(sport, item.team2Id, item.team2);
+                }
+                else
+                {
+                    branch = string.Join(". ", allFonbetMatches[item.parentId].branch, item.name).Trim();
+                    teamHome = allFonbetMatches[item.parentId].team1;
+                    teamAway = allFonbetMatches[item.parentId].team2;
+                }
+
+                if (branch.Contains("Баскетбол 3x3"))
+                {
+                    sport = "Баскетбол 3х3";
+                }
+                if (branch.Contains("Армрестлинг"))
+                {
+                    sport = "Армрестлинг";
+                }
+                if (branch.Contains("Регби"))
+                {
+                    sport = "Регби";
+                }
+
+
+                if (level == 1)
+                {
+                    allFonbetMatches[item.id] = new Event(
+                        item.id, 
+                        sport, 
+                        branch, 
+                        new Team(sport, teamHome.teamId, teamHome.teamName),
+                        new Team(sport, teamAway.teamId, teamAway.teamName), 
+                        item.startTime, 
+                        item.sportId, 
+                        item.name, 
+                        item.place == "live" ? true : false,
+                        item.level,
+                        item.level == 1 ? false : true,
+                        "Fonbet"
+                        );
+                }
+                else if (level == 2)
+                {
+                    allFonbetMatches[item.id] = new Event(
+                        item.id,
+                        sport,
+                        branch,
+                        new Team(sport, teamHome.teamId + "(" + item.name + ")", teamHome.teamName + "(" + item.name + ")"),
+                        new Team(sport, teamAway.teamId + "(" + item.name + ")", teamAway.teamName + "(" + item.name + ")"),
+                        item.startTime,
+                        item.sportId,
+                        item.name,
+                        item.place == "live" ? true : false,
+                        item.level,
+                        item.level == 1 ? false : true,
+                        "Fonbet"
+                        );
+                }
+                else
+                {
+                }
+
+
+                if (ForbiddenSubStrings.isAllowed(branch, isLive, LiveForbiddenStrings, LineForbiddenStrings) && 
+                   (item.place == "live" && isLive == true || item.place == "line" && isLive == false) &&
+                    teamAway.teamId != "0" &&
+                    (item.level == 1 || item.level == 2 && isStatistic))
+                {
+                    filteredFonbetMatches[item.id] = allFonbetMatches[item.id];
+                }
+            }
+            return filteredFonbetMatches;
         }
     }
 

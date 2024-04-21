@@ -10,9 +10,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+	<None Remove="Proto\Fonbet.proto" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.26.1" />
+	<PackageReference Include="Grpc.Core" Version="2.46.6" />
+	<PackageReference Include="Grpc.Core.Api" Version="2.62.0" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.62.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.62.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.10" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<Protobuf Include="Proto\Fonbet.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>

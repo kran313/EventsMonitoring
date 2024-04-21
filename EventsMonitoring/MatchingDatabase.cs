@@ -25,15 +25,24 @@ namespace EventsMonitoring
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                connection.Open();
-
-                SqlCommand command = new SqlCommand(_sqlExpression, connection);
-                var reader = command.ExecuteReader();
-
-                while (reader.Read())
+                try
                 {
-                    _pairs[reader.GetString(0)] = reader.GetString(1);
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(_sqlExpression, connection);
+                    var reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _pairs[reader.GetString(0)] = reader.GetString(1);
+                    }
                 }
+                catch (Exception)
+                {
+                    MessageBox.Show("Database crashed! Try again later.");
+                    throw new Exception("Database crashed! Try again later.");
+                }
+
             }
             return _pairs;
         }

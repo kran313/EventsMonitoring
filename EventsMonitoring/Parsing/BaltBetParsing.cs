@@ -15,66 +15,80 @@ namespace FonbetMonitoring
         public static Team team2;
         public static Event currentEvent;
 
-        public static Dictionary<string, Event> GetMatches(string lineLive)
-        {
-            if (lineLive == "exclusive")
-            {
-                lineLive = "line";
-            }
 
+        public static List<BaltBetEvent> GetEvents(bool isLive)
+        {
             using (ZipWebClient wc = new ZipWebClient())
             {
-                string link;
-                if (lineLive == "line")
+                string link = isLive ? "https://lineevent:7001/LiveEvent" : "https://lineevent:7001/lineevent";
+
+                var jsonText = wc.DownloadString(link);
+
+                return JsonConvert.DeserializeObject<List<BaltBetEvent>>(jsonText);
+            }
+        }
+
+
+        public static Dictionary<string, Event> GetMatches(bool isLive, bool isStatistic)
+        {
+            var LineForbiddenStrings = ForbiddenSubStrings.GetForbiddenStrings("Line");
+            var LiveForbiddenStrings = ForbiddenSubStrings.GetForbiddenStrings("Live");
+
+            var baltBetEvents = GetEvents(isLive);
+
+            Dictionary<string, Event> baltBetMatches = new Dictionary<string, Event>();
+            Dictionary<string, List<Event>> dubles = new Dictionary<string, List<Event>>();
+
+            foreach (var match in baltBetEvents)
+            {
+                if (match.away1Id == "0")
+                    continue;
+
+
+                if (match.away2Id != "0")
                 {
-                    link = "https://lineevent:7001/lineevent";
+                    team1 = new Team(match.sport, match.home1Id, match.home1Name, match.home2Id, match.home2Name);
+                    team2 = new Team(match.sport, match.away1Id, match.away1Name, match.away2Id, match.away2Name);
                 }
                 else
                 {
-                    link = "https://lineevent:7001/LiveEvent";
+                    team1 = new Team(match.sport, match.home1Id, match.home1Name);
+                    team2 = new Team(match.sport, match.away1Id, match.away1Name);
                 }
 
-                var jsonText = wc.DownloadString(link);
-                var baltBetEvents = JsonConvert.DeserializeObject<List<BaltBetEvent>>(jsonText);
-                Dictionary<string, Event> baltBetMatches = new Dictionary<string, Event>();
-                Dictionary<string, List<Event>> dubles = new Dictionary<string, List<Event>>();
 
-                foreach (var match in baltBetEvents)
+                if (ForbiddenSubStrings.isAllowed(match.branch.branchName, isLive, LiveForbiddenStrings, LineForbiddenStrings))
                 {
-                    if (match.away1Id == "0")
+
+                    if (match.branch.branchName.ToLower().Contains("футбол. россия. 2 лига.") && isLive == false)
                     {
-                        continue;
+                        match.sport = "Хоккей";
                     }
-                    if (match.away2Id != "0")
+
+
+                    var statistic = match.branch.branchName.ToLower().Contains("статистика");
+
+
+                    if (isStatistic || (!isStatistic && !statistic))
                     {
-                        team1 = new Team(match.sport, match.home1Id, match.home1Name, match.home2Id, match.home2Name);
-                        team2 = new Team(match.sport, match.away1Id, match.away1Name, match.away2Id, match.away2Name);
+                        currentEvent = new Event(match.eventId, match.sport, match.branch.branchName, team1, team2, match.startTime, statistic, "Baltbet");
                     }
                     else
                     {
-                        team1 = new Team(match.sport, match.home1Id, match.home1Name);
-                        team2 = new Team(match.sport, match.away1Id, match.away1Name);
+                        continue;
                     }
 
-                    if ((match.sport == "Волейбол" && match.branch.branchName.Contains("Статистика")) ||
-                        
-                        (ForbiddenSubStrings.isAllowed(match.branch.branchName, lineLive)))
+
+
+                    foreach (var possibleDouble in new List<string> { currentEvent.team1.teamId, currentEvent.team2.teamId })
                     {
-                        if (match.branch.branchName.ToLower().Contains("футбол. россия. 2-я лига."))
+                        if (!dubles.ContainsKey(possibleDouble))
                         {
-                            match.sport = "Хоккей";
-                        }
-
-                        currentEvent = new Event(match.eventId, match.sport, match.branch.branchName, team1, team2, match.startTime, "Baltbet");
-
-
-                        if (!dubles.ContainsKey(currentEvent.team1.teamId))
-                        {
-                            dubles[currentEvent.team1.teamId] = new List<Event> { currentEvent };
+                            dubles[possibleDouble] = new List<Event> { currentEvent };
                         }
                         else
                         {
-                            foreach (var matchEvent in dubles[currentEvent.team1.teamId])
+                            foreach (var matchEvent in dubles[possibleDouble])
                             {
                                 var timeDifference = Math.Abs((int)currentEvent.startTime.Subtract(matchEvent.startTime).TotalMinutes);
                                 if (timeDifference < 720)
@@ -86,14 +100,14 @@ namespace FonbetMonitoring
                                     matchEvent.linkedBaltBetMatchID = currentEvent.matchID;
                                 }
                             }
-                            dubles[currentEvent.team1.teamId].Add(currentEvent);
+                            dubles[possibleDouble].Add(currentEvent);
                         }
-
-                        baltBetMatches[match.eventId] = currentEvent;
                     }
+
+                    baltBetMatches[match.eventId] = currentEvent;
                 }
-                return baltBetMatches;
             }
+            return baltBetMatches;
         }
     }
 

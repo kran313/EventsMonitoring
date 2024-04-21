@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+option csharp_namespace = "Parser.Contracts.FonbetService";
+
+service FonbetDataService {
+  rpc GetData(google.protobuf.Empty) returns (DataReply);
+}
+
+message DataReply {
+    google.protobuf.Timestamp dataTimeStamp = 1;
+    google.protobuf.StringValue data = 2;
+    google.protobuf.StringValue algorithm = 3;
+}

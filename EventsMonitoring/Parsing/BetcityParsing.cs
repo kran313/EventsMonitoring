@@ -13,54 +13,54 @@ namespace EventsMonitoring.Parsing
 {
     public class BetcityParsing
     {
-        public static Dictionary<string, Event> GetMatches(string lineLive)
-        {
-            using (ZipWebClient wc = new ZipWebClient())
-            {
-                wc.Encoding = Encoding.UTF8;
-                var jsonText = wc.DownloadString(@"https://ad.betcity.ru/d/off/events");
-                var betcityEvents = JsonConvert.DeserializeObject<EventsReply>(jsonText).reply.sports.ToList();
+        //public static Dictionary<string, Event> GetMatches(string lineLive)
+        //{
+        //    using (ZipWebClient wc = new ZipWebClient())
+        //    {
+        //        wc.Encoding = Encoding.UTF8;
+        //        var jsonText = wc.DownloadString(@"https://ad.betcity.ru/d/off/events");
+        //        var betcityEvents = JsonConvert.DeserializeObject<EventsReply>(jsonText).reply.sports.ToList();
 
-                Dictionary<string, Event> betcityMatches = new Dictionary<string, Event>();
+        //        Dictionary<string, Event> betcityMatches = new Dictionary<string, Event>();
 
-                foreach (var sport in betcityEvents)
-                {
-                    var sportName = sport.Value.name_sp;
-                    var sportId = sport.Value.id_sp;
+        //        foreach (var sport in betcityEvents)
+        //        {
+        //            var sportName = sport.Value.name_sp;
+        //            var sportId = sport.Value.id_sp;
 
-                    foreach (var champ in sport.Value.chmps)
-                    {
-                        var branchName = champ.Value.name_cp;
-                        var branchId = champ.Value.id_cp;
+        //            foreach (var champ in sport.Value.chmps)
+        //            {
+        //                var branchName = champ.Value.name_cp;
+        //                var branchId = champ.Value.id_cp;
 
-                        if (ForbiddenSubStrings.isAllowed(branchName, lineLive))
-                        {
-                            continue;
-                        }
+        //                if (ForbiddenSubStrings.isAllowed(branchName, true))
+        //                {
+        //                    continue;
+        //                }
 
-                            foreach (var match in champ.Value.evts)
-                        {
+        //                    foreach (var match in champ.Value.evts)
+        //                {
 
-                            try
-                            {
+        //                    try
+        //                    {
 
-                                var matchId = match.Value.id_ev;
-                                var matchStartTime = match.Value.date_ev;
-                                Team team1 = new Team(sportName, match.Value.id_ht, match.Value.name_ht);
-                                Team team2 = new Team(sportName, match.Value.id_at, match.Value.name_at);
+        //                        var matchId = match.Value.id_ev;
+        //                        var matchStartTime = match.Value.date_ev;
+        //                        Team team1 = new Team(sportName, match.Value.id_ht, match.Value.name_ht);
+        //                        Team team2 = new Team(sportName, match.Value.id_at, match.Value.name_at);
 
-                                betcityMatches[matchId] = new Event(matchId, sportName, branchName, team1, team2, matchStartTime);
-                            }
-                            catch (Exception)
-                            {
-                            }
+        //                        betcityMatches[matchId] = new Event(matchId, sportName, branchName, team1, team2, matchStartTime);
+        //                    }
+        //                    catch (Exception)
+        //                    {
+        //                    }
 
-                        }
-                    }
-                }
-                return betcityMatches;
-            }
-        } 
+        //                }
+        //            }
+        //        }
+        //        return betcityMatches;
+        //    }
+        //} 
     }
 
 
