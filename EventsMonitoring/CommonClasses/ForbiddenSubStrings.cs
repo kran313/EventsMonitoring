@@ -12,13 +12,12 @@ namespace EventsMonitoring.CommonClasses
         private static string _connectionString = "data source=srvapkbb8.gkbaltbet.local;initial catalog=EventMatching;user Id=event_match;password=umbMzLQB3hKo69VG8F4N;" +
                                   "Integrated Security=false;MultipleActiveResultSets=true;TrustServerCertificate=true";
         private static string _sqlExpression;
-        public static List<string> forbiddenStrings;
 
 
         public static List<string> GetForbiddenStrings(string liveLine)
         {
             _sqlExpression = $"SELECT * FROM {liveLine}ForbiddenStrings";
-            forbiddenStrings = new List<string>();
+            var forbiddenStrings = new List<string>();
 
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
@@ -42,6 +41,69 @@ namespace EventsMonitoring.CommonClasses
 
             }
             return forbiddenStrings;
+        }
+
+
+        public static Dictionary<string, Dictionary<string, string>> GetStatisticsNames()
+        {
+            _sqlExpression = $"SELECT * FROM StatisticNames";
+            var statisticsNames = new Dictionary<string, Dictionary<string, string>>();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(_sqlExpression, connection);
+                    var reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        if (!statisticsNames.ContainsKey(reader.GetString(0)))
+                        {
+                            statisticsNames[reader.GetString(0)] = new Dictionary<string, string>();
+                        }
+                        statisticsNames[reader.GetString(0)][reader.GetString(1)] = reader.GetString(2);
+                    }
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Database crashed! Try again later.");
+                    throw new Exception("Database crashed! Try again later.");
+                }
+
+            }
+            return statisticsNames;
+        }
+
+        public static Dictionary<string, string> GetFonbetSportNames()
+        {
+            _sqlExpression = $"SELECT * FROM FonbetSportNames";
+            var fonbetSportNames = new Dictionary<string, string>();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(_sqlExpression, connection);
+                    var reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        fonbetSportNames[reader.GetString(0)] = reader.GetString(1);
+                    }
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Database crashed! Try again later.");
+                    throw new Exception("Database crashed! Try again later.");
+                }
+
+            }
+            return fonbetSportNames;
         }
 
 

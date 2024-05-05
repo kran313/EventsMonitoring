@@ -1,4 +1,5 @@
 ﻿using EventsMonitoring.CommonClasses;
+using EventsMonitoring.Parsing;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,7 @@ namespace FonbetMonitoring
 
             foreach (var match in baltBetEvents)
             {
+
                 if (match.away1Id == "0")
                     continue;
 
@@ -66,7 +68,19 @@ namespace FonbetMonitoring
                     }
 
 
-                    var statistic = match.branch.branchName.ToLower().Contains("статистика");
+                    var statistic = match.branch.branchName.ToLower()
+                        .Replace("e", "е")
+                        .Replace("t", "т")
+                        .Replace("o", "о")
+                        .Replace("p", "р")
+                        .Replace("a", "а")
+                        .Replace("h", "н")
+                        .Replace("k", "к")
+                        .Replace("x", "х")
+                        .Replace("c", "с")
+                        .Replace("b", "в")
+                        .Replace("m", "м")
+                        .Contains("статистика");
 
 
                     if (isStatistic || (!isStatistic && !statistic))
@@ -91,7 +105,10 @@ namespace FonbetMonitoring
                             foreach (var matchEvent in dubles[possibleDouble])
                             {
                                 var timeDifference = Math.Abs((int)currentEvent.startTime.Subtract(matchEvent.startTime).TotalMinutes);
-                                if (timeDifference < 720)
+                                if (((timeDifference < 15 && isLive) || 
+                                    (timeDifference < 720 && !isLive && !new List<string> { "Дартс", "Шахматы", "Шары" }.Contains(match.sport)) ||
+                                    (timeDifference < 15 && isLive && !new List<string> { "Дартс", "Шахматы", "Шары" }.Contains(match.sport))) && 
+                                    (currentEvent.isStatistic == matchEvent.isStatistic))
                                 {
                                     currentEvent.status = "Дубль";
                                     currentEvent.linkedBaltBetMatchID = matchEvent.matchID;
@@ -105,6 +122,33 @@ namespace FonbetMonitoring
                     }
 
                     baltBetMatches[match.eventId] = currentEvent;
+                }
+            }
+
+            if (isStatistic)
+            {
+                foreach (var item in baltBetMatches.Values)
+                {
+                    if (item.isStatistic)
+                    {
+
+                        var lastIndexOfTeam1 = item.team1.teamName.LastIndexOf("(");
+                        var lastIndexOfTeam2 = item.team2.teamName.LastIndexOf("(");
+
+                        try
+                        {
+                            var qwerty = baltBetMatches.Where(t => t.Value.team1.teamName == item.team1.teamName[..lastIndexOfTeam1] &&
+                                                                   t.Value.team2.teamName == item.team2.teamName[..lastIndexOfTeam2]).First().Value;
+
+                            item.parent1ID = qwerty.team1.teamId;
+                            item.parent2ID = qwerty.team2.teamId;
+                            item.statistic = item.team1.teamName[(lastIndexOfTeam1+1)..^1];
+                        }
+                        catch (Exception)
+                        {
+                            item.status = "Нужно проверить основной матч";
+                        }
+                    }
                 }
             }
             return baltBetMatches;

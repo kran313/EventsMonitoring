@@ -31,6 +31,7 @@
             components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             panel1 = new Panel();
+            mainFormQuestionButton = new Button();
             lineLiveGroupBox = new GroupBox();
             statisticCheckBox = new CheckBox();
             liveRadioButton = new RadioButton();
@@ -57,8 +58,11 @@
             panel2 = new Panel();
             SaveIDToolStripMenuItem = new ToolStripMenuItem();
             MatchingToolStripMenuItem = new ToolStripMenuItem();
-            HideEventToolStripMenuItem = new ToolStripMenuItem();
+            HideToolStripMenuItem = new ToolStripMenuItem();
+            HideBranchToolStripMenuItem = new ToolStripMenuItem();
+            HideSportToolStripMenuItem = new ToolStripMenuItem();
             EventContextMenuStrip = new ContextMenuStrip(components);
+            hideEventToolStripMenuItem = new ToolStripMenuItem();
             toolTip1 = new ToolTip(components);
             panel1.SuspendLayout();
             lineLiveGroupBox.SuspendLayout();
@@ -69,6 +73,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(mainFormQuestionButton);
             panel1.Controls.Add(lineLiveGroupBox);
             panel1.Controls.Add(refreshButton);
             panel1.Controls.Add(timeIntervalGroupBox);
@@ -80,6 +85,17 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(221, 861);
             panel1.TabIndex = 1;
+            // 
+            // mainFormQuestionButton
+            // 
+            mainFormQuestionButton.Font = new Font("Segoe UI", 26.25F, FontStyle.Regular, GraphicsUnit.Point);
+            mainFormQuestionButton.Location = new Point(6, 12);
+            mainFormQuestionButton.Name = "mainFormQuestionButton";
+            mainFormQuestionButton.Size = new Size(41, 55);
+            mainFormQuestionButton.TabIndex = 6;
+            mainFormQuestionButton.Text = "?";
+            mainFormQuestionButton.UseVisualStyleBackColor = true;
+            mainFormQuestionButton.Click += mainFormQuestionButton_Click;
             // 
             // lineLiveGroupBox
             // 
@@ -128,9 +144,9 @@
             // 
             // refreshButton
             // 
-            refreshButton.Location = new Point(3, 12);
+            refreshButton.Location = new Point(53, 12);
             refreshButton.Name = "refreshButton";
-            refreshButton.Size = new Size(215, 55);
+            refreshButton.Size = new Size(165, 55);
             refreshButton.TabIndex = 4;
             refreshButton.Text = "Обновить";
             refreshButton.UseVisualStyleBackColor = true;
@@ -252,7 +268,7 @@
             sportTypesCheckedListBox.BorderStyle = BorderStyle.None;
             sportTypesCheckedListBox.CheckOnClick = true;
             sportTypesCheckedListBox.FormattingEnabled = true;
-            sportTypesCheckedListBox.Items.AddRange(new object[] { "Все виды спорта", "Футбол", "Хоккей", "Баскетбол", "Теннис", "Волейбол", "Гандбол", "Бейсбол", "Бокс", "Единоборства", "Австралийский футбол", "Авто-Мотоспорт", "Американский футбол", "Бадминтон", "Баскетбол 3х3", "Биатлон", "Бильярд", "Велоспорт", "Водное поло", "Горные лыжи", "Керлинг", "Лыжи", "Настольный теннис", "Нетбол", "Пляжный волейбол", "Пляжный футбол", "Прыжки с трамплина", "Регби", "Снукер", "Софтбол", "Флорбол", "Формула 1", "Футзал", "Хоккей на траве", "Хоккей с мячом", "Шары", "Шахматы" });
+            sportTypesCheckedListBox.Items.AddRange(new object[] { "Все виды спорта", "Футбол", "Хоккей", "Баскетбол", "Теннис", "Волейбол", "Гандбол", "Бейсбол", "Бокс", "Единоборства", "Австралийский футбол", "Авто-Мотоспорт", "Американский футбол", "Армрестлинг", "Бадминтон", "Баскетбол 3х3", "Биатлон", "Бильярд", "Велоспорт", "Водное поло", "Горные лыжи", "Индор-хоккей", "Керлинг", "Крикет", "Лыжи", "Настольный теннис", "Нетбол", "Пляжный волейбол", "Пляжный футбол", "Прыжки с трамплина", "Регби", "Снукер", "Софтбол", "Флорбол", "Формула 1", "Футзал", "Хоккейбол", "Хоккей на траве", "Хоккей с мячом", "Шары", "Шахматы" });
             sportTypesCheckedListBox.Location = new Point(3, 216);
             sportTypesCheckedListBox.Name = "sportTypesCheckedListBox";
             sportTypesCheckedListBox.Size = new Size(215, 336);
@@ -291,6 +307,7 @@
             SourceColumn.DataPropertyName = "status";
             SourceColumn.HeaderText = "Примечание";
             SourceColumn.Name = "SourceColumn";
+            SourceColumn.ReadOnly = true;
             SourceColumn.Width = 103;
             // 
             // IDColumn
@@ -359,18 +376,39 @@
             MatchingToolStripMenuItem.Text = "Связать команды";
             MatchingToolStripMenuItem.Click += MatchingToolStripMenuItem_Click;
             // 
-            // HideEventToolStripMenuItem
+            // HideToolStripMenuItem
             // 
-            HideEventToolStripMenuItem.Name = "HideEventToolStripMenuItem";
-            HideEventToolStripMenuItem.Size = new Size(196, 22);
-            HideEventToolStripMenuItem.Text = "Скрыть событие";
-            HideEventToolStripMenuItem.Click += HideEventToolStripMenuItem_Click;
+            HideToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { HideBranchToolStripMenuItem, HideSportToolStripMenuItem });
+            HideToolStripMenuItem.Name = "HideToolStripMenuItem";
+            HideToolStripMenuItem.Size = new Size(196, 22);
+            HideToolStripMenuItem.Text = "Скрыть";
+            // 
+            // HideBranchToolStripMenuItem
+            // 
+            HideBranchToolStripMenuItem.Name = "HideBranchToolStripMenuItem";
+            HideBranchToolStripMenuItem.Size = new Size(180, 22);
+            HideBranchToolStripMenuItem.Text = "Ветку";
+            HideBranchToolStripMenuItem.Click += HideBranchToolStripMenuItem_Click;
+            // 
+            // HideSportToolStripMenuItem
+            // 
+            HideSportToolStripMenuItem.Name = "HideSportToolStripMenuItem";
+            HideSportToolStripMenuItem.Size = new Size(180, 22);
+            HideSportToolStripMenuItem.Text = "Спорт";
+            HideSportToolStripMenuItem.Click += HideSportToolStripMenuItem_Click;
             // 
             // EventContextMenuStrip
             // 
-            EventContextMenuStrip.Items.AddRange(new ToolStripItem[] { SaveIDToolStripMenuItem, MatchingToolStripMenuItem, HideEventToolStripMenuItem });
+            EventContextMenuStrip.Items.AddRange(new ToolStripItem[] { MatchingToolStripMenuItem, SaveIDToolStripMenuItem, hideEventToolStripMenuItem, HideToolStripMenuItem });
             EventContextMenuStrip.Name = "contextMenuStrip1";
-            EventContextMenuStrip.Size = new Size(197, 70);
+            EventContextMenuStrip.Size = new Size(197, 92);
+            // 
+            // hideEventToolStripMenuItem
+            // 
+            hideEventToolStripMenuItem.Name = "hideEventToolStripMenuItem";
+            hideEventToolStripMenuItem.Size = new Size(196, 22);
+            hideEventToolStripMenuItem.Text = "Скрыть событие";
+            hideEventToolStripMenuItem.Click += hideEventToolStripMenuItem_Click;
             // 
             // MainForm
             // 
@@ -384,6 +422,7 @@
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Monitoring";
+            FormClosing += MainForm_FormClosing;
             Load += MainForm_Load;
             panel1.ResumeLayout(false);
             lineLiveGroupBox.ResumeLayout(false);
@@ -411,15 +450,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckedListBox sportTypesCheckedListBox;
         private System.Windows.Forms.Button refreshButton;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SourceColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn IDColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn StartTimeColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn BranchColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Team1Column;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Team2Column;
         private System.Windows.Forms.ToolStripMenuItem SaveIDToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem MatchingToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem HideEventToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem HideToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip EventContextMenuStrip;
         private System.Windows.Forms.GroupBox lineLiveGroupBox;
         private System.Windows.Forms.RadioButton liveRadioButton;
@@ -427,5 +460,15 @@
         private RadioButton SixHoursRadioButton;
         private ToolTip toolTip1;
         private CheckBox statisticCheckBox;
+        private ToolStripMenuItem HideBranchToolStripMenuItem;
+        private ToolStripMenuItem HideSportToolStripMenuItem;
+        private Button mainFormQuestionButton;
+        private DataGridViewTextBoxColumn SourceColumn;
+        private DataGridViewTextBoxColumn IDColumn;
+        private DataGridViewTextBoxColumn StartTimeColumn;
+        private DataGridViewTextBoxColumn BranchColumn;
+        private DataGridViewTextBoxColumn Team1Column;
+        private DataGridViewTextBoxColumn Team2Column;
+        private ToolStripMenuItem hideEventToolStripMenuItem;
     }
 }

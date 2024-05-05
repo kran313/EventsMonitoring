@@ -1,23 +1,41 @@
-﻿using EventsMonitoring.CommonClasses;
+﻿using EventsMonitoring;
+using EventsMonitoring.CommonClasses;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace FonbetMonitoring
 {
     public class FonbetMissingEvents
     {
-        public static List<Event> GetMatches(Dictionary<(string, string), List<Event>> baltBetMatches, 
-                                             Dictionary<(string, string), List<Event>> fonBetMatches)
+        public static List<Event> GetMatches(Dictionary<string, Event> baltBetMatchesSource,
+                                             Dictionary<string, Event> fonBetMatchesSource)
         {
+
+            var baltBetMatches = Converter.Convert(baltBetMatchesSource);
+            var fonBetMatches = Converter.ConvertAndChangeIDs(fonBetMatchesSource, "fonbet");
+
+            var baltBetMatchesStatistics = baltBetMatchesSource.Values.Where(t => t.isStatistic).ToList();
+            var fonBetMatchesStatistics = fonBetMatchesSource.Values.Where(t => t.isStatistic).ToList();
+
             var matchesToDisplay = new List<Event>();
+
 
             foreach (var fonBetPairID in fonBetMatches.Keys)
             {
                 foreach (var fonbetMatch in fonBetMatches[fonBetPairID])
                 {
+                    if (fonbetMatch.isStatistic)
+                    {
+                        continue;
+                    }
+
+
                     if (fonbetMatch.status == "Ок")
                     {
                         continue;
@@ -76,6 +94,32 @@ namespace FonbetMonitoring
                     }
                 }
             }
+
+            var matchings = MatchingDatabase.GetMatchings();
+
+            foreach (var fonBetMatchStatistic in fonBetMatchesStatistics)
+            {
+                if (matchings.ContainsKey(fonBetMatchStatistic.parent1ID) && matchings.ContainsKey(fonBetMatchStatistic.parent2ID) && fonBetMatchStatistic.sport == "Волейбол")
+                {
+
+                    if (baltBetMatchesStatistics.Where(
+                        t => 
+                        t.parent1ID == matchings[fonBetMatchStatistic.parent1ID] &&
+                        t.parent2ID == matchings[fonBetMatchStatistic.parent2ID] &&
+                        t.statistic == fonBetMatchStatistic.statistic).Count() > 0
+                     )
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        fonBetMatchStatistic.status = "Нет данных";
+                        matchesToDisplay.Add(fonBetMatchStatistic);
+                    }
+                }
+ 
+            }
+
             return matchesToDisplay;
         }
     }

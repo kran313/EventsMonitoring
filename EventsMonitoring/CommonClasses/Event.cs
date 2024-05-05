@@ -16,6 +16,9 @@ namespace EventsMonitoring.CommonClasses
         public Team team2 { get; set; }
         public DateTime startTime { get; set; }
         public bool isStatistic;
+        public string statistic;
+        public string parent1ID;
+        public string parent2ID;
         public string sportId;
         public string name;
         public bool place;
@@ -24,7 +27,8 @@ namespace EventsMonitoring.CommonClasses
 
 
         //FonBet
-        public Event(string id, string sport, string branch, Team team1, Team team2, long startTime, string sportId, string name, bool place, int level, bool isStatistic = false, string status = "")
+        public Event(string id, string sport, string branch, Team team1, Team team2, long startTime, string sportId, string name, bool place, 
+                     int level, bool isStatistic = false, string statistic = "", string parent1ID = "", string parent2ID = "", string status = "")
         {
             matchID = id;
             this.sport = sport;
@@ -38,11 +42,14 @@ namespace EventsMonitoring.CommonClasses
             this.place = place;
             this.level = level;
             this.isStatistic = isStatistic;
+            this.statistic = statistic;
+            this.parent1ID = parent1ID;
+            this.parent2ID = parent2ID;
             linkedBaltBetMatchID = "";
         }
 
         //Betcity
-        public Event(string id, string sport, string branch, Team team1, Team team2, long startTime, bool isStatistic = false, string status = "")
+        public Event(string id, string sport, string branch, Team team1, Team team2, long startTime, bool isStatistic = false, string parent1ID = "", string parent2ID = "", string status = "")
         {
             matchID = id;
             this.sport = sport;
@@ -50,14 +57,17 @@ namespace EventsMonitoring.CommonClasses
             this.team1 = team1;
             this.team2 = team2;
             this.startTime = UnixTimeStampToDateTime(startTime);
-            this.status = status;
             this.isStatistic = isStatistic;
+            this.parent1ID = parent1ID;
+            this.parent2ID = parent2ID;
+            this.status = status;
             linkedBaltBetMatchID = "";
         }
 
 
         //BaltBet
-        public Event(string id, string sport, string branch, Team team1, Team team2, DateTime startTime, bool isStatistic = false, string status = "")
+        public Event(string id, string sport, string branch, Team team1, Team team2, DateTime startTime, bool isStatistic = false,
+                     string statistic = "", string parent1ID = "", string parent2ID = "", string status = "")
         {
             matchID = id;
             this.sport = sport;
@@ -67,6 +77,9 @@ namespace EventsMonitoring.CommonClasses
             this.startTime = startTime;
             this.status = status;
             this.isStatistic = isStatistic;
+            this.statistic = statistic;
+            this.parent1ID = parent1ID;
+            this.parent2ID = parent2ID;
             linkedBaltBetMatchID = "";
         }
 

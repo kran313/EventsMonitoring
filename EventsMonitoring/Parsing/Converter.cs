@@ -16,6 +16,11 @@ namespace FonbetMonitoring
 
             foreach (var match in matchesID.Values)
             {
+                if (match.isStatistic)
+                {
+                    continue;
+                }
+
                 if (!convertedMatches.ContainsKey((match.team1.teamId, match.team2.teamId)))
                 {
                     convertedMatches[(match.team1.teamId, match.team2.teamId)] = new List<Event>();
@@ -37,6 +42,7 @@ namespace FonbetMonitoring
 
             foreach (var match in matchesID.Values)
             {
+
                 if (!(matchings.ContainsKey(match.team1.teamId) && matchings.ContainsKey(match.team2.teamId)))
                 {
                     match.status = "Нет данных";

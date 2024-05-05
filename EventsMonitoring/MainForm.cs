@@ -2,6 +2,7 @@ using EventsMonitoring.CommonClasses;
 using EventsMonitoring.Parsing;
 using FonbetMonitoring;
 using System.Diagnostics.Eventing.Reader;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace EventsMonitoring
@@ -11,10 +12,13 @@ namespace EventsMonitoring
         public List<Event> matchesToDisplay;
         public List<Event> matchesToDisplayDubles;
         public List<string> hiddenMatches;
+        public List<string> hiddenBranches;
+        public List<string> hiddenSports;
         public Dictionary<string, Event> baltBetMatches;
         public Dictionary<string, Event> fonBetMatches;
         public Dictionary<(string, string), List<Event>> baltBetMatchesConverted;
         public Dictionary<(string, string), List<Event>> fonBetMatchesConverted;
+        public List<string> rememberedCheckedSportTypes;
         public DateTime savedTime;
         public bool isLive;
         public bool isStatistic;
@@ -25,13 +29,48 @@ namespace EventsMonitoring
         {
             InitializeComponent();
             hiddenMatches = new List<string>();
+            hiddenBranches = new List<string>();
+            hiddenSports = new List<string>();
             isLive = false;
             isStatistic = false;
             flag = false;
+            rememberedCheckedSportTypes = new List<string>();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            if (File.Exists("checkedSportTypes.txt"))
+            {
+                StreamReader sr = new StreamReader("checkedSportTypes.txt");
+
+                while (!sr.EndOfStream)
+                {
+                    rememberedCheckedSportTypes.Add(sr.ReadLine());
+                }
+
+                sr.Close();
+
+                if (rememberedCheckedSportTypes[0] == "1")
+                {
+                    isLive = true;
+                    liveRadioButton.Checked = true;
+                }
+                if (rememberedCheckedSportTypes[1] == "1")
+                {
+                    isStatistic = true;
+                    statisticCheckBox.Checked = true;
+                }
+
+                for (var i = 0; i < sportTypesCheckedListBox.Items.Count; i++)
+                {
+                    if (rememberedCheckedSportTypes.Contains(sportTypesCheckedListBox.Items[i]))
+                    {
+                        sportTypesCheckedListBox.SetItemCheckState(i, CheckState.Checked);
+                    }
+                }
+            }
+
+
             dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
         }
 
@@ -58,17 +97,14 @@ namespace EventsMonitoring
             {
                 savedTime = currentTime;
                 baltBetMatches = BaltBetParsing.GetMatches(isLive, isStatistic);
-                baltBetMatchesConverted = Converter.Convert(baltBetMatches);
-
                 fonBetMatches = FonBetParsing.GetMatches(isLive, isStatistic);
-                fonBetMatchesConverted = Converter.ConvertAndChangeIDs(fonBetMatches, "fonbet");
 
                 flag = false;
             }
 
 
 
-            matchesToDisplay = FonbetMissingEvents.GetMatches(baltBetMatchesConverted, fonBetMatchesConverted);
+            matchesToDisplay = FonbetMissingEvents.GetMatches(baltBetMatches, fonBetMatches);
 
 
 
@@ -110,10 +146,10 @@ namespace EventsMonitoring
 
             }
 
-            matchesToDisplayDubles = baltBetMatches.Values.Where(t => t.status == "Дубль").ToList();
+            matchesToDisplayDubles = baltBetMatches.Values.Where(t => t.status == "Дубль" || t.status == "Не совпадают названия команд").ToList();
             matchesToDisplayDubles.AddRange(matchesToDisplay);
 
-            matchesToDisplayDubles = matchesToDisplayDubles.Where(t => !hiddenMatches.Contains(t.matchID)).ToList();
+            matchesToDisplayDubles = matchesToDisplayDubles.Where(t => !hiddenMatches.Contains(t.matchID) && !hiddenBranches.Contains(t.branch) && !hiddenSports.Contains(t.sport)).ToList();
 
             if (sortIndex == 5)
             {
@@ -159,7 +195,22 @@ namespace EventsMonitoring
 
         private void dataGridView1_RowContextMenuStripNeeded(object sender, DataGridViewRowContextMenuStripNeededEventArgs e)
         {
+            Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
+
+            if (new List<string> { "Нет матча/поменялся ID", "Нет данных", "" }.Contains(selectedMatch.status))
+            {
+                EventContextMenuStrip.Items[1].Text = "Скопировать инфо о матче";
+                EventContextMenuStrip.Items[0].Enabled = true;
+            }
+            else
+            {
+                EventContextMenuStrip.Items[1].Text = "Скопировать ID матча";
+                EventContextMenuStrip.Items[0].Enabled = false;
+            }
+
+
             e.ContextMenuStrip = EventContextMenuStrip;
+
 
             //SaveIDToolStripMenuItem.Click += SaveIDToolStripMenuItem_Click;
             //MatchingToolStripMenuItem.Click += MatchingToolStripMenuItem_Click;
@@ -196,6 +247,10 @@ namespace EventsMonitoring
             {
 
             }
+            else if (selectedMatch.isStatistic)
+            {
+                MessageBox.Show("Статистику нельзя связывать");
+            }
             else
             {
                 Event matchingMatch;
@@ -203,7 +258,7 @@ namespace EventsMonitoring
                 matchingMatch = fonBetMatches[selectedMatch.matchID];
 
 
-                if (!selectedMatch.status.Contains("Дубль"))
+                if (!selectedMatch.status.Contains("Дубль") || !selectedMatch.status.Contains("Не совпадают названия команд"))
                 {
                     MatchingForm form = new MatchingForm(matchingMatch, baltBetMatches);
                     if (form.ShowDialog() == DialogResult.OK)
@@ -229,38 +284,12 @@ namespace EventsMonitoring
                 }
                 else
                 {
-                    MessageBox.Show("Это дубль!!!");
+                    MessageBox.Show("Смотри примечание!");
                 }
             }
 
         }
 
-        private void HideEventToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
-            int selectedMatchIndex = dataGridView1.SelectedRows[0].Index;
-            hiddenMatches.Add(selectedMatch.matchID);
-
-            // dataGridView1.DataSource = new List<Event>();
-            dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
-
-
-            if (dataGridView1.RowCount <= 1)
-            {
-
-            }
-            else if (dataGridView1.RowCount > selectedMatchIndex)
-            {
-                dataGridView1.FirstDisplayedScrollingRowIndex = selectedMatchIndex > 10 ? selectedMatchIndex - 10 : 0;
-                dataGridView1.Rows[selectedMatchIndex].Selected = true;
-            }
-            else
-            {
-                dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
-                dataGridView1.Rows[dataGridView1.RowCount - 1].Selected = true;
-            }
-
-        }
 
         private void lineRadioButton_CheckedChanged(object sender, EventArgs e)
         {
@@ -311,6 +340,136 @@ namespace EventsMonitoring
             else
             {
                 isStatistic = false; ;
+            }
+        }
+
+        private void HideBranchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
+            int selectedMatchIndex = dataGridView1.SelectedRows[0].Index;
+            hiddenBranches.Add(selectedMatch.branch);
+
+            // dataGridView1.DataSource = new List<Event>();
+            dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
+
+
+            if (dataGridView1.RowCount <= 1)
+            {
+
+            }
+            else if (dataGridView1.RowCount > selectedMatchIndex)
+            {
+                dataGridView1.FirstDisplayedScrollingRowIndex = selectedMatchIndex > 10 ? selectedMatchIndex - 10 : 0;
+                dataGridView1.Rows[selectedMatchIndex].Selected = true;
+            }
+            else
+            {
+                dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
+                dataGridView1.Rows[dataGridView1.RowCount - 1].Selected = true;
+            }
+        }
+
+        private void HideSportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
+            int selectedMatchIndex = dataGridView1.SelectedRows[0].Index;
+            hiddenSports.Add(selectedMatch.sport);
+
+            // dataGridView1.DataSource = new List<Event>();
+            dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
+
+
+            if (dataGridView1.RowCount <= 1)
+            {
+
+            }
+            else if (dataGridView1.RowCount > selectedMatchIndex)
+            {
+                dataGridView1.FirstDisplayedScrollingRowIndex = selectedMatchIndex > 10 ? selectedMatchIndex - 10 : 0;
+                dataGridView1.Rows[selectedMatchIndex].Selected = true;
+            }
+            else
+            {
+                dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
+                dataGridView1.Rows[dataGridView1.RowCount - 1].Selected = true;
+            }
+        }
+
+        private void mainFormQuestionButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Это основное окно программы. Слева можно выбрать настройки для отображающихся матчей.\n" +
+                            "Справа будет список из потенциально некорректных или отсутствующих матчей в сравнении с Фонбетом.\n\n" +
+                            "В колонке Примечание возможны следующие варианты:\n" +
+                            "Время чч:мм - показывает на сколько часов и минут матч не совпадает.\n" +
+                            "Дубль - если у нас есть матч, в котором совпадает первая или вторая команда.\n" +
+                            "Перевертыш - если у нас команды в обратном порядке.\n" +
+                            "Нет данных - хотя бы одна из команд не связана.\n" +
+                            "Нет матча/поменялся ID - либо этого матча у нас нет, либо у одной из команд сменился ID.\n" +
+                            "Не совпадают названия команд - названия команд в статистике не совпадают с родительскими названиями. Или такую статистику просто нужно скрыть, для этого напишите мне\n\n" +
+                            "Для взаимодействия с любым матчем нужно нажать на него правой клавишей мышки и выбрать один из пунктов меню:\n" +
+                            "Скрыть событие/ветку/спорт - в списке матчей перестанет показываться текущее событие/ветка/спорт только на вашем компьютере.\n" +
+                            "Скопировать ID матча - если в колонке примечание указано Время, Дубль или Перевертыш, тогда в память скопируется ID нашего матча. В ином случае скопируется полная информация о матче с Фонбета.\n" +
+                            "Связать команды - если в колонке примечание указано Нет данных или Нет матча/поменялся ID, то нужно связать ID команд. После связывание матч либо исчезнет, если с ним все ок, либо останется и в колонке примечание будет написана причина.\n" +
+                            "Матчи статистики связать нельзя, они должны автоматически пропадать, если все хорошо.\n\n\n" +
+                            "По всем вопросам/предложениям/ошибкам писать Литвинову Артему в дискорд.", "Основное окно");
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            StreamWriter sr = new StreamWriter("checkedSportTypes.txt", false);
+
+            if (liveRadioButton.Checked)
+            {
+                sr.WriteLine("1");
+            }
+            else{
+                sr.WriteLine("0");
+            }
+
+            if (statisticCheckBox.Checked)
+            {
+                sr.WriteLine("1");
+            }
+            else
+            {
+                sr.WriteLine("0");
+            }
+
+
+            for (var i = 0; i < sportTypesCheckedListBox.Items.Count; i++)
+            {
+                if (sportTypesCheckedListBox.GetItemCheckState(i) == CheckState.Checked)
+                {
+                    sr.WriteLine(sportTypesCheckedListBox.Items[i]);
+                }
+            }
+
+            sr.Close();
+        }
+
+        private void hideEventToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
+            int selectedMatchIndex = dataGridView1.SelectedRows[0].Index;
+            hiddenMatches.Add(selectedMatch.matchID);
+
+            // dataGridView1.DataSource = new List<Event>();
+            dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
+
+
+            if (dataGridView1.RowCount <= 1)
+            {
+
+            }
+            else if (dataGridView1.RowCount > selectedMatchIndex)
+            {
+                dataGridView1.FirstDisplayedScrollingRowIndex = selectedMatchIndex > 10 ? selectedMatchIndex - 10 : 0;
+                dataGridView1.Rows[selectedMatchIndex].Selected = true;
+            }
+            else
+            {
+                dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
+                dataGridView1.Rows[dataGridView1.RowCount - 1].Selected = true;
             }
         }
     }

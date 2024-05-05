@@ -55,6 +55,7 @@ namespace FonbetMonitoring
         public static Dictionary<string, Event> GetMatches(bool isLive, bool isStatistic)
         {
             var fonBetEvents = GetEvents();
+            var statisticsNames = ForbiddenSubStrings.GetStatisticsNames();
 
 
             Dictionary<string, SportFonBet> sportFonBet = new Dictionary<string, SportFonBet>();
@@ -67,6 +68,7 @@ namespace FonbetMonitoring
 
             var LineForbiddenStrings = ForbiddenSubStrings.GetForbiddenStrings("Line");
             var LiveForbiddenStrings = ForbiddenSubStrings.GetForbiddenStrings("Live");
+            var fonbetSportNames = ForbiddenSubStrings.GetFonbetSportNames();
 
             foreach (var item in fonBetEvents.events)
             {
@@ -97,18 +99,15 @@ namespace FonbetMonitoring
                     teamAway = allFonbetMatches[item.parentId].team2;
                 }
 
-                if (branch.Contains("Баскетбол 3x3"))
+
+                foreach (var fonbetSportName in fonbetSportNames.Keys)
                 {
-                    sport = "Баскетбол 3х3";
+                    if (branch.Contains(fonbetSportName))
+                    {
+                        sport = fonbetSportNames[fonbetSportName];
+                    }
                 }
-                if (branch.Contains("Армрестлинг"))
-                {
-                    sport = "Армрестлинг";
-                }
-                if (branch.Contains("Регби"))
-                {
-                    sport = "Регби";
-                }
+
 
 
                 if (level == 1)
@@ -125,11 +124,37 @@ namespace FonbetMonitoring
                         item.place == "live" ? true : false,
                         item.level,
                         item.level == 1 ? false : true,
+                        "",
+                        "",
                         "Fonbet"
                         );
                 }
-                else if (level == 2)
+                else
                 {
+                    var qwerty = fonBetEvents.events.Where(t => t.id == item.parentId).First();
+                    string statistic = string.Empty;
+
+                    if (statisticsNames.ContainsKey(sport) && statisticsNames[sport].ContainsKey(item.name))
+                    {
+                        statistic = statisticsNames[sport][item.name];
+                    }
+                    else
+                    {
+                        statistic = item.name;
+                    }
+
+                    if (sport == "Волейбол" && item.place == "line")
+                    {
+                        statistic = "статистика";
+                    }
+
+                    if (sport == "Баскетбол" && statistic == "основное время")
+                    {
+                        continue;
+                    }
+
+
+
                     allFonbetMatches[item.id] = new Event(
                         item.id,
                         sport,
@@ -142,12 +167,13 @@ namespace FonbetMonitoring
                         item.place == "live" ? true : false,
                         item.level,
                         item.level == 1 ? false : true,
+                        statistic,
+                        qwerty.team1Id,
+                        qwerty.team2Id,
                         "Fonbet"
                         );
                 }
-                else
-                {
-                }
+                
 
 
                 if (ForbiddenSubStrings.isAllowed(branch, isLive, LiveForbiddenStrings, LineForbiddenStrings) && 
