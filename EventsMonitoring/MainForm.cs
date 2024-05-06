@@ -184,30 +184,51 @@ namespace EventsMonitoring
         {
             if (e.Button == MouseButtons.Right)
             {
-                var hti = dataGridView1.HitTest(e.X, e.Y);
-                dataGridView1.ClearSelection();
-                if (hti.RowIndex != -1)
+                if (dataGridView1.SelectedRows.Count > 1)
                 {
-                    dataGridView1.Rows[hti.RowIndex].Selected = true;
+
+                }
+                else
+                {
+                    var hti = dataGridView1.HitTest(e.X, e.Y);
+                    dataGridView1.ClearSelection();
+                    if (hti.RowIndex != -1)
+                    {
+                        dataGridView1.Rows[hti.RowIndex].Selected = true;
+                    }
                 }
             }
         }
 
         private void dataGridView1_RowContextMenuStripNeeded(object sender, DataGridViewRowContextMenuStripNeededEventArgs e)
         {
-            Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
-
-            if (new List<string> { "Нет матча/поменялся ID", "Нет данных", "" }.Contains(selectedMatch.status))
+            if (dataGridView1.SelectedRows.Count > 1)
             {
-                EventContextMenuStrip.Items[1].Text = "Скопировать инфо о матче";
-                EventContextMenuStrip.Items[0].Enabled = true;
+                EventContextMenuStrip.Items[0].Visible = false;
+                EventContextMenuStrip.Items[1].Visible = false;
+                EventContextMenuStrip.Items[3].Visible = false;
+                EventContextMenuStrip.Items[2].Text = "Скрыть события";
             }
             else
             {
-                EventContextMenuStrip.Items[1].Text = "Скопировать ID матча";
-                EventContextMenuStrip.Items[0].Enabled = false;
-            }
+                EventContextMenuStrip.Items[0].Visible = true;
+                EventContextMenuStrip.Items[1].Visible = true;
+                EventContextMenuStrip.Items[3].Visible = true;
+                EventContextMenuStrip.Items[2].Text = "Скрыть событие";
 
+                Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
+
+                if (new List<string> { "Нет матча/поменялся ID", "Нет данных", "" }.Contains(selectedMatch.status))
+                {
+                    EventContextMenuStrip.Items[1].Text = "Скопировать инфо о матче";
+                    EventContextMenuStrip.Items[0].Enabled = true;
+                }
+                else
+                {
+                    EventContextMenuStrip.Items[1].Text = "Скопировать ID матча";
+                    EventContextMenuStrip.Items[0].Enabled = false;
+                }
+            }
 
             e.ContextMenuStrip = EventContextMenuStrip;
 
@@ -265,6 +286,7 @@ namespace EventsMonitoring
                     {
                         // dataGridView1.DataSource = new List<Event>();
                         dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
+                        dataGridView1.ClearSelection();
 
                         if (dataGridView1.RowCount <= 1)
                         {
@@ -351,6 +373,7 @@ namespace EventsMonitoring
 
             // dataGridView1.DataSource = new List<Event>();
             dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
+            dataGridView1.ClearSelection();
 
 
             if (dataGridView1.RowCount <= 1)
@@ -377,6 +400,7 @@ namespace EventsMonitoring
 
             // dataGridView1.DataSource = new List<Event>();
             dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
+            dataGridView1.ClearSelection();
 
 
             if (dataGridView1.RowCount <= 1)
@@ -449,27 +473,59 @@ namespace EventsMonitoring
 
         private void hideEventToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
-            int selectedMatchIndex = dataGridView1.SelectedRows[0].Index;
-            hiddenMatches.Add(selectedMatch.matchID);
-
-            // dataGridView1.DataSource = new List<Event>();
-            dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
-
-
-            if (dataGridView1.RowCount <= 1)
+            if (dataGridView1.SelectedRows.Count > 1)
             {
+                for (var i = 0; i < dataGridView1.SelectedRows.Count; i++)
+                {
+                    Event selectedMatch = dataGridView1.SelectedRows[i].DataBoundItem as Event;
+                    hiddenMatches.Add(selectedMatch.matchID);
+                }
+                var selectedMatchIndex = dataGridView1.SelectedRows.Cast<DataGridViewRow>().Select(t => t.Index).ToList().Min();
 
-            }
-            else if (dataGridView1.RowCount > selectedMatchIndex)
-            {
-                dataGridView1.FirstDisplayedScrollingRowIndex = selectedMatchIndex > 10 ? selectedMatchIndex - 10 : 0;
-                dataGridView1.Rows[selectedMatchIndex].Selected = true;
+                dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
+                dataGridView1.ClearSelection();
+
+
+                if (dataGridView1.RowCount <= 1)
+                {
+
+                }
+                else if (dataGridView1.RowCount > selectedMatchIndex)
+                {
+                    dataGridView1.FirstDisplayedScrollingRowIndex = selectedMatchIndex > 10 ? selectedMatchIndex - 10 : 0;
+                    dataGridView1.Rows[selectedMatchIndex].Selected = true;
+                }
+                else
+                {
+                    dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
+                    dataGridView1.Rows[dataGridView1.RowCount - 1].Selected = true;
+                }
             }
             else
             {
-                dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
-                dataGridView1.Rows[dataGridView1.RowCount - 1].Selected = true;
+                Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
+                int selectedMatchIndex = dataGridView1.SelectedRows[0].Index;
+                hiddenMatches.Add(selectedMatch.matchID);
+
+                // dataGridView1.DataSource = new List<Event>();
+                dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic);
+                dataGridView1.ClearSelection();
+
+
+                if (dataGridView1.RowCount <= 1)
+                {
+
+                }
+                else if (dataGridView1.RowCount > selectedMatchIndex)
+                {
+                    dataGridView1.FirstDisplayedScrollingRowIndex = selectedMatchIndex > 10 ? selectedMatchIndex - 10 : 0;
+                    dataGridView1.Rows[selectedMatchIndex].Selected = true;
+                }
+                else
+                {
+                    dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.RowCount - 1;
+                    dataGridView1.Rows[dataGridView1.RowCount - 1].Selected = true;
+                }
             }
         }
     }

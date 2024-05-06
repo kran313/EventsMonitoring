@@ -291,7 +291,6 @@
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
             dataGridView1.DefaultCellStyle = dataGridViewCellStyle1;
             dataGridView1.Location = new Point(227, 0);
-            dataGridView1.MultiSelect = false;
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowTemplate.Height = 25;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -386,14 +385,14 @@
             // HideBranchToolStripMenuItem
             // 
             HideBranchToolStripMenuItem.Name = "HideBranchToolStripMenuItem";
-            HideBranchToolStripMenuItem.Size = new Size(180, 22);
+            HideBranchToolStripMenuItem.Size = new Size(108, 22);
             HideBranchToolStripMenuItem.Text = "Ветку";
             HideBranchToolStripMenuItem.Click += HideBranchToolStripMenuItem_Click;
             // 
             // HideSportToolStripMenuItem
             // 
             HideSportToolStripMenuItem.Name = "HideSportToolStripMenuItem";
-            HideSportToolStripMenuItem.Size = new Size(180, 22);
+            HideSportToolStripMenuItem.Size = new Size(108, 22);
             HideSportToolStripMenuItem.Text = "Спорт";
             HideSportToolStripMenuItem.Click += HideSportToolStripMenuItem_Click;
             // 

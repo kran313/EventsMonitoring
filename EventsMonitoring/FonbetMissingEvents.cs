@@ -40,6 +40,7 @@ namespace FonbetMonitoring
                     {
                         continue;
                     }
+
                     else if (fonbetMatch.status == "Нет данных")
                     {
                         matchesToDisplay.Add(fonbetMatch);
@@ -53,6 +54,7 @@ namespace FonbetMonitoring
                                 if (Math.Abs(fonbetMatch.startTime.Subtract(baltbetMatch.startTime).TotalMinutes) < 30)
                                 {
                                     fonbetMatch.status = "Ок";
+                                    fonbetMatch.linkedBaltBetMatchID = baltbetMatch.matchID;
                                     break;
                                 }
                             }
@@ -119,7 +121,6 @@ namespace FonbetMonitoring
                 }
  
             }
-
             return matchesToDisplay;
         }
     }
