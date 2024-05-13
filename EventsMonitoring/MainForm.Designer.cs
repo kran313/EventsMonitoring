@@ -31,8 +31,10 @@
             components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             panel1 = new Panel();
+            hudeMenuBarButton = new Button();
             mainFormQuestionButton = new Button();
             lineLiveGroupBox = new GroupBox();
+            exclusiveCheckBox = new CheckBox();
             statisticCheckBox = new CheckBox();
             liveRadioButton = new RadioButton();
             lineRadioButton = new RadioButton();
@@ -73,6 +75,7 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(hudeMenuBarButton);
             panel1.Controls.Add(mainFormQuestionButton);
             panel1.Controls.Add(lineLiveGroupBox);
             panel1.Controls.Add(refreshButton);
@@ -83,15 +86,25 @@
             panel1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(221, 861);
+            panel1.Size = new Size(300, 861);
             panel1.TabIndex = 1;
+            // 
+            // hudeMenuBarButton
+            // 
+            hudeMenuBarButton.Location = new Point(6, 134);
+            hudeMenuBarButton.Name = "hudeMenuBarButton";
+            hudeMenuBarButton.Size = new Size(48, 55);
+            hudeMenuBarButton.TabIndex = 7;
+            hudeMenuBarButton.Text = "<=";
+            hudeMenuBarButton.UseVisualStyleBackColor = true;
+            hudeMenuBarButton.Click += hudeMenuBarButton_Click;
             // 
             // mainFormQuestionButton
             // 
             mainFormQuestionButton.Font = new Font("Segoe UI", 26.25F, FontStyle.Regular, GraphicsUnit.Point);
             mainFormQuestionButton.Location = new Point(6, 12);
             mainFormQuestionButton.Name = "mainFormQuestionButton";
-            mainFormQuestionButton.Size = new Size(41, 55);
+            mainFormQuestionButton.Size = new Size(48, 55);
             mainFormQuestionButton.TabIndex = 6;
             mainFormQuestionButton.Text = "?";
             mainFormQuestionButton.UseVisualStyleBackColor = true;
@@ -99,14 +112,26 @@
             // 
             // lineLiveGroupBox
             // 
+            lineLiveGroupBox.Controls.Add(exclusiveCheckBox);
             lineLiveGroupBox.Controls.Add(statisticCheckBox);
             lineLiveGroupBox.Controls.Add(liveRadioButton);
             lineLiveGroupBox.Controls.Add(lineRadioButton);
-            lineLiveGroupBox.Location = new Point(3, 73);
+            lineLiveGroupBox.Location = new Point(82, 73);
             lineLiveGroupBox.Name = "lineLiveGroupBox";
-            lineLiveGroupBox.Size = new Size(215, 95);
+            lineLiveGroupBox.Size = new Size(215, 115);
             lineLiveGroupBox.TabIndex = 5;
             lineLiveGroupBox.TabStop = false;
+            // 
+            // exclusiveCheckBox
+            // 
+            exclusiveCheckBox.AutoSize = true;
+            exclusiveCheckBox.Location = new Point(7, 84);
+            exclusiveCheckBox.Name = "exclusiveCheckBox";
+            exclusiveCheckBox.Size = new Size(107, 25);
+            exclusiveCheckBox.TabIndex = 7;
+            exclusiveCheckBox.Text = "Эксклюзив";
+            exclusiveCheckBox.UseVisualStyleBackColor = true;
+            exclusiveCheckBox.CheckedChanged += exclusiveCheckBox_CheckedChanged;
             // 
             // statisticCheckBox
             // 
@@ -144,9 +169,9 @@
             // 
             // refreshButton
             // 
-            refreshButton.Location = new Point(53, 12);
+            refreshButton.Location = new Point(6, 73);
             refreshButton.Name = "refreshButton";
-            refreshButton.Size = new Size(165, 55);
+            refreshButton.Size = new Size(48, 55);
             refreshButton.TabIndex = 4;
             refreshButton.Text = "Обновить";
             refreshButton.UseVisualStyleBackColor = true;
@@ -163,7 +188,7 @@
             timeIntervalGroupBox.Controls.Add(ThreeHoursRadioButton);
             timeIntervalGroupBox.Controls.Add(OneHourRadioButton);
             timeIntervalGroupBox.ForeColor = SystemColors.WindowText;
-            timeIntervalGroupBox.Location = new Point(3, 574);
+            timeIntervalGroupBox.Location = new Point(82, 574);
             timeIntervalGroupBox.Name = "timeIntervalGroupBox";
             timeIntervalGroupBox.Size = new Size(215, 284);
             timeIntervalGroupBox.TabIndex = 3;
@@ -255,7 +280,7 @@
             // 
             // label1
             // 
-            label1.Location = new Point(3, 191);
+            label1.Location = new Point(82, 185);
             label1.Name = "label1";
             label1.Size = new Size(215, 22);
             label1.TabIndex = 1;
@@ -269,7 +294,7 @@
             sportTypesCheckedListBox.CheckOnClick = true;
             sportTypesCheckedListBox.FormattingEnabled = true;
             sportTypesCheckedListBox.Items.AddRange(new object[] { "Все виды спорта", "Футбол", "Хоккей", "Баскетбол", "Теннис", "Волейбол", "Гандбол", "Бейсбол", "Бокс", "Единоборства", "Австралийский футбол", "Авто-Мотоспорт", "Американский футбол", "Армрестлинг", "Бадминтон", "Баскетбол 3х3", "Биатлон", "Бильярд", "Велоспорт", "Водное поло", "Горные лыжи", "Индор-хоккей", "Керлинг", "Крикет", "Лыжи", "Настольный теннис", "Нетбол", "Пляжный волейбол", "Пляжный футбол", "Прыжки с трамплина", "Регби", "Снукер", "Софтбол", "Флорбол", "Формула 1", "Футзал", "Хоккейбол", "Хоккей на траве", "Хоккей с мячом", "Шары", "Шахматы" });
-            sportTypesCheckedListBox.Location = new Point(3, 216);
+            sportTypesCheckedListBox.Location = new Point(82, 210);
             sportTypesCheckedListBox.Name = "sportTypesCheckedListBox";
             sportTypesCheckedListBox.Size = new Size(215, 336);
             sportTypesCheckedListBox.TabIndex = 0;
@@ -290,11 +315,11 @@
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
             dataGridView1.DefaultCellStyle = dataGridViewCellStyle1;
-            dataGridView1.Location = new Point(227, 0);
+            dataGridView1.Location = new Point(306, 0);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowTemplate.Height = 25;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new Size(1257, 860);
+            dataGridView1.Size = new Size(1178, 860);
             dataGridView1.TabIndex = 0;
             dataGridView1.ColumnHeaderMouseClick += dataGridView1_ColumnHeaderMouseClick;
             dataGridView1.RowContextMenuStripNeeded += dataGridView1_RowContextMenuStripNeeded;
@@ -356,9 +381,9 @@
             panel2.AutoSize = true;
             panel2.BackColor = SystemColors.ActiveCaption;
             panel2.Dock = DockStyle.Top;
-            panel2.Location = new Point(221, 0);
+            panel2.Location = new Point(300, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1263, 0);
+            panel2.Size = new Size(1184, 0);
             panel2.TabIndex = 2;
             // 
             // SaveIDToolStripMenuItem
@@ -420,7 +445,7 @@
             Controls.Add(panel1);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Monitoring";
+            Text = "Monitoring Ver.1.5";
             FormClosing += MainForm_FormClosing;
             Load += MainForm_Load;
             panel1.ResumeLayout(false);
@@ -469,5 +494,7 @@
         private DataGridViewTextBoxColumn Team1Column;
         private DataGridViewTextBoxColumn Team2Column;
         private ToolStripMenuItem hideEventToolStripMenuItem;
+        private CheckBox exclusiveCheckBox;
+        private Button hudeMenuBarButton;
     }
 }

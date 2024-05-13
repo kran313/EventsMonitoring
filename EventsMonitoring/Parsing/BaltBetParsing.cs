@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace FonbetMonitoring
 {
@@ -127,7 +128,7 @@ namespace FonbetMonitoring
 
             if (isStatistic)
             {
-                foreach (var item in baltBetMatches.Values)
+                foreach (var item in baltBetMatches.Values)                 
                 {
                     if (item.isStatistic)
                     {
@@ -147,6 +148,7 @@ namespace FonbetMonitoring
                         catch (Exception)
                         {
                             item.status = "Нужно проверить основной матч";
+                            item.linkedBaltBetMatchID = item.matchID;
                         }
                     }
                 }

@@ -14,7 +14,8 @@ namespace FonbetMonitoring
     public class FonbetMissingEvents
     {
         public static List<Event> GetMatches(Dictionary<string, Event> baltBetMatchesSource,
-                                             Dictionary<string, Event> fonBetMatchesSource)
+                                             Dictionary<string, Event> fonBetMatchesSource,
+                                             bool isExclusive)
         {
 
             var baltBetMatches = Converter.Convert(baltBetMatchesSource);
@@ -30,6 +31,7 @@ namespace FonbetMonitoring
             {
                 foreach (var fonbetMatch in fonBetMatches[fonBetPairID])
                 {
+
                     if (fonbetMatch.isStatistic)
                     {
                         continue;
@@ -57,6 +59,16 @@ namespace FonbetMonitoring
                                     fonbetMatch.linkedBaltBetMatchID = baltbetMatch.matchID;
                                     break;
                                 }
+                                else if (
+                                    Math.Abs(fonbetMatch.startTime.Subtract(baltbetMatch.startTime).TotalMinutes) >= 30 && 
+                                    baltbetMatch.sport == "Теннис")
+                                {
+                                    fonbetMatch.status = "Ок";
+                                    fonbetMatch.linkedBaltBetMatchID = baltbetMatch.matchID;
+                                    break;
+                                }
+
+
                             }
 
                             foreach (var baltbetMatch in baltBetMatches[fonBetPairID])
@@ -101,7 +113,7 @@ namespace FonbetMonitoring
 
             foreach (var fonBetMatchStatistic in fonBetMatchesStatistics)
             {
-                if (matchings.ContainsKey(fonBetMatchStatistic.parent1ID) && matchings.ContainsKey(fonBetMatchStatistic.parent2ID) && fonBetMatchStatistic.sport == "Волейбол")
+                if (matchings.ContainsKey(fonBetMatchStatistic.parent1ID) && matchings.ContainsKey(fonBetMatchStatistic.parent2ID))
                 {
 
                     if (baltBetMatchesStatistics.Where(
@@ -121,7 +133,27 @@ namespace FonbetMonitoring
                 }
  
             }
-            return matchesToDisplay;
+
+            if (!isExclusive)
+            {
+                return matchesToDisplay;
+            }
+            else
+            {
+                var linkedMatches = (from p in fonBetMatchesSource.Values
+                                     where p.isStatistic == false && p.linkedBaltBetMatchID != ""
+                                     select p.linkedBaltBetMatchID).ToList();
+
+
+                var exclusive = baltBetMatchesSource.Values.Where(
+                    t => !linkedMatches.Contains(t.matchID) &&
+                    matchings.Values.Contains(t.team1.teamId) &&
+                    matchings.Values.Contains(t.team2.teamId)).ToList();
+
+
+
+                return exclusive;
+            }
         }
     }
 }
