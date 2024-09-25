@@ -17,7 +17,7 @@ namespace FonbetMonitoring
         public static Team team2;
         public static Event currentEvent;
 
-
+        //ghjgfj
         public static List<BaltBetEvent> GetEvents(bool isLive)
         {
             using (ZipWebClient wc = new ZipWebClient())
