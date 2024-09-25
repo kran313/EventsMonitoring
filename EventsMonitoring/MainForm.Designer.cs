@@ -44,7 +44,6 @@
             button1 = new Button();
             button3 = new Button();
             lineLiveGroupBox = new GroupBox();
-            exclusiveCheckBox = new CheckBox();
             statisticCheckBox = new CheckBox();
             liveRadioButton = new RadioButton();
             lineRadioButton = new RadioButton();
@@ -231,7 +230,6 @@
             // 
             // lineLiveGroupBox
             // 
-            lineLiveGroupBox.Controls.Add(exclusiveCheckBox);
             lineLiveGroupBox.Controls.Add(statisticCheckBox);
             lineLiveGroupBox.Controls.Add(liveRadioButton);
             lineLiveGroupBox.Controls.Add(lineRadioButton);
@@ -240,18 +238,6 @@
             lineLiveGroupBox.Size = new Size(555, 55);
             lineLiveGroupBox.TabIndex = 5;
             lineLiveGroupBox.TabStop = false;
-            // 
-            // exclusiveCheckBox
-            // 
-            exclusiveCheckBox.AutoSize = true;
-            exclusiveCheckBox.Enabled = false;
-            exclusiveCheckBox.Location = new Point(437, 23);
-            exclusiveCheckBox.Name = "exclusiveCheckBox";
-            exclusiveCheckBox.Size = new Size(107, 25);
-            exclusiveCheckBox.TabIndex = 7;
-            exclusiveCheckBox.Text = "Эксклюзив";
-            exclusiveCheckBox.UseVisualStyleBackColor = true;
-            exclusiveCheckBox.CheckedChanged += exclusiveCheckBox_CheckedChanged;
             // 
             // statisticCheckBox
             // 
@@ -634,7 +620,6 @@
         private ToolStripMenuItem HideSportToolStripMenuItem;
         private Button mainFormQuestionButton;
         private ToolStripMenuItem hideEventToolStripMenuItem;
-        private CheckBox exclusiveCheckBox;
         private Button hudeMenuBarButton;
         private Panel panel4;
         private DataGridView dataGridView1;
