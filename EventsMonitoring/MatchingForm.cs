@@ -215,23 +215,14 @@ namespace EventsMonitoring
 
 
         private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            if (!checkBox1.Checked)
-            {
-                dataGridView1.DataSource = matchesToDisplay.Where(t => t.branch.ToLower().Contains(textBox1.Text.ToLower()) ||
-                                                                   t.team1.teamName.ToLower().Contains(textBox1.Text.ToLower()) ||
-                                                                   t.team2.teamName.ToLower().Contains(textBox1.Text.ToLower())
-                                                             ).ToList();
-            }
-            else
-            {
-                dataGridView1.DataSource = baltBetMatches.Values.Where(t => t.sport == bookmakerMatch.sport &&
-                                                                   (t.branch.ToLower().Contains(textBox1.Text.ToLower()) ||
-                                                                   t.team1.teamName.ToLower().Contains(textBox1.Text.ToLower()) ||
-                                                                   t.team2.teamName.ToLower().Contains(textBox1.Text.ToLower()))
-                                                             ).ToList();
-            }
-
+        {   
+            dataGridView1.DataSource = baltBetMatches.Values.Where(
+                t => t.sport == bookmakerMatch.sport &&
+                !t.isStatistic &&
+                (t.branch.ToLower().Contains(textBox1.Text.ToLower()) ||
+                t.team1.teamName.ToLower().Contains(textBox1.Text.ToLower()) ||
+                t.team2.teamName.ToLower().Contains(textBox1.Text.ToLower()))
+                ).ToList();
         }
 
         private void matchingFormQuestionButton_Click(object sender, EventArgs e)
@@ -239,7 +230,7 @@ namespace EventsMonitoring
             MessageBox.Show("Это окно для связвания команд.\n" + 
                             "Сверху отображается основная информация по матчу с Фонбета. Нужно вставить ID соответствующего матча с Балтбета внизу экрана. Если команды идут в обратном порядке, то поставить галочку в поле Обратный порядок.\n\n" + 
                             "В таблице посередине будет представлен список возможных совпадений. Если там есть нужный матч, кликните по нему 2 раза и ID матча автоматически подставится в нужное поле.\n" + 
-                            "Если среди представленных матчей нужного нет, тогда поставьте галочку в поле Полный поиск и в соседнем поле начните вводить название ветки или название любого из участников. В таблице снизу будут появлять все матчи, в которых есть введеная вами подстрока.\n" + 
+                            "Если среди представленных матчей нужного нет, тогда в поле поиск всех матчей по подстроке начните вводить название ветки или название любого из участников. В таблице снизу будут появлять все матчи, в которых есть введеная вами подстрока.\n" + 
                             "Если и после этого нужного матча нет, тогда можно вручную вставить ID матча.\n" + 
                             "Как только нужный ID найден, нажмите кнопу Связать команды.\n\n" + 
                             "В случае если связать не удастся, нажмите кнопку отмена, обновите события и попробуйте еще раз (возможно ID не успел подтянуться).", "Связывание команд");

@@ -11,7 +11,7 @@ namespace EventsMonitoring
     {
         public List<Event> matchesToDisplay;
         public List<Event> matchesToDisplayDubles;
-        public List<string> hiddenMatches;
+        public Dictionary<string, Event> hiddenMatches;
         public List<string> hiddenBranches;
         public List<string> hiddenSports;
         public Dictionary<string, Event> baltBetMatches;
@@ -25,11 +25,12 @@ namespace EventsMonitoring
         public bool isExclusive;
         public bool flag;
         public int sortIndex = -1;
+        public string[] qwaszx;
 
         public MainForm()
         {
             InitializeComponent();
-            hiddenMatches = new List<string>();
+            hiddenMatches = new Dictionary<string, Event>();
             hiddenBranches = new List<string>();
             hiddenSports = new List<string>();
             isLive = false;
@@ -72,13 +73,35 @@ namespace EventsMonitoring
                 }
             }
 
+            panel1.Dock = DockStyle.Fill;
+            dataGridView1.Dock = DockStyle.Fill;
 
+            panel1.Visible = false;
+            dataGridView1.Visible = true;
+
+            dataGridView2.DataSource = new List<Hidden>();
             dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
+
+
+            dataGridView1.Columns[0].Width = 140;
+            dataGridView1.Columns[5].Width = 110;
+            dataGridView1.Columns[3].Width = 230;
+            dataGridView1.Columns[4].Width = 230;
+            dataGridView1.Columns[2].Width = 1300 - 140 - 110 - 230 - 230;
         }
 
 
         private void refreshButton_Click(object sender, EventArgs e)
         {
+            if (panel1.Visible == true)
+            {
+                dataGridView1.DataSource = new List<Event>();
+
+                panel1.Visible = !panel1.Visible;
+                dataGridView1.Visible = !dataGridView1.Visible;
+            }
+
+            dataGridView2.DataSource = new List<Hidden>();
             dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
         }
 
@@ -141,7 +164,7 @@ namespace EventsMonitoring
             matchesToDisplayDubles = baltBetMatches.Values.Where(t => t.status == "Дубль" || t.status == "Нужно проверить основной матч").ToList();
             matchesToDisplayDubles.AddRange(matchesToDisplay);
 
-            matchesToDisplayDubles = matchesToDisplayDubles.Where(t => !hiddenMatches.Contains(t.matchID) && !hiddenBranches.Contains(t.branch) && !hiddenSports.Contains(t.sport)).ToList();
+            matchesToDisplayDubles = matchesToDisplayDubles.Where(t => !hiddenMatches.Keys.Contains(t.matchID) && !hiddenBranches.Contains(t.branch) && !hiddenSports.Contains(t.sport)).ToList();
 
             if (sortIndex == 5)
             {
@@ -161,6 +184,22 @@ namespace EventsMonitoring
             {
                 return matchesToDisplayDubles.
                     OrderBy(t => t.status).
+                    ThenBy(t => t.branch).
+                    ThenBy(t => t.startTime).
+                    ToList();
+            }
+            else if (sortIndex == 3)
+            {
+                return matchesToDisplayDubles.
+                    OrderBy(t => t.team1.teamName).
+                    ThenBy(t => t.branch).
+                    ThenBy(t => t.startTime).
+                    ToList();
+            }
+            else if (sortIndex == 4)
+            {
+                return matchesToDisplayDubles.
+                    OrderBy(t => t.team2.teamName).
                     ThenBy(t => t.branch).
                     ThenBy(t => t.startTime).
                     ToList();
@@ -322,12 +361,23 @@ namespace EventsMonitoring
                 isLive = false;
                 timeIntervalGroupBox.Visible = true;
                 exclusiveCheckBox.Visible = true;
+                button1.Visible = true;
+                button2.Visible = true;
+                button3.Visible = true;
+                button4.Visible = true;
+                dataGridView2.Visible = true;
             }
             else
             {
                 isLive = true; ;
                 timeIntervalGroupBox.Visible = false;
+                exclusiveCheckBox.Checked = false;
                 exclusiveCheckBox.Visible = false;
+                button1.Visible = false;
+                button2.Visible = false;
+                button3.Visible = false;
+                button4.Visible = false;
+                dataGridView2.Visible = false;
             }
 
             flag = true;
@@ -348,6 +398,16 @@ namespace EventsMonitoring
             else if (e.ColumnIndex == 0)
             {
                 sortIndex = 0;
+                dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
+            }
+            else if (e.ColumnIndex == 3)
+            {
+                sortIndex = 3;
+                dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
+            }
+            else if (e.ColumnIndex == 4)
+            {
+                sortIndex = 4;
                 dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
             }
             else
@@ -425,8 +485,9 @@ namespace EventsMonitoring
 
         private void mainFormQuestionButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Это основное окно программы. Слева можно выбрать настройки для отображающихся матчей.\n" +
-                            "Справа будет список из потенциально некорректных или отсутствующих матчей в сравнении с Фонбетом.\n\n" +
+            MessageBox.Show("Это основное окно программы.\n" +
+                            "Нажав на шестеренку, можно выбрать настройки для отображающихся матчей.\n" +
+                            "Нажав на стрелки, обновится список из потенциально некорректных или отсутствующих матчей в сравнении с Фонбетом.\n\n" +
                             "В колонке Примечание возможны следующие варианты:\n" +
                             "Время чч:мм - показывает на сколько часов и минут матч не совпадает.\n" +
                             "Дубль - если у нас есть матч, в котором совпадает первая или вторая команда.\n" +
@@ -483,7 +544,7 @@ namespace EventsMonitoring
                 for (var i = 0; i < dataGridView1.SelectedRows.Count; i++)
                 {
                     Event selectedMatch = dataGridView1.SelectedRows[i].DataBoundItem as Event;
-                    hiddenMatches.Add(selectedMatch.matchID);
+                    hiddenMatches[selectedMatch.matchID] = selectedMatch;
                 }
                 var selectedMatchIndex = dataGridView1.SelectedRows.Cast<DataGridViewRow>().Select(t => t.Index).ToList().Min();
 
@@ -510,7 +571,7 @@ namespace EventsMonitoring
             {
                 Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
                 int selectedMatchIndex = dataGridView1.SelectedRows[0].Index;
-                hiddenMatches.Add(selectedMatch.matchID);
+                hiddenMatches[selectedMatch.matchID] = selectedMatch;
 
                 // dataGridView1.DataSource = new List<Event>();
                 dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
@@ -539,6 +600,7 @@ namespace EventsMonitoring
             if (exclusiveCheckBox.Checked)
             {
                 isExclusive = true;
+                statisticCheckBox.Checked = false;
                 statisticCheckBox.Enabled = false;
             }
             else
@@ -550,8 +612,104 @@ namespace EventsMonitoring
 
         private void hudeMenuBarButton_Click(object sender, EventArgs e)
         {
-            dataGridView1.Location = new Point(75, 0);
-            dataGridView1.Size = new Size(this.Width - 75, this.Height);
+
+            panel1.Visible = !panel1.Visible;
+            dataGridView1.Visible = !dataGridView1.Visible;
+        }
+
+
+
+        public class Hidden
+        {
+            public string id { get; set; }
+            public string sport { get; set; }
+            public string branch { get; set; }
+            public string match { get; set; }
+            public CheckState state { get; set; }
+
+            public Hidden(string id, string sport, string branch, string match, CheckState state = CheckState.Unchecked)
+            {
+                this.id = id;
+                this.sport = sport;
+                this.branch = branch;
+                this.match = match;
+                this.state = state;
+            }
+        }
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var tempHiddenMatches = new List<Hidden>();
+            foreach (var item in hiddenMatches.Values)
+            {
+                if (item.startTime > DateTime.Now)
+                {
+                    tempHiddenMatches.Add(new Hidden(item.matchID, item.sport, item.branch, $"{item.team1.teamName} - {item.team2.teamName}"));
+                }
+                else
+                {
+                    hiddenMatches.Remove(item.matchID);
+                }
+            }
+            dataGridView2.Columns[1].Visible = false;
+            dataGridView2.Columns[2].Visible = true;
+            dataGridView2.Columns[3].Visible = true;
+
+            dataGridView2.DataSource = tempHiddenMatches;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var tempHiddenBranches = new List<Hidden>();
+            foreach (var item in hiddenBranches)
+            {
+                tempHiddenBranches.Add(new Hidden("Ветка", "", item, ""));
+            }
+            dataGridView2.Columns[1].Visible = false;
+            dataGridView2.Columns[2].Visible = true;
+            dataGridView2.Columns[3].Visible = false;
+
+            dataGridView2.DataSource = tempHiddenBranches;
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var tempHiddenSports = new List<Hidden>();
+            foreach (var item in hiddenSports)
+            {
+                tempHiddenSports.Add(new Hidden("Спорт", item, "", ""));
+            }
+            dataGridView2.Columns[1].Visible = true;
+            dataGridView2.Columns[2].Visible = false;
+            dataGridView2.Columns[3].Visible = false;
+
+            dataGridView2.DataSource = tempHiddenSports;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < dataGridView2.RowCount; i++)
+            {
+                Hidden hiddenLine = dataGridView2.Rows[i].DataBoundItem as Hidden;
+                if (hiddenLine.state == CheckState.Checked)
+                {
+                    if (hiddenLine.id == "Ветка")
+                    {
+                        hiddenBranches.Remove(hiddenLine.branch);
+                    }
+                    else if (hiddenLine.id == "Спорт")
+                    {
+                        hiddenSports.Remove(hiddenLine.sport);
+                    }
+                    else
+                    {
+                        hiddenMatches.Remove(hiddenLine.id);
+                    }
+                }
+            }
+            var data = dataGridView2.DataSource as List<Hidden>;
+            dataGridView2.DataSource = data.Where(t => t.state == CheckState.Unchecked).ToList();
         }
     }
 }

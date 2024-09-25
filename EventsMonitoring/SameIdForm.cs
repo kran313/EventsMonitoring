@@ -58,8 +58,14 @@ namespace EventsMonitoring
             teamNameLabel.Text = teamName;
             textBox1.Text = Id1;
             textBox2.Text = Id2;
-            label4.Text = GetPath(Id1);
-            label5.Text = GetPath(Id2);
+            try
+            {
+                label4.Text = GetPath(Id1);
+                label5.Text = GetPath(Id2);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private void OKButton_Click(object sender, EventArgs e)

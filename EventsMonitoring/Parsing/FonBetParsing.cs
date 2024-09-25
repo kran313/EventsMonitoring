@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.Threading.Channels;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Text.RegularExpressions;
 
 namespace FonbetMonitoring
 {
@@ -56,6 +57,7 @@ namespace FonbetMonitoring
         {
             var fonBetEvents = GetEvents();
             var statisticsNames = ForbiddenSubStrings.GetStatisticsNames();
+            var cyberSportsNames = ForbiddenSubStrings.GetCyberSportsNames();
 
 
             Dictionary<string, SportFonBet> sportFonBet = new Dictionary<string, SportFonBet>();
@@ -88,13 +90,27 @@ namespace FonbetMonitoring
 
                 if (item.parentId == null)
                 {
-                    branch = string.Join(". ", sportFonBet[item.sportId].name, item.name).Trim();
+                    if (sportFonBet[item.sportId].name.Contains(sport))
+                    {
+                        branch = string.Join(". ", sportFonBet[item.sportId].name, item.name).Replace("..", ".").Trim();
+                    }
+                    else
+                    {
+                        branch = string.Join(". ", sport, sportFonBet[item.sportId].name, item.name).Replace("..", ".").Trim();
+                    }
                     teamHome = new Team(sport, item.team1Id, item.team1);
                     teamAway = new Team(sport, item.team2Id, item.team2);
                 }
                 else
                 {
-                    branch = string.Join(". ", allFonbetMatches[item.parentId].branch, item.name).Trim();
+                    if (allFonbetMatches[item.parentId].branch.Contains(sport))
+                    {
+                        branch = string.Join(". ", allFonbetMatches[item.parentId].branch, item.name).Replace("..", ".").Trim();
+                    }
+                    else
+                    {
+                        branch = string.Join(". ", sport, allFonbetMatches[item.parentId].branch, item.name).Replace("..", ".").Trim();
+                    }
                     teamHome = allFonbetMatches[item.parentId].team1;
                     teamAway = allFonbetMatches[item.parentId].team2;
                 }
@@ -106,6 +122,11 @@ namespace FonbetMonitoring
                     {
                         sport = fonbetSportNames[fonbetSportName];
                     }
+                }
+
+                if (cyberSportsNames.Where(t => branch.Contains(t)).Any())
+                {
+                    sport = "Киберспорт";
                 }
 
 
@@ -173,8 +194,6 @@ namespace FonbetMonitoring
                         "Fonbet"
                         );
                 }
-                
-
 
                 if (ForbiddenSubStrings.isAllowed(branch, isLive, LiveForbiddenStrings, LineForbiddenStrings) && 
                    (item.place == "live" && isLive == true || item.place == "line" && isLive == false) &&

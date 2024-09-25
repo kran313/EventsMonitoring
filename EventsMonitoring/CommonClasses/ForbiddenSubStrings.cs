@@ -43,6 +43,35 @@ namespace EventsMonitoring.CommonClasses
             return forbiddenStrings;
         }
 
+        public static List<string> GetCyberSportsNames()
+        {
+            _sqlExpression = $"SELECT * FROM CyberSportsNames";
+            var cyberSportsNames = new List<string>();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(_sqlExpression, connection);
+                    var reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        cyberSportsNames.Add(reader.GetString(0));
+                    }
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Database crashed! Try again later.");
+                    throw new Exception("Database crashed! Try again later.");
+                }
+
+            }
+            return cyberSportsNames;
+        }
+
 
         public static Dictionary<string, Dictionary<string, string>> GetStatisticsNames()
         {

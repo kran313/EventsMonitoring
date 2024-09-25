@@ -29,16 +29,25 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             panel1 = new Panel();
-            hudeMenuBarButton = new Button();
-            mainFormQuestionButton = new Button();
+            panel3 = new Panel();
+            panel7 = new Panel();
+            button4 = new Button();
+            dataGridView2 = new DataGridView();
+            Column1 = new DataGridViewTextBoxColumn();
+            Column4 = new DataGridViewTextBoxColumn();
+            Column5 = new DataGridViewTextBoxColumn();
+            Column6 = new DataGridViewTextBoxColumn();
+            Column2 = new DataGridViewCheckBoxColumn();
+            panel6 = new Panel();
+            button2 = new Button();
+            button1 = new Button();
+            button3 = new Button();
             lineLiveGroupBox = new GroupBox();
             exclusiveCheckBox = new CheckBox();
             statisticCheckBox = new CheckBox();
             liveRadioButton = new RadioButton();
             lineRadioButton = new RadioButton();
-            refreshButton = new Button();
             timeIntervalGroupBox = new GroupBox();
             SixHoursRadioButton = new RadioButton();
             AllTimeRadioButton = new RadioButton();
@@ -50,6 +59,17 @@
             OneHourRadioButton = new RadioButton();
             label1 = new Label();
             sportTypesCheckedListBox = new CheckedListBox();
+            hudeMenuBarButton = new Button();
+            mainFormQuestionButton = new Button();
+            refreshButton = new Button();
+            SaveIDToolStripMenuItem = new ToolStripMenuItem();
+            MatchingToolStripMenuItem = new ToolStripMenuItem();
+            HideToolStripMenuItem = new ToolStripMenuItem();
+            HideBranchToolStripMenuItem = new ToolStripMenuItem();
+            HideSportToolStripMenuItem = new ToolStripMenuItem();
+            EventContextMenuStrip = new ContextMenuStrip(components);
+            hideEventToolStripMenuItem = new ToolStripMenuItem();
+            panel4 = new Panel();
             dataGridView1 = new DataGridView();
             SourceColumn = new DataGridViewTextBoxColumn();
             IDColumn = new DataGridViewTextBoxColumn();
@@ -58,57 +78,156 @@
             Team1Column = new DataGridViewTextBoxColumn();
             Team2Column = new DataGridViewTextBoxColumn();
             panel2 = new Panel();
-            SaveIDToolStripMenuItem = new ToolStripMenuItem();
-            MatchingToolStripMenuItem = new ToolStripMenuItem();
-            HideToolStripMenuItem = new ToolStripMenuItem();
-            HideBranchToolStripMenuItem = new ToolStripMenuItem();
-            HideSportToolStripMenuItem = new ToolStripMenuItem();
-            EventContextMenuStrip = new ContextMenuStrip(components);
-            hideEventToolStripMenuItem = new ToolStripMenuItem();
-            toolTip1 = new ToolTip(components);
             panel1.SuspendLayout();
+            panel3.SuspendLayout();
+            panel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
+            panel6.SuspendLayout();
             lineLiveGroupBox.SuspendLayout();
             timeIntervalGroupBox.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             EventContextMenuStrip.SuspendLayout();
+            panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            panel2.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
-            panel1.Controls.Add(hudeMenuBarButton);
-            panel1.Controls.Add(mainFormQuestionButton);
+            panel1.Controls.Add(panel3);
             panel1.Controls.Add(lineLiveGroupBox);
-            panel1.Controls.Add(refreshButton);
             panel1.Controls.Add(timeIntervalGroupBox);
             panel1.Controls.Add(label1);
             panel1.Controls.Add(sportTypesCheckedListBox);
-            panel1.Dock = DockStyle.Left;
             panel1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            panel1.Location = new Point(0, 0);
+            panel1.Location = new Point(8, 19);
             panel1.Name = "panel1";
-            panel1.Size = new Size(300, 861);
+            panel1.Size = new Size(1381, 830);
             panel1.TabIndex = 1;
             // 
-            // hudeMenuBarButton
+            // panel3
             // 
-            hudeMenuBarButton.Location = new Point(6, 134);
-            hudeMenuBarButton.Name = "hudeMenuBarButton";
-            hudeMenuBarButton.Size = new Size(48, 55);
-            hudeMenuBarButton.TabIndex = 7;
-            hudeMenuBarButton.Text = "<=";
-            hudeMenuBarButton.UseVisualStyleBackColor = true;
-            hudeMenuBarButton.Click += hudeMenuBarButton_Click;
+            panel3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel3.Controls.Add(panel7);
+            panel3.Controls.Add(panel6);
+            panel3.Location = new Point(573, 7);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(805, 820);
+            panel3.TabIndex = 11;
             // 
-            // mainFormQuestionButton
+            // panel7
             // 
-            mainFormQuestionButton.Font = new Font("Segoe UI", 26.25F, FontStyle.Regular, GraphicsUnit.Point);
-            mainFormQuestionButton.Location = new Point(6, 12);
-            mainFormQuestionButton.Name = "mainFormQuestionButton";
-            mainFormQuestionButton.Size = new Size(48, 55);
-            mainFormQuestionButton.TabIndex = 6;
-            mainFormQuestionButton.Text = "?";
-            mainFormQuestionButton.UseVisualStyleBackColor = true;
-            mainFormQuestionButton.Click += mainFormQuestionButton_Click;
+            panel7.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel7.Controls.Add(button4);
+            panel7.Controls.Add(dataGridView2);
+            panel7.Location = new Point(13, 80);
+            panel7.Name = "panel7";
+            panel7.Size = new Size(775, 737);
+            panel7.TabIndex = 12;
+            // 
+            // button4
+            // 
+            button4.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            button4.Location = new Point(240, 669);
+            button4.MaximumSize = new Size(260, 54);
+            button4.Name = "button4";
+            button4.Size = new Size(260, 54);
+            button4.TabIndex = 10;
+            button4.Text = "Отобразить";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
+            // 
+            // dataGridView2
+            // 
+            dataGridView2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView2.Columns.AddRange(new DataGridViewColumn[] { Column1, Column4, Column5, Column6, Column2 });
+            dataGridView2.Location = new Point(14, 16);
+            dataGridView2.MultiSelect = false;
+            dataGridView2.Name = "dataGridView2";
+            dataGridView2.RowTemplate.Height = 25;
+            dataGridView2.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView2.Size = new Size(751, 635);
+            dataGridView2.TabIndex = 9;
+            // 
+            // Column1
+            // 
+            Column1.DataPropertyName = "id";
+            Column1.HeaderText = "ID";
+            Column1.Name = "Column1";
+            Column1.Visible = false;
+            // 
+            // Column4
+            // 
+            Column4.DataPropertyName = "sport";
+            Column4.FillWeight = 99.4923859F;
+            Column4.HeaderText = "Вид спорта";
+            Column4.Name = "Column4";
+            // 
+            // Column5
+            // 
+            Column5.DataPropertyName = "branch";
+            Column5.FillWeight = 99.4923859F;
+            Column5.HeaderText = "Ветка";
+            Column5.Name = "Column5";
+            // 
+            // Column6
+            // 
+            Column6.DataPropertyName = "match";
+            Column6.FillWeight = 99.4923859F;
+            Column6.HeaderText = "Матч";
+            Column6.Name = "Column6";
+            // 
+            // Column2
+            // 
+            Column2.DataPropertyName = "state";
+            Column2.FillWeight = 101.522842F;
+            Column2.HeaderText = "Отобразить";
+            Column2.Name = "Column2";
+            // 
+            // panel6
+            // 
+            panel6.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            panel6.Controls.Add(button2);
+            panel6.Controls.Add(button1);
+            panel6.Controls.Add(button3);
+            panel6.Location = new Point(13, 3);
+            panel6.Name = "panel6";
+            panel6.Size = new Size(775, 72);
+            panel6.TabIndex = 12;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(279, 4);
+            button2.MaximumSize = new Size(245, 68);
+            button2.Name = "button2";
+            button2.Size = new Size(221, 68);
+            button2.TabIndex = 7;
+            button2.Text = "Показать скрытые ветки";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(14, 4);
+            button1.MaximumSize = new Size(245, 68);
+            button1.Name = "button1";
+            button1.Size = new Size(221, 68);
+            button1.TabIndex = 6;
+            button1.Text = "Показать скрытые события";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(544, 4);
+            button3.MaximumSize = new Size(245, 68);
+            button3.Name = "button3";
+            button3.Size = new Size(221, 68);
+            button3.TabIndex = 8;
+            button3.Text = "Показать скрытые виды спорта";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // lineLiveGroupBox
             // 
@@ -116,16 +235,17 @@
             lineLiveGroupBox.Controls.Add(statisticCheckBox);
             lineLiveGroupBox.Controls.Add(liveRadioButton);
             lineLiveGroupBox.Controls.Add(lineRadioButton);
-            lineLiveGroupBox.Location = new Point(82, 73);
+            lineLiveGroupBox.Location = new Point(12, 7);
             lineLiveGroupBox.Name = "lineLiveGroupBox";
-            lineLiveGroupBox.Size = new Size(215, 115);
+            lineLiveGroupBox.Size = new Size(555, 55);
             lineLiveGroupBox.TabIndex = 5;
             lineLiveGroupBox.TabStop = false;
             // 
             // exclusiveCheckBox
             // 
             exclusiveCheckBox.AutoSize = true;
-            exclusiveCheckBox.Location = new Point(7, 84);
+            exclusiveCheckBox.Enabled = false;
+            exclusiveCheckBox.Location = new Point(437, 23);
             exclusiveCheckBox.Name = "exclusiveCheckBox";
             exclusiveCheckBox.Size = new Size(107, 25);
             exclusiveCheckBox.TabIndex = 7;
@@ -136,7 +256,7 @@
             // statisticCheckBox
             // 
             statisticCheckBox.AutoSize = true;
-            statisticCheckBox.Location = new Point(7, 60);
+            statisticCheckBox.Location = new Point(310, 23);
             statisticCheckBox.Name = "statisticCheckBox";
             statisticCheckBox.Size = new Size(109, 25);
             statisticCheckBox.TabIndex = 6;
@@ -147,7 +267,7 @@
             // liveRadioButton
             // 
             liveRadioButton.AutoSize = true;
-            liveRadioButton.Location = new Point(107, 29);
+            liveRadioButton.Location = new Point(114, 23);
             liveRadioButton.Name = "liveRadioButton";
             liveRadioButton.Size = new Size(64, 25);
             liveRadioButton.TabIndex = 1;
@@ -158,7 +278,7 @@
             // 
             lineRadioButton.AutoSize = true;
             lineRadioButton.Checked = true;
-            lineRadioButton.Location = new Point(7, 29);
+            lineRadioButton.Location = new Point(14, 23);
             lineRadioButton.Name = "lineRadioButton";
             lineRadioButton.Size = new Size(74, 25);
             lineRadioButton.TabIndex = 0;
@@ -166,16 +286,6 @@
             lineRadioButton.Text = "Линия";
             lineRadioButton.UseVisualStyleBackColor = true;
             lineRadioButton.CheckedChanged += lineRadioButton_CheckedChanged;
-            // 
-            // refreshButton
-            // 
-            refreshButton.Location = new Point(6, 73);
-            refreshButton.Name = "refreshButton";
-            refreshButton.Size = new Size(48, 55);
-            refreshButton.TabIndex = 4;
-            refreshButton.Text = "Обновить";
-            refreshButton.UseVisualStyleBackColor = true;
-            refreshButton.Click += refreshButton_Click;
             // 
             // timeIntervalGroupBox
             // 
@@ -188,9 +298,9 @@
             timeIntervalGroupBox.Controls.Add(ThreeHoursRadioButton);
             timeIntervalGroupBox.Controls.Add(OneHourRadioButton);
             timeIntervalGroupBox.ForeColor = SystemColors.WindowText;
-            timeIntervalGroupBox.Location = new Point(82, 574);
+            timeIntervalGroupBox.Location = new Point(372, 87);
             timeIntervalGroupBox.Name = "timeIntervalGroupBox";
-            timeIntervalGroupBox.Size = new Size(215, 284);
+            timeIntervalGroupBox.Size = new Size(195, 358);
             timeIntervalGroupBox.TabIndex = 3;
             timeIntervalGroupBox.TabStop = false;
             timeIntervalGroupBox.Text = "Временной интервал";
@@ -280,7 +390,7 @@
             // 
             // label1
             // 
-            label1.Location = new Point(82, 185);
+            label1.Location = new Point(138, 87);
             label1.Name = "label1";
             label1.Size = new Size(215, 22);
             label1.TabIndex = 1;
@@ -293,98 +403,51 @@
             sportTypesCheckedListBox.BorderStyle = BorderStyle.None;
             sportTypesCheckedListBox.CheckOnClick = true;
             sportTypesCheckedListBox.FormattingEnabled = true;
-            sportTypesCheckedListBox.Items.AddRange(new object[] { "Все виды спорта", "Футбол", "Хоккей", "Баскетбол", "Теннис", "Волейбол", "Гандбол", "Бейсбол", "Бокс", "Единоборства", "Австралийский футбол", "Авто-Мотоспорт", "Американский футбол", "Армрестлинг", "Бадминтон", "Баскетбол 3х3", "Биатлон", "Бильярд", "Велоспорт", "Водное поло", "Горные лыжи", "Индор-хоккей", "Керлинг", "Крикет", "Лыжи", "Настольный теннис", "Нетбол", "Пляжный волейбол", "Пляжный футбол", "Прыжки с трамплина", "Регби", "Снукер", "Софтбол", "Флорбол", "Формула 1", "Футзал", "Хоккейбол", "Хоккей на траве", "Хоккей с мячом", "Шары", "Шахматы" });
-            sportTypesCheckedListBox.Location = new Point(82, 210);
+            sportTypesCheckedListBox.Items.AddRange(new object[] { "Все виды спорта", "Киберспорт", "Футбол", "Хоккей", "Баскетбол", "Теннис", "Волейбол", "Единоборства", "Австралийский футбол", "Авто-Мотоспорт", "Американский футбол", "Армрестлинг", "Бадминтон", "Баскетбол 3х3", "Бейсбол", "Бобслей", "Бокс", "Бол-хоккей", "Боулинг", "Биатлон", "Бильярд", "Велоспорт", "Водные виды", "Водное поло", "Волейбол на снегу", "Гандбол", "Гимнастика", "Гольф", "Горные лыжи", "Гребля", "Гэльский футбол", "Дартс", "Индор-хоккей", "Кабадди", "Керлинг", "Конный спорт", "Конькобежный спорт", "Крикет", "Лакросс", "Легкая атлетика", "Лыжи", "Лыжное двоеборье", "Микрофутзал", "Настольный теннис", "Нетбол", "Падел", "Парусный спорт", "Пелота", "Песапалло", "Пляжное регби", "Пляжный волейбол", "Пляжный гандбол", "Пляжный футбол", "Поло", "Прыжки на батуте", "Прыжки с трамплина", "Пятиборье", "Регби", "Санный спорт", "Сепактакрау", "Серфинг", "Скалолазание", "Сквош", "Скейтбординг", "Скелетон", "Сноуборд", "Снукер", "Софтбол", "Стрелковый спорт", "Стрельба из лука", "Текбол", "Триатлон", "Тяжелая атлетика", "Фехтование", "Фигурное катание", "Флорбол", "Формула 1", "Фрисби", "Футзал", "Херлинг", "Хоккейбол", "Хоккей на роликах", "Хоккей на траве", "Хоккей на траве в залах", "Хоккей с мячом", "Шары", "Шахматы", "Шашки", "Шорт-трек" });
+            sportTypesCheckedListBox.Location = new Point(12, 114);
             sportTypesCheckedListBox.Name = "sportTypesCheckedListBox";
-            sportTypesCheckedListBox.Size = new Size(215, 336);
+            sportTypesCheckedListBox.Size = new Size(341, 696);
             sportTypesCheckedListBox.TabIndex = 0;
             // 
-            // dataGridView1
+            // hudeMenuBarButton
             // 
-            dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.AllowUserToDeleteRows = false;
-            dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { SourceColumn, IDColumn, StartTimeColumn, BranchColumn, Team1Column, Team2Column });
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Window;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
-            dataGridView1.DefaultCellStyle = dataGridViewCellStyle1;
-            dataGridView1.Location = new Point(306, 0);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowTemplate.Height = 25;
-            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Size = new Size(1178, 860);
-            dataGridView1.TabIndex = 0;
-            dataGridView1.ColumnHeaderMouseClick += dataGridView1_ColumnHeaderMouseClick;
-            dataGridView1.RowContextMenuStripNeeded += dataGridView1_RowContextMenuStripNeeded;
-            dataGridView1.MouseDown += dataGridView1_MouseDown;
+            hudeMenuBarButton.BackColor = SystemColors.Menu;
+            hudeMenuBarButton.FlatAppearance.BorderSize = 0;
+            hudeMenuBarButton.FlatStyle = FlatStyle.Flat;
+            hudeMenuBarButton.Image = Properties.Resources.settings;
+            hudeMenuBarButton.Location = new Point(0, 61);
+            hudeMenuBarButton.Name = "hudeMenuBarButton";
+            hudeMenuBarButton.Size = new Size(55, 55);
+            hudeMenuBarButton.TabIndex = 7;
+            hudeMenuBarButton.UseVisualStyleBackColor = false;
+            hudeMenuBarButton.Click += hudeMenuBarButton_Click;
             // 
-            // SourceColumn
+            // mainFormQuestionButton
             // 
-            SourceColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            SourceColumn.DataPropertyName = "status";
-            SourceColumn.HeaderText = "Примечание";
-            SourceColumn.Name = "SourceColumn";
-            SourceColumn.ReadOnly = true;
-            SourceColumn.Width = 103;
+            mainFormQuestionButton.BackColor = SystemColors.Menu;
+            mainFormQuestionButton.FlatAppearance.BorderSize = 0;
+            mainFormQuestionButton.FlatStyle = FlatStyle.Flat;
+            mainFormQuestionButton.Font = new Font("Segoe UI", 26.25F, FontStyle.Regular, GraphicsUnit.Point);
+            mainFormQuestionButton.Image = Properties.Resources.help;
+            mainFormQuestionButton.Location = new Point(0, 122);
+            mainFormQuestionButton.Name = "mainFormQuestionButton";
+            mainFormQuestionButton.Size = new Size(55, 55);
+            mainFormQuestionButton.TabIndex = 6;
+            mainFormQuestionButton.UseVisualStyleBackColor = false;
+            mainFormQuestionButton.Click += mainFormQuestionButton_Click;
             // 
-            // IDColumn
+            // refreshButton
             // 
-            IDColumn.DataPropertyName = "matchID";
-            IDColumn.HeaderText = "Матч ID";
-            IDColumn.Name = "IDColumn";
-            IDColumn.Visible = false;
-            IDColumn.Width = 75;
-            // 
-            // StartTimeColumn
-            // 
-            StartTimeColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            StartTimeColumn.DataPropertyName = "startTime";
-            StartTimeColumn.HeaderText = "Время начала";
-            StartTimeColumn.Name = "StartTimeColumn";
-            StartTimeColumn.ReadOnly = true;
-            // 
-            // BranchColumn
-            // 
-            BranchColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            BranchColumn.DataPropertyName = "branch";
-            BranchColumn.HeaderText = "Ветка";
-            BranchColumn.Name = "BranchColumn";
-            BranchColumn.ReadOnly = true;
-            // 
-            // Team1Column
-            // 
-            Team1Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            Team1Column.DataPropertyName = "team1";
-            Team1Column.HeaderText = "Команда 1";
-            Team1Column.Name = "Team1Column";
-            Team1Column.ReadOnly = true;
-            Team1Column.Width = 82;
-            // 
-            // Team2Column
-            // 
-            Team2Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            Team2Column.DataPropertyName = "team2";
-            Team2Column.HeaderText = "Команда 2";
-            Team2Column.Name = "Team2Column";
-            Team2Column.ReadOnly = true;
-            Team2Column.Width = 82;
-            // 
-            // panel2
-            // 
-            panel2.AutoSize = true;
-            panel2.BackColor = SystemColors.ActiveCaption;
-            panel2.Dock = DockStyle.Top;
-            panel2.Location = new Point(300, 0);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(1184, 0);
-            panel2.TabIndex = 2;
+            refreshButton.BackColor = SystemColors.Menu;
+            refreshButton.FlatAppearance.BorderSize = 0;
+            refreshButton.FlatStyle = FlatStyle.Flat;
+            refreshButton.Image = Properties.Resources.update1;
+            refreshButton.Location = new Point(0, 0);
+            refreshButton.Name = "refreshButton";
+            refreshButton.Size = new Size(55, 55);
+            refreshButton.TabIndex = 4;
+            refreshButton.UseVisualStyleBackColor = false;
+            refreshButton.Click += refreshButton_Click;
             // 
             // SaveIDToolStripMenuItem
             // 
@@ -434,35 +497,119 @@
             hideEventToolStripMenuItem.Text = "Скрыть событие";
             hideEventToolStripMenuItem.Click += hideEventToolStripMenuItem_Click;
             // 
+            // panel4
+            // 
+            panel4.AutoSize = true;
+            panel4.Controls.Add(mainFormQuestionButton);
+            panel4.Controls.Add(refreshButton);
+            panel4.Controls.Add(hudeMenuBarButton);
+            panel4.Location = new Point(3, 0);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(58, 192);
+            panel4.TabIndex = 9;
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AllowUserToDeleteRows = false;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { SourceColumn, IDColumn, StartTimeColumn, BranchColumn, Team1Column, Team2Column });
+            dataGridView1.Location = new Point(1395, 19);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.RowTemplate.Height = 25;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.Size = new Size(12, 830);
+            dataGridView1.TabIndex = 0;
+            dataGridView1.ColumnHeaderMouseClick += dataGridView1_ColumnHeaderMouseClick;
+            dataGridView1.RowContextMenuStripNeeded += dataGridView1_RowContextMenuStripNeeded;
+            dataGridView1.MouseDown += dataGridView1_MouseDown;
+            // 
+            // SourceColumn
+            // 
+            SourceColumn.DataPropertyName = "status";
+            SourceColumn.HeaderText = "Примечание";
+            SourceColumn.Name = "SourceColumn";
+            SourceColumn.ReadOnly = true;
+            // 
+            // IDColumn
+            // 
+            IDColumn.DataPropertyName = "matchID";
+            IDColumn.HeaderText = "Матч ID";
+            IDColumn.Name = "IDColumn";
+            IDColumn.ReadOnly = true;
+            IDColumn.Visible = false;
+            // 
+            // StartTimeColumn
+            // 
+            StartTimeColumn.DataPropertyName = "startTime";
+            StartTimeColumn.HeaderText = "Время начала";
+            StartTimeColumn.Name = "StartTimeColumn";
+            StartTimeColumn.ReadOnly = true;
+            // 
+            // BranchColumn
+            // 
+            BranchColumn.DataPropertyName = "branch";
+            BranchColumn.HeaderText = "Ветка";
+            BranchColumn.Name = "BranchColumn";
+            BranchColumn.ReadOnly = true;
+            // 
+            // Team1Column
+            // 
+            Team1Column.DataPropertyName = "team1";
+            Team1Column.HeaderText = "Команда 1";
+            Team1Column.Name = "Team1Column";
+            Team1Column.ReadOnly = true;
+            // 
+            // Team2Column
+            // 
+            Team2Column.DataPropertyName = "team2";
+            Team2Column.HeaderText = "Команда 2";
+            Team2Column.Name = "Team2Column";
+            Team2Column.ReadOnly = true;
+            // 
+            // panel2
+            // 
+            panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel2.Controls.Add(dataGridView1);
+            panel2.Controls.Add(panel1);
+            panel2.Location = new Point(65, 0);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(1419, 861);
+            panel2.TabIndex = 10;
+            // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            AutoSize = true;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
             ClientSize = new Size(1484, 861);
-            Controls.Add(dataGridView1);
             Controls.Add(panel2);
-            Controls.Add(panel1);
+            Controls.Add(panel4);
+            Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Monitoring Ver.1.5";
+            Text = "Monitoring Ver.1.8";
             FormClosing += MainForm_FormClosing;
             Load += MainForm_Load;
             panel1.ResumeLayout(false);
+            panel3.ResumeLayout(false);
+            panel7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
+            panel6.ResumeLayout(false);
             lineLiveGroupBox.ResumeLayout(false);
             lineLiveGroupBox.PerformLayout();
             timeIntervalGroupBox.ResumeLayout(false);
             timeIntervalGroupBox.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             EventContextMenuStrip.ResumeLayout(false);
+            panel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            panel2.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.GroupBox timeIntervalGroupBox;
         private System.Windows.Forms.RadioButton AllTimeRadioButton;
         private System.Windows.Forms.RadioButton OneWeekRadioButton;
@@ -482,19 +629,34 @@
         private System.Windows.Forms.RadioButton liveRadioButton;
         private System.Windows.Forms.RadioButton lineRadioButton;
         private RadioButton SixHoursRadioButton;
-        private ToolTip toolTip1;
         private CheckBox statisticCheckBox;
         private ToolStripMenuItem HideBranchToolStripMenuItem;
         private ToolStripMenuItem HideSportToolStripMenuItem;
         private Button mainFormQuestionButton;
+        private ToolStripMenuItem hideEventToolStripMenuItem;
+        private CheckBox exclusiveCheckBox;
+        private Button hudeMenuBarButton;
+        private Panel panel4;
+        private DataGridView dataGridView1;
+        private Panel panel2;
         private DataGridViewTextBoxColumn SourceColumn;
         private DataGridViewTextBoxColumn IDColumn;
         private DataGridViewTextBoxColumn StartTimeColumn;
         private DataGridViewTextBoxColumn BranchColumn;
         private DataGridViewTextBoxColumn Team1Column;
         private DataGridViewTextBoxColumn Team2Column;
-        private ToolStripMenuItem hideEventToolStripMenuItem;
-        private CheckBox exclusiveCheckBox;
-        private Button hudeMenuBarButton;
+        private Button button3;
+        private Button button2;
+        private Button button1;
+        private DataGridView dataGridView2;
+        private Button button4;
+        private Panel panel3;
+        private Panel panel6;
+        private Panel panel7;
+        private DataGridViewTextBoxColumn Column1;
+        private DataGridViewTextBoxColumn Column4;
+        private DataGridViewTextBoxColumn Column5;
+        private DataGridViewTextBoxColumn Column6;
+        private DataGridViewCheckBoxColumn Column2;
     }
 }
