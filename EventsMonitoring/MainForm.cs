@@ -23,9 +23,8 @@ namespace EventsMonitoring
         public bool isLive;
         public bool isStatistic;
         public bool isExclusive;
-        public bool flag;
+        public bool isRefreshable;
         public int sortIndex = -1;
-        public string[] qwaszx;
 
         public MainForm()
         {
@@ -35,13 +34,23 @@ namespace EventsMonitoring
             hiddenSports = new List<string>();
             isLive = false;
             isStatistic = false;
-            isExclusive = false;
-            flag = false;
+            isRefreshable = false;
             rememberedCheckedSportTypes = new List<string>();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            var sportTypes = ForbiddenSubStrings.GetCyberSportsNames();
+            sportTypesCheckedListBox.Items.Insert(0, "Все виды спорта");
+
+            for (int i = 0; i < sportTypes.Count; i++)
+            {
+                sportTypesCheckedListBox.Items.Insert(i + 1, sportTypes[i]);
+            }
+
+
+
+
             if (File.Exists("checkedSportTypes.txt"))
             {
                 StreamReader sr = new StreamReader("checkedSportTypes.txt");
@@ -110,13 +119,13 @@ namespace EventsMonitoring
         {
             DateTime currentTime = DateTime.Now;
 
-            if (Math.Abs(savedTime.Subtract(currentTime).TotalSeconds) > 3 || flag == true)
+            if (Math.Abs(savedTime.Subtract(currentTime).TotalSeconds) > 3 || isRefreshable == true)
             {
                 savedTime = currentTime;
                 baltBetMatches = BaltBetParsing.GetMatches(isLive, isStatistic);
                 fonBetMatches = FonBetParsing.GetMatches(isLive, isStatistic);
 
-                flag = false;
+                isRefreshable = false;
             }
 
 
@@ -377,7 +386,7 @@ namespace EventsMonitoring
                 dataGridView2.Visible = false;
             }
 
-            flag = true;
+            isRefreshable = true;
         }
 
         private void dataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)

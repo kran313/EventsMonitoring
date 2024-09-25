@@ -45,7 +45,7 @@ namespace FonbetMonitoring
             foreach (var match in baltBetEvents)
             {
 
-                if (match.away1Id == "0" || match.home1Name.Contains("Хозяева"))
+                if (match.away1Id == "0" || match.home1Name.Contains("Хозяева") || match.sport != "Киберспорт")
                     continue;
 
 
@@ -63,16 +63,7 @@ namespace FonbetMonitoring
 
                 if (ForbiddenSubStrings.isAllowed(match.branch.branchName, isLive, LiveForbiddenStrings, LineForbiddenStrings))
                 {
-
-                    if (match.branch.branchName.ToLower().Contains("россия. 2-я лига") && isLive == false)
-                    {
-                        match.sport = "Хоккей";
-                    }
-
-                    if (cyberSportsNames.Where(t => match.branch.branchName.Contains(t)).Any())
-                    {
-                        match.sport = "Киберспорт";
-                    }
+                    match.sport = match.branch.branchName.Split(".")[1];
 
 
                     var statistic = match.branch.branchName.ToLower()
@@ -112,11 +103,7 @@ namespace FonbetMonitoring
                             foreach (var matchEvent in dubles[possibleDouble])
                             {
                                 var timeDifference = Math.Abs((int)currentEvent.startTime.Subtract(matchEvent.startTime).TotalMinutes);
-                                if (((timeDifference < 15 && isLive) ||
-                                    (timeDifference < 720 && !isLive && !new List<string> { "Дартс", "Шахматы", "Шары", "Снукер", "Киберспорт" }.Contains(match.sport)) ||
-                                    //(timeDifference < 1 && !isLive && "Киберспорт" == match.sport) ||
-                                    (timeDifference < 15 && isLive && !new List<string> { "Дартс", "Шахматы", "Шары", "Снукер", "Киберспорт" }.Contains(match.sport))) && 
-                                    (currentEvent.isStatistic == matchEvent.isStatistic))
+                                if (timeDifference < 5  && currentEvent.isStatistic == matchEvent.isStatistic)                              
                                 {
                                     currentEvent.status = "Дубль";
                                     currentEvent.linkedBaltBetMatchID = matchEvent.matchID;

@@ -389,7 +389,6 @@
             sportTypesCheckedListBox.BorderStyle = BorderStyle.None;
             sportTypesCheckedListBox.CheckOnClick = true;
             sportTypesCheckedListBox.FormattingEnabled = true;
-            sportTypesCheckedListBox.Items.AddRange(new object[] { "Все виды спорта", "Киберспорт" });
             sportTypesCheckedListBox.Location = new Point(12, 114);
             sportTypesCheckedListBox.Name = "sportTypesCheckedListBox";
             sportTypesCheckedListBox.Size = new Size(341, 696);

@@ -76,6 +76,11 @@ namespace FonbetMonitoring
             {
                 string sport = sportFonBet[sportFonBet[item.sportId].parentId].name;
 
+                if (sport != "Киберспорт")
+                {
+                    continue;
+                }
+
 
                 string branch;
                 Team? teamHome = null;
@@ -115,6 +120,8 @@ namespace FonbetMonitoring
                     teamAway = allFonbetMatches[item.parentId].team2;
                 }
 
+                sport = branch.Split(".")[1].Trim();
+
 
                 foreach (var fonbetSportName in fonbetSportNames.Keys)
                 {
@@ -124,10 +131,7 @@ namespace FonbetMonitoring
                     }
                 }
 
-                if (cyberSportsNames.Where(t => branch.Contains(t)).Any())
-                {
-                    sport = "Киберспорт";
-                }
+
 
 
 
@@ -162,16 +166,6 @@ namespace FonbetMonitoring
                     else
                     {
                         statistic = item.name;
-                    }
-
-                    if (sport == "Волейбол" && item.place == "line")
-                    {
-                        statistic = "статистика";
-                    }
-
-                    if (sport == "Баскетбол" && statistic == "основное время")
-                    {
-                        continue;
                     }
 
 
