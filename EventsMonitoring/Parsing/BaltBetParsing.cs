@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -63,7 +64,16 @@ namespace FonbetMonitoring
 
                 if (ForbiddenSubStrings.isAllowed(match.branch.branchName, isLive, LiveForbiddenStrings, LineForbiddenStrings))
                 {
-                    match.sport = match.branch.branchName.Split(".")[1];
+                    match.sport = match.branch.branchName.Split(".")[1].Trim();
+
+                    if (match.sport == "CS:GO")
+                    {
+                        match.sport = "Counter-Strike";
+                    }
+                    if (match.sport.StartsWith("Mobile Legends"))
+                    {
+                        match.sport = "Mobile Legends";
+                    }
 
 
                     var statistic = match.branch.branchName.ToLower()

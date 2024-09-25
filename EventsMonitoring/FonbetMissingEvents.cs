@@ -1,5 +1,6 @@
 ﻿using EventsMonitoring;
 using EventsMonitoring.CommonClasses;
+using EventsMonitoring.Parsing;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -118,8 +119,8 @@ namespace FonbetMonitoring
 
                     if (baltBetMatchesStatistics.Where(
                         t => 
-                        t.parent1ID == matchings[fonBetMatchStatistic.parent1ID] &&
-                        t.parent2ID == matchings[fonBetMatchStatistic.parent2ID] &&
+                        t.parent1ID == matchings[fonBetMatchStatistic.sport][fonBetMatchStatistic.parent1ID] &&
+                        t.parent2ID == matchings[fonBetMatchStatistic.sport][fonBetMatchStatistic.parent2ID] &&
                         t.statistic == fonBetMatchStatistic.statistic).Count() > 0
                      )
                     {
@@ -134,26 +135,7 @@ namespace FonbetMonitoring
  
             }
 
-            if (!isExclusive)
-            {
-                return matchesToDisplay;
-            }
-            else
-            {
-                var linkedMatches = (from p in fonBetMatchesSource.Values
-                                     where p.isStatistic == false && p.linkedBaltBetMatchID != ""
-                                     select p.linkedBaltBetMatchID).ToList();
-
-
-                var exclusive = baltBetMatchesSource.Values.Where(
-                    t => !linkedMatches.Contains(t.matchID) &&
-                    matchings.Values.Contains(t.team1.teamId) &&
-                    matchings.Values.Contains(t.team2.teamId)).ToList();
-
-
-
-                return exclusive;
-            }
+            return matchesToDisplay;
         }
     }
 }

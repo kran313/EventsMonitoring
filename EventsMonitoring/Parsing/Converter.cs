@@ -42,8 +42,13 @@ namespace FonbetMonitoring
 
             foreach (var match in matchesID.Values)
             {
+                if (!matchings.ContainsKey(match.sport))
+                {
+                    matchings[match.sport] = new Dictionary<string, string>();
+                }
 
-                if (!(matchings.ContainsKey(match.team1.teamId) && matchings.ContainsKey(match.team2.teamId)))
+
+                if (!(matchings[match.sport].ContainsKey(match.team1.teamId) && matchings[match.sport].ContainsKey(match.team2.teamId)))
                 {
                     match.status = "Нет данных";
                     team1ID = match.team1.teamId;
@@ -51,8 +56,8 @@ namespace FonbetMonitoring
                 }
                 else
                 {
-                    team1ID = matchings[match.team1.teamId];
-                    team2ID = matchings[match.team2.teamId];
+                    team1ID = matchings[match.sport][match.team1.teamId];
+                    team2ID = matchings[match.sport][match.team2.teamId];
                 }
 
 
