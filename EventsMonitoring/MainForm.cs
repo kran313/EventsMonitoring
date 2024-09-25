@@ -360,7 +360,6 @@ namespace EventsMonitoring
             {
                 isLive = false;
                 timeIntervalGroupBox.Visible = true;
-                exclusiveCheckBox.Visible = true;
                 button1.Visible = true;
                 button2.Visible = true;
                 button3.Visible = true;
@@ -371,8 +370,6 @@ namespace EventsMonitoring
             {
                 isLive = true; ;
                 timeIntervalGroupBox.Visible = false;
-                exclusiveCheckBox.Checked = false;
-                exclusiveCheckBox.Visible = false;
                 button1.Visible = false;
                 button2.Visible = false;
                 button3.Visible = false;
@@ -595,20 +592,6 @@ namespace EventsMonitoring
             }
         }
 
-        private void exclusiveCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (exclusiveCheckBox.Checked)
-            {
-                isExclusive = true;
-                statisticCheckBox.Checked = false;
-                statisticCheckBox.Enabled = false;
-            }
-            else
-            {
-                isExclusive = false;
-                statisticCheckBox.Enabled = true;
-            }
-        }
 
         private void hudeMenuBarButton_Click(object sender, EventArgs e)
         {
