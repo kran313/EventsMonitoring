@@ -74,6 +74,14 @@ namespace FonbetMonitoring
                     {
                         match.sport = "Mobile Legends";
                     }
+                    if (match.sport.StartsWith("League of Legends"))
+                    {
+                        match.sport = "League of Legends";
+                    }
+                    if (match.sport.Contains("WarCraft"))
+                    {
+                        match.sport = "WarCraft";
+                    }
 
 
                     var statistic = match.branch.branchName.ToLower()
