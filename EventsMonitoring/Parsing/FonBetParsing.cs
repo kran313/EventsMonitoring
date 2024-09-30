@@ -76,11 +76,6 @@ namespace FonbetMonitoring
             {
                 string sport = sportFonBet[sportFonBet[item.sportId].parentId].name;
 
-                if (sport != "Киберспорт")
-                {
-                    continue;
-                }
-
 
                 string branch;
                 Team? teamHome = null;
@@ -119,19 +114,6 @@ namespace FonbetMonitoring
                     teamHome = allFonbetMatches[item.parentId].team1;
                     teamAway = allFonbetMatches[item.parentId].team2;
                 }
-
-                sport = branch.Split(".")[1].Trim();
-
-
-                foreach (var fonbetSportName in fonbetSportNames.Keys)
-                {
-                    if (branch.Contains(fonbetSportName))
-                    {
-                        sport = fonbetSportNames[fonbetSportName];
-                    }
-                }
-
-
 
 
 
@@ -194,7 +176,24 @@ namespace FonbetMonitoring
                     teamAway.teamId != "0" &&
                     (item.level == 1 || item.level == 2 && isStatistic))
                 {
-                    filteredFonbetMatches[item.id] = allFonbetMatches[item.id];
+
+                    if (sport == "Киберспорт" || (sport == "Футбол" & branch.Contains("FC")) || (sport == "Хоккей" & branch.Contains("NHL")) || (sport == "Баскетбол" & branch.Contains("NBA 2K")))
+                    {
+                        
+                        sport = branch.Split(".")[1].Trim();
+
+
+                        foreach (var fonbetSportName in fonbetSportNames.Keys)
+                        {
+                            if (branch.Contains(fonbetSportName))
+                            {
+                                sport = fonbetSportNames[fonbetSportName];
+                            }
+                        }
+
+                        filteredFonbetMatches[item.id] = allFonbetMatches[item.id];
+                        filteredFonbetMatches[item.id].sport = sport;
+                    }
                 }
             }
             return filteredFonbetMatches;

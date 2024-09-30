@@ -136,6 +136,36 @@ namespace EventsMonitoring.CommonClasses
         }
 
 
+        public static Dictionary<string, string> GetBaltbetSportNames()
+        {
+            _sqlExpression = $"SELECT * FROM BaltbetSportNames";
+            var baltbetSportNames = new Dictionary<string, string>();
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(_sqlExpression, connection);
+                    var reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        baltbetSportNames[reader.GetString(0)] = reader.GetString(1);
+                    }
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Database crashed! Try again later.");
+                    throw new Exception("Database crashed! Try again later.");
+                }
+
+            }
+            return baltbetSportNames;
+        }
+
+
         static public bool isAllowed(string name, bool isLive, List<string> fordiddenSubStringsLive, List<string> fordiddenSubStringsLine)
         {
             if (isLive)

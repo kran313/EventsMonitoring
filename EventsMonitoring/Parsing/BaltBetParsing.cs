@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TreeView;
 
 namespace FonbetMonitoring
 {
@@ -37,6 +38,7 @@ namespace FonbetMonitoring
             var LineForbiddenStrings = ForbiddenSubStrings.GetForbiddenStrings("Line");
             var LiveForbiddenStrings = ForbiddenSubStrings.GetForbiddenStrings("Live");
             var cyberSportsNames = ForbiddenSubStrings.GetCyberSportsNames();
+            var baltbetSportNames = ForbiddenSubStrings.GetBaltbetSportNames();
 
             var baltBetEvents = GetEvents(isLive);
 
@@ -46,7 +48,7 @@ namespace FonbetMonitoring
             foreach (var match in baltBetEvents)
             {
 
-                if (match.away1Id == "0" || match.home1Name.Contains("Хозяева") || match.sport != "Киберспорт")
+                if (match.away1Id == "0" || match.home1Name.Contains("Хозяева") || !match.branch.branchName.Contains("Кибер"))
                     continue;
 
 
@@ -64,24 +66,26 @@ namespace FonbetMonitoring
 
                 if (ForbiddenSubStrings.isAllowed(match.branch.branchName, isLive, LiveForbiddenStrings, LineForbiddenStrings))
                 {
-                    match.sport = match.branch.branchName.Split(".")[1].Trim();
+                    if (match.branch.branchName.Contains("Киберспорт"))
+                    {
+                        match.sport = match.branch.branchName.Split(".")[1].Trim();
+                    }
+                    else
+                    {
+                        match.sport = match.branch.branchName.Split(".")[2].Trim();
+                    }
 
-                    if (match.sport == "CS:GO")
+
+
+                    foreach (var baltbetSportName in baltbetSportNames.Keys)
                     {
-                        match.sport = "Counter-Strike";
+                        if (match.branch.branchName.Contains(baltbetSportName))
+                        {
+                            match.sport = baltbetSportNames[baltbetSportName];
+                        }
                     }
-                    if (match.sport.StartsWith("Mobile Legends"))
-                    {
-                        match.sport = "Mobile Legends";
-                    }
-                    if (match.sport.StartsWith("League of Legends"))
-                    {
-                        match.sport = "League of Legends";
-                    }
-                    if (match.sport.Contains("WarCraft"))
-                    {
-                        match.sport = "WarCraft";
-                    }
+
+
 
 
                     var statistic = match.branch.branchName.ToLower()

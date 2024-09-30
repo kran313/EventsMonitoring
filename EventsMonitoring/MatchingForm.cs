@@ -150,6 +150,9 @@ namespace EventsMonitoring
                 name2 = name2.Replace(item, " ");
             }
 
+            name1 = name1.Replace(" (", "(");
+            name2 = name2.Replace(" (", "(");
+
             name1 = name1.Trim();
             name2 = name2.Trim();
 
