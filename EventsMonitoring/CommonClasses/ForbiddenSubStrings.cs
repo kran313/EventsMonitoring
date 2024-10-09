@@ -9,7 +9,7 @@ namespace EventsMonitoring.CommonClasses
 {
     public static class ForbiddenSubStrings
     {
-        private static string _connectionString = "data source=srvapkbb9.gkbaltbet.local;initial catalog=EventMatching;user Id=event_match;password=umbMzLQB3hKo69VG8F4N;" +
+        private static string _connectionString = "data source=analytic.gkbaltbet.local;initial catalog=EventMatching;user Id=event_match;password=umbMzLQB3hKo69VG8F4N;" +
                                   "Integrated Security=false;MultipleActiveResultSets=true;TrustServerCertificate=true";
         private static string _sqlExpression;
 
