@@ -195,17 +195,23 @@ namespace FonbetMonitoring
                         );
                 }
 
+
                 if (ForbiddenSubStrings.isAllowed(branch, isLive, LiveForbiddenStrings, LineForbiddenStrings) && 
                    (item.place == "live" && isLive == true || item.place == "line" && isLive == false) &&
                     teamAway.teamId != "0" &&
                     (item.level == 1 || item.level == 2 && isStatistic))
                 {
-                    filteredFonbetMatches[item.id] = allFonbetMatches[item.id];
+                    if (!branch.ToLower().Contains("кибер") && !(sport == "Футбол" & branch.Contains("FC")) && !(sport == "Хоккей" & branch.Contains("NHL")) && !(sport == "Баскетбол" & branch.Contains("NBA 2K")))
+                    {
+                        filteredFonbetMatches[item.id] = allFonbetMatches[item.id];
+                    } 
                 }
             }
             return filteredFonbetMatches;
         }
     }
+
+
 
 
     public class SportFonBet
