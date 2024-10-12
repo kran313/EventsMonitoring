@@ -370,11 +370,11 @@ namespace EventsMonitoring
             {
                 isLive = true; ;
                 timeIntervalGroupBox.Visible = false;
-                button1.Visible = false;
-                button2.Visible = false;
-                button3.Visible = false;
-                button4.Visible = false;
-                dataGridView2.Visible = false;
+                button1.Visible = true;
+                button2.Visible = true;
+                button3.Visible = true;
+                button4.Visible = true;
+                dataGridView2.Visible = true;
             }
 
             flag = true;
@@ -626,14 +626,7 @@ namespace EventsMonitoring
             var tempHiddenMatches = new List<Hidden>();
             foreach (var item in hiddenMatches.Values)
             {
-                if (item.startTime > DateTime.Now)
-                {
-                    tempHiddenMatches.Add(new Hidden(item.matchID, item.sport, item.branch, $"{item.team1.teamName} - {item.team2.teamName}"));
-                }
-                else
-                {
-                    hiddenMatches.Remove(item.matchID);
-                }
+                tempHiddenMatches.Add(new Hidden(item.matchID, item.sport, item.branch, $"{item.team1.teamName} - {item.team2.teamName}"));
             }
             dataGridView2.Columns[1].Visible = false;
             dataGridView2.Columns[2].Visible = true;

@@ -134,26 +134,7 @@ namespace FonbetMonitoring
  
             }
 
-            if (!isExclusive)
-            {
-                return matchesToDisplay;
-            }
-            else
-            {
-                var linkedMatches = (from p in fonBetMatchesSource.Values
-                                     where p.isStatistic == false && p.linkedBaltBetMatchID != ""
-                                     select p.linkedBaltBetMatchID).ToList();
-
-
-                var exclusive = baltBetMatchesSource.Values.Where(
-                    t => !linkedMatches.Contains(t.matchID) &&
-                    matchings.Values.Contains(t.team1.teamId) &&
-                    matchings.Values.Contains(t.team2.teamId)).ToList();
-
-
-
-                return exclusive;
-            }
+            return matchesToDisplay;
         }
     }
 }
