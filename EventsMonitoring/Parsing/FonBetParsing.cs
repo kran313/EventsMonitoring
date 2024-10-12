@@ -124,11 +124,11 @@ namespace FonbetMonitoring
                     }
                 }
 
-                if (cyberSportsNames.Where(t => branch.Contains(t)).Any())
+
+                if (cyberSportsNames.Where(t => t == sport).Any())
                 {
                     sport = "Киберспорт";
                 }
-
 
 
                 if (level == 1)
@@ -201,7 +201,7 @@ namespace FonbetMonitoring
                     teamAway.teamId != "0" &&
                     (item.level == 1 || item.level == 2 && isStatistic))
                 {
-                    if (!branch.ToLower().Contains("кибер") && !(sport == "Футбол" & branch.Contains("FC")) && !(sport == "Хоккей" & branch.Contains("NHL")) && !(sport == "Баскетбол" & branch.Contains("NBA 2K")))
+                    if (sport != "Киберспорт" && !(sport == "Футбол" & branch.Contains("FC")) && !(sport == "Хоккей" & branch.Contains("NHL")) && !(sport == "Баскетбол" & branch.Contains("NBA 2K")))
                     {
                         filteredFonbetMatches[item.id] = allFonbetMatches[item.id];
                     } 
