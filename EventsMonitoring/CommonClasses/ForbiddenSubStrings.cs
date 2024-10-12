@@ -35,8 +35,8 @@ namespace EventsMonitoring.CommonClasses
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Database crashed! Try again later.");
-                    throw new Exception("Database crashed! Try again later.");
+                    MessageBox.Show("Database GetForbiddenStrings crashed! Try again later.");
+                    throw new Exception("Database GetForbiddenStrings crashed! Try again later.");
                 }
 
             }
@@ -64,8 +64,8 @@ namespace EventsMonitoring.CommonClasses
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Database crashed! Try again later.");
-                    throw new Exception("Database crashed! Try again later.");
+                    MessageBox.Show("Database GetCyberSportsNames crashed! Try again later.");
+                    throw new Exception("Database GetCyberSportsNames crashed! Try again later.");
                 }
 
             }
@@ -98,8 +98,8 @@ namespace EventsMonitoring.CommonClasses
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Database crashed! Try again later.");
-                    throw new Exception("Database crashed! Try again later.");
+                    MessageBox.Show("Database GetStatisticsNames crashed! Try again later.");
+                    throw new Exception("Database GetStatisticsNames crashed! Try again later.");
                 }
 
             }
@@ -127,8 +127,8 @@ namespace EventsMonitoring.CommonClasses
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Database crashed! Try again later.");
-                    throw new Exception("Database crashed! Try again later.");
+                    MessageBox.Show("Database GetFonbetSportNames crashed! Try again later.");
+                    throw new Exception("Database GetFonbetSportNames crashed! Try again later.");
                 }
 
             }
@@ -157,8 +157,8 @@ namespace EventsMonitoring.CommonClasses
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Database crashed! Try again later.");
-                    throw new Exception("Database crashed! Try again later.");
+                    MessageBox.Show("Database GetBaltbetSportNames crashed! Try again later.");
+                    throw new Exception("Database GetBaltbetSportNames crashed! Try again later.");
                 }
 
             }

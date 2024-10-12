@@ -44,8 +44,8 @@ namespace EventsMonitoring
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Database crashed! Try again later.");
-                    throw new Exception("Database crashed! Try again later.");
+                    MessageBox.Show("Database GetMatchings crashed! Try again later.");
+                    throw new Exception("Database GetMatchings crashed! Try again later.");
                 }
             }
 

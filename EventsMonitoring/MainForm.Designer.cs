@@ -573,7 +573,7 @@
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "MonitoringCyber Ver.3";
+            Text = "MonitoringCyber Ver1.4";
             FormClosing += MainForm_FormClosing;
             Load += MainForm_Load;
             panel1.ResumeLayout(false);
