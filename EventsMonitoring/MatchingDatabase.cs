@@ -15,7 +15,7 @@ namespace EventsMonitoring
         private static Dictionary<string, string> _pairs = new Dictionary<string, string>();
 
         private static string _connectionString = "data source=analytic.gkbaltbet.local;initial catalog=EventMatching;user Id=event_match;password=umbMzLQB3hKo69VG8F4N;" +
-                                  "Integrated Security=false;MultipleActiveResultSets=true;TrustServerCertificate=true";
+                                  "Integrated Security=false;MultipleActiveResultSets=true;MultiSubnetFailover=True;TrustServerCertificate=true";
         private static string _sqlExpression;
 
 

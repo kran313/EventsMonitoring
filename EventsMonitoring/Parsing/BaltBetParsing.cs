@@ -108,9 +108,8 @@ namespace FonbetMonitoring
                             {
                                 var timeDifference = Math.Abs((int)currentEvent.startTime.Subtract(matchEvent.startTime).TotalMinutes);
                                 if (((timeDifference < 15 && isLive) ||
-                                    (timeDifference < 720 && !isLive && !new List<string> { "Дартс", "Шахматы", "Шары", "Снукер", "Киберспорт" }.Contains(match.sport)) ||
-                                    //(timeDifference < 1 && !isLive && "Киберспорт" == match.sport) ||
-                                    (timeDifference < 15 && isLive && !new List<string> { "Дартс", "Шахматы", "Шары", "Снукер", "Киберспорт" }.Contains(match.sport))) && 
+                                    (timeDifference < 60 * 12 && !isLive && !new List<string> { "Дартс", "Шахматы", "Шары", "Снукер", "Киберспорт" }.Contains(match.sport)) ||
+                                    (timeDifference < 60 * 24 * 2 && !isLive && match.sport == "Футбол")) && 
                                     (currentEvent.isStatistic == matchEvent.isStatistic))
                                 {
                                     currentEvent.status = "Дубль";
