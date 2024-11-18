@@ -7,11 +7,15 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-    <ApplicationIcon>big-data_15102521.ico</ApplicationIcon>
+    <ApplicationIcon>bin\Icons\big-data_15102521.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
 	<None Remove="Proto\Fonbet.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="bin\Icons\big-data_15102521.ico" />
   </ItemGroup>
 	
   <ItemGroup>
