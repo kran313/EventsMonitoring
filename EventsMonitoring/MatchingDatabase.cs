@@ -47,18 +47,20 @@ namespace EventsMonitoring
             return _pairs;
         }
 
-        public static void AddMatching(string team1Id, string team2Id)
-        {
 
+        public static void AddMatching(string sport, string team1Id, string team2Id, string team1Name, string team2Name)
+        {
+            var userName = SystemInformation.UserName + ";" + Environment.MachineName;
+            var date = DateTime.Now;
             var matchings = GetMatchings();
 
             if (matchings.ContainsKey(team1Id))
             {
-                _sqlExpression = "UPDATE ImportTable SET BaltbetId=(@team2Id) WHERE FonbetId=(@team1Id)";
+                _sqlExpression = "UPDATE ImportTable SET BaltbetId=(@team2Id), Sport=(@sport), FonbetName=(@team1Name), BaltbetName=(@team2Name), UserName=(@userName), Date=(@date) WHERE FonbetId=(@team1Id)";
             }
             else
             {
-                _sqlExpression = "INSERT INTO ImportTable VALUES (@team1Id, @team2Id)";
+                _sqlExpression = "INSERT INTO ImportTable VALUES (@team1Id, @team2Id, @sport, @team1Name, @team2Name, @userName, @date)";
             }
 
 
@@ -69,6 +71,11 @@ namespace EventsMonitoring
                 SqlCommand command = new SqlCommand(_sqlExpression, connection);
                 command.Parameters.AddWithValue("@team1Id", team1Id);
                 command.Parameters.AddWithValue("@team2Id", team2Id);
+                command.Parameters.AddWithValue("@sport", sport);
+                command.Parameters.AddWithValue("@team1Name", team1Name);
+                command.Parameters.AddWithValue("@team2Name", team2Name);
+                command.Parameters.AddWithValue("@userName", userName);
+                command.Parameters.AddWithValue("@date", date);
 
                 command.ExecuteNonQuery();
             }

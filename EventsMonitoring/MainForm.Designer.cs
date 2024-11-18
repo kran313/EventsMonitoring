@@ -590,7 +590,7 @@
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Monitoring Ver.1.11";
+            Text = "Monitoring Ver.1.12";
             FormClosing += MainForm_FormClosing;
             Load += MainForm_Load;
             panel1.ResumeLayout(false);
