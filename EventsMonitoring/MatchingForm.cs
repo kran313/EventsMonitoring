@@ -16,7 +16,8 @@ namespace EventsMonitoring
         public Event bookmakerMatch;
         public List<Event> matchesToDisplay;
         Dictionary<string, Event> baltBetMatches;
-        public Dictionary<string, string> pairs = MatchingDatabase.GetMatchings();
+        public Dictionary<string, string> pairsTeams = MatchingDatabase.GetMatchingsTeams();
+        public Dictionary<string, string> pairsBranches = MatchingDatabase.GetMatchingsBranches();
 
         public MatchingForm(Event selectedMatch, Dictionary<string, Event> baltBetMatches)
         {
@@ -61,6 +62,7 @@ namespace EventsMonitoring
         private void acceptButton_Click(object sender, EventArgs e)
         {
             string baltBetMatchID = baltbetMatchIDTextBox.Text;
+           
 
             if (!int.TryParse(baltBetMatchID, out int number) || !baltBetMatches.ContainsKey(baltBetMatchID))
             {
@@ -68,70 +70,102 @@ namespace EventsMonitoring
             }
             else
             {
+                Event baltbetMatch = baltBetMatches[baltBetMatchID];
+
                 if (!reverseCheckBox.Checked)
                 {
-                    if (pairs.ContainsKey(bookmakerMatch.team1.teamId) && pairs[bookmakerMatch.team1.teamId] != baltBetMatches[baltBetMatchID].team1.teamId)
+                    if (pairsTeams.ContainsKey(bookmakerMatch.team1.teamId) && pairsTeams[bookmakerMatch.team1.teamId] != baltbetMatch.team1.teamId)
                     {
-                        SameIdForm sameIdForm = new SameIdForm(baltBetMatches[baltBetMatchID].team1.teamName, pairs[bookmakerMatch.team1.teamId], baltBetMatches[baltBetMatchID].team1.teamId);
+                        SameIdForm sameIdForm = new SameIdForm(baltbetMatch.team1.teamName, pairsTeams[bookmakerMatch.team1.teamId], baltbetMatch.team1.teamId);
                         if (sameIdForm.ShowDialog() == DialogResult.OK)
                         {
-                            MatchingDatabase.AddMatching(bookmakerMatch.sport, bookmakerMatch.team1.teamId, baltBetMatches[baltBetMatchID].team1.teamId, 
-                                bookmakerMatch.team1.teamName, baltBetMatches[baltBetMatchID].team1.teamName);
+                            MatchingDatabase.AddMatchingTeams(
+                                bookmakerMatch.sport, 
+                                bookmakerMatch.team1.teamId, baltbetMatch.team1.teamId, 
+                                bookmakerMatch.team1.teamName, baltbetMatch.team1.teamName
+                                );
                         }
                     }
                     else
                     {
-                        MatchingDatabase.AddMatching(bookmakerMatch.sport, bookmakerMatch.team1.teamId, baltBetMatches[baltBetMatchID].team1.teamId, 
-                            bookmakerMatch.team1.teamName, baltBetMatches[baltBetMatchID].team1.teamName);
+                        MatchingDatabase.AddMatchingTeams(
+                            bookmakerMatch.sport, 
+                            bookmakerMatch.team1.teamId, baltbetMatch.team1.teamId, 
+                            bookmakerMatch.team1.teamName, baltbetMatch.team1.teamName
+                            );
                     }
 
-                    if (pairs.ContainsKey(bookmakerMatch.team2.teamId) && pairs[bookmakerMatch.team2.teamId] != baltBetMatches[baltBetMatchID].team2.teamId)
+                    if (pairsTeams.ContainsKey(bookmakerMatch.team2.teamId) && pairsTeams[bookmakerMatch.team2.teamId] != baltBetMatches[baltBetMatchID].team2.teamId)
                     {
-                        SameIdForm sameIdForm = new SameIdForm(baltBetMatches[baltBetMatchID].team2.teamName, pairs[bookmakerMatch.team2.teamId], baltBetMatches[baltBetMatchID].team2.teamId);
+                        SameIdForm sameIdForm = new SameIdForm(baltBetMatches[baltBetMatchID].team2.teamName, pairsTeams[bookmakerMatch.team2.teamId], baltBetMatches[baltBetMatchID].team2.teamId);
                         if (sameIdForm.ShowDialog() == DialogResult.OK)
                         {
-                            MatchingDatabase.AddMatching(bookmakerMatch.sport, bookmakerMatch.team2.teamId, baltBetMatches[baltBetMatchID].team2.teamId, 
-                                bookmakerMatch.team2.teamName, baltBetMatches[baltBetMatchID].team2.teamName);
+                            MatchingDatabase.AddMatchingTeams(
+                                bookmakerMatch.sport, 
+                                bookmakerMatch.team2.teamId, baltbetMatch.team2.teamId, 
+                                bookmakerMatch.team2.teamName, baltbetMatch.team2.teamName
+                                );
                         }
                     }
                     else
                     {
-                        MatchingDatabase.AddMatching(bookmakerMatch.sport, bookmakerMatch.team2.teamId, baltBetMatches[baltBetMatchID].team2.teamId, 
-                            bookmakerMatch.team2.teamName, baltBetMatches[baltBetMatchID].team2.teamName);
+                        MatchingDatabase.AddMatchingTeams(
+                            bookmakerMatch.sport, 
+                            bookmakerMatch.team2.teamId, baltbetMatch.team2.teamId, 
+                            bookmakerMatch.team2.teamName, baltbetMatch.team2.teamName
+                            );
                     }
                 }
                 else
                 {
-                    if (pairs.ContainsKey(bookmakerMatch.team1.teamId) && pairs[bookmakerMatch.team1.teamId] != baltBetMatches[baltBetMatchID].team2.teamId)
+                    if (pairsTeams.ContainsKey(bookmakerMatch.team1.teamId) && pairsTeams[bookmakerMatch.team1.teamId] != baltBetMatches[baltBetMatchID].team2.teamId)
                     {
-                        SameIdForm sameIdForm = new SameIdForm(baltBetMatches[baltBetMatchID].team2.teamName, pairs[bookmakerMatch.team1.teamId], baltBetMatches[baltBetMatchID].team2.teamId);
+                        SameIdForm sameIdForm = new SameIdForm(baltBetMatches[baltBetMatchID].team2.teamName, pairsTeams[bookmakerMatch.team1.teamId], baltBetMatches[baltBetMatchID].team2.teamId);
                         if (sameIdForm.ShowDialog() == DialogResult.OK)
                         {
-                            MatchingDatabase.AddMatching(bookmakerMatch.sport, bookmakerMatch.team1.teamId, baltBetMatches[baltBetMatchID].team2.teamId, 
-                                bookmakerMatch.team1.teamName, baltBetMatches[baltBetMatchID].team2.teamName);
+                            MatchingDatabase.AddMatchingTeams(
+                                bookmakerMatch.sport, 
+                                bookmakerMatch.team1.teamId, baltbetMatch.team2.teamId, 
+                                bookmakerMatch.team1.teamName, baltbetMatch.team2.teamName
+                                );
                         }
                     }
                     else
                     {
-                        MatchingDatabase.AddMatching(bookmakerMatch.sport, bookmakerMatch.team1.teamId, baltBetMatches[baltBetMatchID].team2.teamId, 
-                            bookmakerMatch.team1.teamName, baltBetMatches[baltBetMatchID].team2.teamName);
+                        MatchingDatabase.AddMatchingTeams(
+                            bookmakerMatch.sport, 
+                            bookmakerMatch.team1.teamId, baltbetMatch.team2.teamId, 
+                            bookmakerMatch.team1.teamName, baltbetMatch.team2.teamName
+                            );
                     }
 
-                    if (pairs.ContainsKey(bookmakerMatch.team2.teamId) && pairs[bookmakerMatch.team2.teamId] != baltBetMatches[baltBetMatchID].team1.teamId)
+                    if (pairsTeams.ContainsKey(bookmakerMatch.team2.teamId) && pairsTeams[bookmakerMatch.team2.teamId] != baltBetMatches[baltBetMatchID].team1.teamId)
                     {
-                        SameIdForm sameIdForm = new SameIdForm(baltBetMatches[baltBetMatchID].team1.teamName, pairs[bookmakerMatch.team2.teamId], baltBetMatches[baltBetMatchID].team1.teamId);
+                        SameIdForm sameIdForm = new SameIdForm(baltBetMatches[baltBetMatchID].team1.teamName, pairsTeams[bookmakerMatch.team2.teamId], baltBetMatches[baltBetMatchID].team1.teamId);
                         if (sameIdForm.ShowDialog() == DialogResult.OK)
                         {
-                            MatchingDatabase.AddMatching(bookmakerMatch.sport, bookmakerMatch.team2.teamId, baltBetMatches[baltBetMatchID].team1.teamId, 
-                                bookmakerMatch.team2.teamName, baltBetMatches[baltBetMatchID].team1.teamName);
+                            MatchingDatabase.AddMatchingTeams(
+                                bookmakerMatch.sport, 
+                                bookmakerMatch.team2.teamId, baltbetMatch.team1.teamId, 
+                                bookmakerMatch.team2.teamName, baltbetMatch.team1.teamName
+                                );
                         }
                     }
                     else
                     {
-                        MatchingDatabase.AddMatching(bookmakerMatch.sport, bookmakerMatch.team2.teamId, baltBetMatches[baltBetMatchID].team1.teamId, 
-                            bookmakerMatch.team2.teamName, baltBetMatches[baltBetMatchID].team1.teamName);
+                        MatchingDatabase.AddMatchingTeams(
+                            bookmakerMatch.sport, 
+                            bookmakerMatch.team2.teamId, baltbetMatch.team1.teamId, 
+                            bookmakerMatch.team2.teamName, baltbetMatch.team1.teamName
+                            );
                     }
                 }
+
+                MatchingDatabase.AddMatchingBranches(
+                    bookmakerMatch.sport,
+                    bookmakerMatch.branch.branchId, baltbetMatch.branch.branchId,
+                    bookmakerMatch.branch.branchName, baltbetMatch.branch.branchName
+                    );
 
                 this.DialogResult = DialogResult.OK;
             }
@@ -227,7 +261,7 @@ namespace EventsMonitoring
             dataGridView1.DataSource = baltBetMatches.Values.Where(
                 t => t.sport == bookmakerMatch.sport &&
                 !t.isStatistic &&
-                (t.branch.ToLower().Contains(textBox1.Text.ToLower()) ||
+                (t.branch.branchName.ToLower().Contains(textBox1.Text.ToLower()) ||
                 t.team1.teamName.ToLower().Contains(textBox1.Text.ToLower()) ||
                 t.team2.teamName.ToLower().Contains(textBox1.Text.ToLower()))
                 ).ToList();

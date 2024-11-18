@@ -169,7 +169,11 @@ namespace EventsMonitoring
             matchesToDisplayDubles = baltBetMatches.Values.Where(t => t.status == "Дубль" || t.status == "Нужно проверить основной матч").ToList();
             matchesToDisplayDubles.AddRange(matchesToDisplay);
 
-            matchesToDisplayDubles = matchesToDisplayDubles.Where(t => !hiddenMatches.Keys.Contains(t.matchID) && !hiddenBranches.Contains(t.branch) && !hiddenSports.Contains(t.sport)).ToList();
+            matchesToDisplayDubles = matchesToDisplayDubles.Where(
+                t => !hiddenMatches.Keys.Contains(t.matchID) && 
+                !hiddenBranches.Contains(t.branch.branchName) && 
+                !hiddenSports.Contains(t.sport)
+            ).ToList();
 
             if (sortIndex == 5)
             {
@@ -441,7 +445,7 @@ namespace EventsMonitoring
         {
             Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
             int selectedMatchIndex = dataGridView1.SelectedRows[0].Index;
-            hiddenBranches.Add(selectedMatch.branch);
+            hiddenBranches.Add(selectedMatch.branch.branchName);
 
             // dataGridView1.DataSource = new List<Event>();
             dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
@@ -637,7 +641,7 @@ namespace EventsMonitoring
             var tempHiddenMatches = new List<Hidden>();
             foreach (var item in hiddenMatches.Values)
             {
-                tempHiddenMatches.Add(new Hidden(item.matchID, item.sport, item.branch, $"{item.team1.teamName} - {item.team2.teamName}"));
+                tempHiddenMatches.Add(new Hidden(item.matchID, item.sport, item.branch.branchName, $"{item.team1.teamName} - {item.team2.teamName}"));
             }
             dataGridView2.Columns[1].Visible = false;
             dataGridView2.Columns[2].Visible = true;
@@ -702,7 +706,7 @@ namespace EventsMonitoring
         private void SaveBranchNameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
-            Clipboard.SetText(selectedMatch.branch, TextDataFormat.UnicodeText);
+            Clipboard.SetText(selectedMatch.branch.branchName, TextDataFormat.UnicodeText);
         }
 
         private void FindBaltBetBranchToolStripMenuItem_Click(object sender, EventArgs e)

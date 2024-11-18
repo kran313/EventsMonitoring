@@ -109,7 +109,7 @@ namespace FonbetMonitoring
                 }
             }
 
-            var matchings = MatchingDatabase.GetMatchings();
+            var matchings = MatchingDatabase.GetMatchingsTeams();
 
             foreach (var fonBetMatchStatistic in fonBetMatchesStatistics)
             {

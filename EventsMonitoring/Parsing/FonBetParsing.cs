@@ -103,13 +103,13 @@ namespace FonbetMonitoring
                 }
                 else
                 {
-                    if (allFonbetMatches[item.parentId].branch.Contains(sport))
+                    if (allFonbetMatches[item.parentId].branch.branchName.Contains(sport))
                     {
-                        branch = string.Join(". ", allFonbetMatches[item.parentId].branch, item.name).Replace("..", ".").Trim();
+                        branch = string.Join(". ", allFonbetMatches[item.parentId].branch.branchName, item.name).Replace("..", ".").Trim();
                     }
                     else
                     {
-                        branch = string.Join(". ", sport, allFonbetMatches[item.parentId].branch, item.name).Replace("..", ".").Trim();
+                        branch = string.Join(". ", sport, allFonbetMatches[item.parentId].branch.branchName, item.name).Replace("..", ".").Trim();
                     }
                     teamHome = allFonbetMatches[item.parentId].team1;
                     teamAway = allFonbetMatches[item.parentId].team2;
@@ -136,7 +136,7 @@ namespace FonbetMonitoring
                     allFonbetMatches[item.id] = new Event(
                         item.id, 
                         sport, 
-                        branch, 
+                        new Branch(sport, item.sportId, branch), 
                         new Team(sport, teamHome.teamId, teamHome.teamName),
                         new Team(sport, teamAway.teamId, teamAway.teamName), 
                         item.startTime, 
@@ -179,7 +179,7 @@ namespace FonbetMonitoring
                     allFonbetMatches[item.id] = new Event(
                         item.id,
                         sport,
-                        branch,
+                        new Branch(sport, item.sportId, branch),
                         new Team(sport, teamHome.teamId + "(" + item.name + ")", teamHome.teamName + "(" + item.name + ")"),
                         new Team(sport, teamAway.teamId + "(" + item.name + ")", teamAway.teamName + "(" + item.name + ")"),
                         item.startTime,

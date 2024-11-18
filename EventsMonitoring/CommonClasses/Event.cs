@@ -11,7 +11,7 @@ namespace EventsMonitoring.CommonClasses
         public string status { get; set; }
         public string matchID { get; set; }
         public string sport;
-        public string branch { get; set; }
+        public Branch branch { get; set; }
         public Team team1 { get; set; }
         public Team team2 { get; set; }
         public DateTime startTime { get; set; }
@@ -27,7 +27,7 @@ namespace EventsMonitoring.CommonClasses
 
 
         //FonBet
-        public Event(string id, string sport, string branch, Team team1, Team team2, long startTime, string sportId, string name, bool place, 
+        public Event(string id, string sport, Branch branch, Team team1, Team team2, long startTime, string sportId, string name, bool place, 
                      int level, bool isStatistic = false, string statistic = "", string parent1ID = "", string parent2ID = "", string status = "")
         {
             matchID = id;
@@ -49,7 +49,7 @@ namespace EventsMonitoring.CommonClasses
         }
 
         //Betcity
-        public Event(string id, string sport, string branch, Team team1, Team team2, long startTime, bool isStatistic = false, string parent1ID = "", string parent2ID = "", string status = "")
+        public Event(string id, string sport, Branch branch, Team team1, Team team2, long startTime, bool isStatistic = false, string parent1ID = "", string parent2ID = "", string status = "")
         {
             matchID = id;
             this.sport = sport;
@@ -66,7 +66,7 @@ namespace EventsMonitoring.CommonClasses
 
 
         //BaltBet
-        public Event(string id, string sport, string branch, Team team1, Team team2, DateTime startTime, bool isStatistic = false,
+        public Event(string id, string sport, Branch branch, Team team1, Team team2, DateTime startTime, bool isStatistic = false,
                      string statistic = "", string parent1ID = "", string parent2ID = "", string status = "")
         {
             matchID = id;

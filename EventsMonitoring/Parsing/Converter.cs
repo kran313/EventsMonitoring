@@ -37,7 +37,7 @@ namespace FonbetMonitoring
         {
             string team1ID;
             string team2ID;
-            var matchings = MatchingDatabase.GetMatchings();
+            var matchings = MatchingDatabase.GetMatchingsTeams();
             Dictionary<(string, string), List<Event>> convertedMatchesAndChangedIDs = new Dictionary<(string, string), List<Event>>();
 
             foreach (var match in matchesID.Values)

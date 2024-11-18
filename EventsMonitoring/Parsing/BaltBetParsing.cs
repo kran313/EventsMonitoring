@@ -15,6 +15,7 @@ namespace FonbetMonitoring
     {
         public static Team team1;
         public static Team team2;
+        public static Branch branch;
         public static Event currentEvent;
 
         //ghjgfj
@@ -44,8 +45,9 @@ namespace FonbetMonitoring
 
             foreach (var match in baltBetEvents)
             {
+                branch = new Branch(match.sport, match.branch.branchId, match.branch.branchName);
 
-                if (match.away1Id == "0" || match.home1Name.Contains("Хозяева") || match.branch.branchName.ToLower().Contains("кибер"))
+                if (match.away1Id == "0" || match.home1Name.Contains("Хозяева") || branch.branchName.ToLower().Contains("кибер"))
                     continue;
 
 
@@ -61,16 +63,16 @@ namespace FonbetMonitoring
                 }
 
 
-                if (ForbiddenSubStrings.isAllowed(match.branch.branchName, isLive, LiveForbiddenStrings, LineForbiddenStrings))
+                if (ForbiddenSubStrings.isAllowed(branch.branchName, isLive, LiveForbiddenStrings, LineForbiddenStrings))
                 {
 
-                    if (match.branch.branchName.ToLower().Contains("россия. 2-я лига") && isLive == false)
+                    if (branch.branchName.ToLower().Contains("россия. 2-я лига") && isLive == false)
                     {
                         match.sport = "Хоккей";
                     }
 
 
-                    var statistic = match.branch.branchName.ToLower()
+                    var statistic = branch.branchName.ToLower()
                         .Replace("e", "е")
                         .Replace("t", "т")
                         .Replace("o", "о")
@@ -87,7 +89,7 @@ namespace FonbetMonitoring
 
                     if (isStatistic || (!isStatistic && !statistic))
                     {
-                        currentEvent = new Event(match.eventId, match.sport, match.branch.branchName, team1, team2, match.startTime, statistic, "Baltbet");
+                        currentEvent = new Event(match.eventId, match.sport, branch, team1, team2, match.startTime, statistic, "Baltbet");
                     }
                     else
                     {
