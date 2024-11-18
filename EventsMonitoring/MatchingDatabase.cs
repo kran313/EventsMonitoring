@@ -3,7 +3,9 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -54,6 +56,8 @@ namespace EventsMonitoring
 
         public static void AddMatching(string sport, string team1Id, string team2Id, string team1Name, string team2Name)
         {
+            var userName = SystemInformation.UserName + ";" + Environment.MachineName;
+            var date = DateTime.Now;
 
             var matchings = GetMatchings();
             if (!matchings.ContainsKey(sport))
@@ -63,11 +67,11 @@ namespace EventsMonitoring
 
             if (matchings[sport].ContainsKey(team1Id))
             {
-                _sqlExpression = "UPDATE IdLinksCyberSport SET BaltbetId=(@team2Id) WHERE Sport = (@sport) AND FonbetId=(@team1Id)";
+                _sqlExpression = "UPDATE IdLinksCyberSport SET BaltbetId=(@team2Id), FonbetName=(@team1Name), BaltbetName=(@team2Name), UserName=(@userName), Date=(@date) WHERE Sport=(@sport) AND FonbetId=(@team1Id)";
             }
             else
             {
-                _sqlExpression = "INSERT INTO IdLinksCyberSport VALUES (@sport, @team1Id, @team2Id, @team1Name, @team2Name)";
+                _sqlExpression = "INSERT INTO IdLinksCyberSport VALUES (@sport, @team1Id, @team2Id, @team1Name, @team2Name, @userName, @date)";
             }
 
 
@@ -81,6 +85,8 @@ namespace EventsMonitoring
                 command.Parameters.AddWithValue("@team2Id", team2Id);
                 command.Parameters.AddWithValue("@team1Name", team1Name);
                 command.Parameters.AddWithValue("@team2Name", team2Name);
+                command.Parameters.AddWithValue("@userName", userName);
+                command.Parameters.AddWithValue("@date", date);
 
                 command.ExecuteNonQuery();
             }
