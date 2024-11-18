@@ -67,6 +67,8 @@
             HideBranchToolStripMenuItem = new ToolStripMenuItem();
             HideSportToolStripMenuItem = new ToolStripMenuItem();
             EventContextMenuStrip = new ContextMenuStrip(components);
+            SaveBranchNameToolStripMenuItem = new ToolStripMenuItem();
+            FindBaltBetBranchToolStripMenuItem = new ToolStripMenuItem();
             hideEventToolStripMenuItem = new ToolStripMenuItem();
             panel4 = new Panel();
             dataGridView1 = new DataGridView();
@@ -438,14 +440,14 @@
             // SaveIDToolStripMenuItem
             // 
             SaveIDToolStripMenuItem.Name = "SaveIDToolStripMenuItem";
-            SaveIDToolStripMenuItem.Size = new Size(196, 22);
+            SaveIDToolStripMenuItem.Size = new Size(232, 22);
             SaveIDToolStripMenuItem.Text = "Скопировать ID матча";
             SaveIDToolStripMenuItem.Click += SaveIDToolStripMenuItem_Click;
             // 
             // MatchingToolStripMenuItem
             // 
             MatchingToolStripMenuItem.Name = "MatchingToolStripMenuItem";
-            MatchingToolStripMenuItem.Size = new Size(196, 22);
+            MatchingToolStripMenuItem.Size = new Size(232, 22);
             MatchingToolStripMenuItem.Text = "Связать команды";
             MatchingToolStripMenuItem.Click += MatchingToolStripMenuItem_Click;
             // 
@@ -453,7 +455,7 @@
             // 
             HideToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { HideBranchToolStripMenuItem, HideSportToolStripMenuItem });
             HideToolStripMenuItem.Name = "HideToolStripMenuItem";
-            HideToolStripMenuItem.Size = new Size(196, 22);
+            HideToolStripMenuItem.Size = new Size(232, 22);
             HideToolStripMenuItem.Text = "Скрыть";
             // 
             // HideBranchToolStripMenuItem
@@ -472,14 +474,28 @@
             // 
             // EventContextMenuStrip
             // 
-            EventContextMenuStrip.Items.AddRange(new ToolStripItem[] { MatchingToolStripMenuItem, SaveIDToolStripMenuItem, hideEventToolStripMenuItem, HideToolStripMenuItem });
+            EventContextMenuStrip.Items.AddRange(new ToolStripItem[] { MatchingToolStripMenuItem, SaveIDToolStripMenuItem, SaveBranchNameToolStripMenuItem, FindBaltBetBranchToolStripMenuItem, hideEventToolStripMenuItem, HideToolStripMenuItem });
             EventContextMenuStrip.Name = "contextMenuStrip1";
-            EventContextMenuStrip.Size = new Size(197, 92);
+            EventContextMenuStrip.Size = new Size(233, 136);
+            // 
+            // SaveBranchNameToolStripMenuItem
+            // 
+            SaveBranchNameToolStripMenuItem.Name = "SaveBranchNameToolStripMenuItem";
+            SaveBranchNameToolStripMenuItem.Size = new Size(232, 22);
+            SaveBranchNameToolStripMenuItem.Text = "Скопировать название ветки";
+            SaveBranchNameToolStripMenuItem.Click += SaveBranchNameToolStripMenuItem_Click;
+            // 
+            // FindBaltBetBranchToolStripMenuItem
+            // 
+            FindBaltBetBranchToolStripMenuItem.Name = "FindBaltBetBranchToolStripMenuItem";
+            FindBaltBetBranchToolStripMenuItem.Size = new Size(232, 22);
+            FindBaltBetBranchToolStripMenuItem.Text = "Найти ветку в БалтБете";
+            FindBaltBetBranchToolStripMenuItem.Click += FindBaltBetBranchToolStripMenuItem_Click;
             // 
             // hideEventToolStripMenuItem
             // 
             hideEventToolStripMenuItem.Name = "hideEventToolStripMenuItem";
-            hideEventToolStripMenuItem.Size = new Size(196, 22);
+            hideEventToolStripMenuItem.Size = new Size(232, 22);
             hideEventToolStripMenuItem.Text = "Скрыть событие";
             hideEventToolStripMenuItem.Click += hideEventToolStripMenuItem_Click;
             // 
@@ -643,5 +659,7 @@
         private DataGridViewTextBoxColumn Column5;
         private DataGridViewTextBoxColumn Column6;
         private DataGridViewCheckBoxColumn Column2;
+        private ToolStripMenuItem SaveBranchNameToolStripMenuItem;
+        private ToolStripMenuItem FindBaltBetBranchToolStripMenuItem;
     }
 }

@@ -108,6 +108,11 @@ namespace EventsMonitoring
 
         public List<Event> GetMatchesToDisplay(bool isLive, int sortIndex, bool isStatistic, bool isExclusive)
         {
+
+            var a = SystemInformation.UserName;
+            var b = Environment.MachineName;
+
+
             DateTime currentTime = DateTime.Now;
 
             if (Math.Abs(savedTime.Subtract(currentTime).TotalSeconds) > 3 || flag == true)
@@ -247,15 +252,19 @@ namespace EventsMonitoring
             {
                 EventContextMenuStrip.Items[0].Visible = false;
                 EventContextMenuStrip.Items[1].Visible = false;
+                EventContextMenuStrip.Items[2].Visible = false;
                 EventContextMenuStrip.Items[3].Visible = false;
-                EventContextMenuStrip.Items[2].Text = "Скрыть события";
+                EventContextMenuStrip.Items[5].Visible = false;
+                EventContextMenuStrip.Items[4].Text = "Скрыть события";
             }
             else
             {
                 EventContextMenuStrip.Items[0].Visible = true;
                 EventContextMenuStrip.Items[1].Visible = true;
+                EventContextMenuStrip.Items[2].Visible = true;
                 EventContextMenuStrip.Items[3].Visible = true;
-                EventContextMenuStrip.Items[2].Text = "Скрыть событие";
+                EventContextMenuStrip.Items[5].Visible = true;
+                EventContextMenuStrip.Items[4].Text = "Скрыть событие";
 
                 Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
 
@@ -263,11 +272,13 @@ namespace EventsMonitoring
                 {
                     EventContextMenuStrip.Items[1].Text = "Скопировать инфо о матче";
                     EventContextMenuStrip.Items[0].Enabled = true;
+                    EventContextMenuStrip.Items[3].Enabled = true;
                 }
                 else
                 {
                     EventContextMenuStrip.Items[1].Text = "Скопировать ID матча";
                     EventContextMenuStrip.Items[0].Enabled = false;
+                    EventContextMenuStrip.Items[3].Enabled = false;
                 }
             }
 
@@ -686,6 +697,26 @@ namespace EventsMonitoring
             }
             var data = dataGridView2.DataSource as List<Hidden>;
             dataGridView2.DataSource = data.Where(t => t.state == CheckState.Unchecked).ToList();
+        }
+
+        private void SaveBranchNameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
+            Clipboard.SetText(selectedMatch.branch, TextDataFormat.UnicodeText);
+        }
+
+        private void FindBaltBetBranchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
+            var sameBranchFonbetMatches = fonBetMatches.Values.Where(t => t.branch == selectedMatch.branch && t.linkedBaltBetMatchID != "").ToList();
+            if (sameBranchFonbetMatches.Count != 0)
+            {
+                Clipboard.SetText(sameBranchFonbetMatches.First().linkedBaltBetMatchID, TextDataFormat.UnicodeText);
+            }
+            else
+            {
+                MessageBox.Show("Не удалось найти ветку");
+            }
         }
     }
 }
