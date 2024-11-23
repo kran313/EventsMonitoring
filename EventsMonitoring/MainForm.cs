@@ -179,13 +179,13 @@ namespace EventsMonitoring
             {
                 return matchesToDisplayDubles.
                     OrderBy(t => t.startTime).
-                    ThenBy(t => t.branch).
+                    ThenBy(t => t.branch.branchName).
                     ToList();
             }
             else if (sortIndex == 2)
             {
                 return matchesToDisplayDubles.
-                    OrderBy(t => t.branch).
+                    OrderBy(t => t.branch.branchName).
                     ThenBy(t => t.startTime).
                     ToList();
             }
@@ -193,7 +193,7 @@ namespace EventsMonitoring
             {
                 return matchesToDisplayDubles.
                     OrderBy(t => t.status).
-                    ThenBy(t => t.branch).
+                    ThenBy(t => t.branch.branchName).
                     ThenBy(t => t.startTime).
                     ToList();
             }
@@ -201,7 +201,7 @@ namespace EventsMonitoring
             {
                 return matchesToDisplayDubles.
                     OrderBy(t => t.team1.teamName).
-                    ThenBy(t => t.branch).
+                    ThenBy(t => t.branch.branchName).
                     ThenBy(t => t.startTime).
                     ToList();
             }
@@ -209,7 +209,7 @@ namespace EventsMonitoring
             {
                 return matchesToDisplayDubles.
                     OrderBy(t => t.team2.teamName).
-                    ThenBy(t => t.branch).
+                    ThenBy(t => t.branch.branchName).
                     ThenBy(t => t.startTime).
                     ToList();
             }
@@ -310,7 +310,7 @@ namespace EventsMonitoring
             }
             else
             {
-                Clipboard.SetText($"{selectedMatch.startTime}  {selectedMatch.branch}  {selectedMatch.team1.teamName} - {selectedMatch.team2.teamName}", TextDataFormat.UnicodeText);
+                Clipboard.SetText($"{selectedMatch.startTime}  {selectedMatch.branch.branchName}  {selectedMatch.team1.teamName} - {selectedMatch.team2.teamName}", TextDataFormat.UnicodeText);
             }
         }
 
@@ -706,13 +706,13 @@ namespace EventsMonitoring
         private void SaveBranchNameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
-            Clipboard.SetText(selectedMatch.branch.branchName, TextDataFormat.UnicodeText);
+            Clipboard.SetText(selectedMatch.branch.branchName.Trim('.'), TextDataFormat.UnicodeText);
         }
 
         private void FindBaltBetBranchToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
-            var sameBranchFonbetMatches = fonBetMatches.Values.Where(t => t.branch == selectedMatch.branch && t.linkedBaltBetMatchID != "").ToList();
+            var sameBranchFonbetMatches = fonBetMatches.Values.Where(t => t.branch.branchName == selectedMatch.branch.branchName && t.linkedBaltBetMatchID != "").ToList();
             if (sameBranchFonbetMatches.Count != 0)
             {
                 Clipboard.SetText(sameBranchFonbetMatches.First().linkedBaltBetMatchID, TextDataFormat.UnicodeText);

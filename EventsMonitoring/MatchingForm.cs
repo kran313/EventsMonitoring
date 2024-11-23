@@ -25,7 +25,7 @@ namespace EventsMonitoring
             bookmakerMatch = selectedMatch;
             this.baltBetMatches = baltBetMatches;
 
-            bookmakerBranchLabel.Text = $"{bookmakerMatch.startTime}     {bookmakerMatch.branch}";
+            bookmakerBranchLabel.Text = $"{bookmakerMatch.startTime}     {bookmakerMatch.branch.branchName}";
             bookmakerTeamsLabel.Text = $"{bookmakerMatch.team1} - {bookmakerMatch.team2}";
         }
 
@@ -45,8 +45,10 @@ namespace EventsMonitoring
                     matchesToDisplay.Add(baltBetMatch);
                 }
             }
+
+
             matchesToDisplay = matchesToDisplay.
-                OrderBy(t => t.branch).
+                OrderBy(t => t.branch.branchName).
                 ThenBy(t => t.team1.teamName).
                 ThenBy(t => t.team2.teamName).ToList();
             dataGridView1.DataSource = matchesToDisplay;

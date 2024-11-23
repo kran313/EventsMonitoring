@@ -77,10 +77,19 @@ namespace FonbetMonitoring
                                 {
                                     if (baltbetMatch != null && fonbetMatch.sport == baltbetMatch.sport && baltbetMatch.status != "ок" &&
                                     Math.Abs(fonbetMatch.startTime.Subtract(baltbetMatch.startTime).TotalMinutes) >= 30 &&
-                                    Math.Abs(fonbetMatch.startTime.Subtract(baltbetMatch.startTime).TotalMinutes) < 1440)
+                                    Math.Abs(fonbetMatch.startTime.Subtract(baltbetMatch.startTime).TotalMinutes) < 60 * 24)
                                     {
-                                        var timeDifference = Math.Abs((int)fonbetMatch.startTime.Subtract(baltbetMatch.startTime).TotalMinutes);
-                                        fonbetMatch.status = $"Время {timeDifference/60} : {timeDifference%60}";
+                                        var timeDifference = (int)fonbetMatch.startTime.Subtract(baltbetMatch.startTime).TotalMinutes;
+
+                                        if (timeDifference > 0)
+                                        {
+                                            fonbetMatch.status = $"У нас раньше на {timeDifference / 60} : {timeDifference % 60}";
+                                        }
+                                        else
+                                        {
+                                            fonbetMatch.status = $"У нас позже на {-timeDifference / 60} : {-timeDifference % 60}";
+                                        }
+
                                         fonbetMatch.linkedBaltBetMatchID = baltbetMatch.matchID;
                                         matchesToDisplay.Add(fonbetMatch);
                                     }
