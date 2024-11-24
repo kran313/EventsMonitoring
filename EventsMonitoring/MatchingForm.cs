@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -259,14 +261,41 @@ namespace EventsMonitoring
 
 
         private void textBox1_TextChanged(object sender, EventArgs e)
-        {   
+        {
+            var russianName = textBox1.Text.ToLower();
+            var englishName = textBox1.Text.ToLower();
+
+            var swapSymbols = new Dictionary<char, char>()
+            {
+                { 'q', 'й'}, { 'w', 'ц'}, { 'e', 'у'}, { 'r', 'к'}, { 't', 'е'}, { 'y', 'н'}, { 'u', 'г'}, { 'i', 'ш'}, { 'o', 'щ'}, { 'p', 'з'},
+                { '[', 'х'}, { ']', 'ъ'}, { 'a', 'ф'}, { 's', 'ы'}, { 'd', 'в'}, { 'f', 'а'}, { 'g', 'п'}, { 'h', 'р'}, { 'j', 'о'}, { 'k', 'л'},
+                { 'l', 'д'}, { ';', 'ж'}, { '"', 'э'}, { 'z', 'я'}, { 'x', 'ч'}, { 'c', 'с'}, { 'v', 'м'}, { 'b', 'и'}, { 'n', 'т'}, { 'm', 'ь'},
+                { ',', 'б'}, { '.', 'ю'}, { '`', 'е'}
+            };
+
+            try
+            {
+                foreach (var letter in englishName)
+                {
+                    englishName = englishName.Replace(letter, swapSymbols[letter]);
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+
             dataGridView1.DataSource = baltBetMatches.Values.Where(
                 t => t.sport == bookmakerMatch.sport &&
                 !t.isStatistic &&
-                (t.branch.branchName.ToLower().Contains(textBox1.Text.ToLower()) ||
-                t.team1.teamName.ToLower().Contains(textBox1.Text.ToLower()) ||
-                t.team2.teamName.ToLower().Contains(textBox1.Text.ToLower()))
-                ).ToList();
+                (t.branch.branchName.ToLower().Contains(russianName) ||
+                 t.team1.teamName.ToLower().Contains(russianName) ||
+                 t.team2.teamName.ToLower().Contains(russianName) ||
+
+                 t.branch.branchName.ToLower().Contains(englishName) ||
+                 t.team1.teamName.ToLower().Contains(englishName) ||
+                 t.team2.teamName.ToLower().Contains(englishName))).ToList();
+
         }
 
         private void matchingFormQuestionButton_Click(object sender, EventArgs e)

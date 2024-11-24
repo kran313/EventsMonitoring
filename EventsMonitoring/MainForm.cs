@@ -711,11 +711,12 @@ namespace EventsMonitoring
 
         private void FindBaltBetBranchToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var matchingsBranches = MatchingDatabase.GetMatchingsBranches();
             Event selectedMatch = dataGridView1.SelectedRows[0].DataBoundItem as Event;
-            var sameBranchFonbetMatches = fonBetMatches.Values.Where(t => t.branch.branchName == selectedMatch.branch.branchName && t.linkedBaltBetMatchID != "").ToList();
-            if (sameBranchFonbetMatches.Count != 0)
+
+            if (matchingsBranches.ContainsKey(selectedMatch.branch.branchId))
             {
-                Clipboard.SetText(sameBranchFonbetMatches.First().linkedBaltBetMatchID, TextDataFormat.UnicodeText);
+                Clipboard.SetText(matchingsBranches[selectedMatch.branch.branchId], TextDataFormat.UnicodeText);
             }
             else
             {
