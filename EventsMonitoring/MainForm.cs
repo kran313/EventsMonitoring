@@ -40,6 +40,17 @@ namespace EventsMonitoring
             isExclusive = false;
             flag = false;
             rememberedCheckedSportTypes = new List<string>();
+
+            timer1.Enabled = true;
+            timer1.Interval = 1000 * 5 * 60;
+            timer1.Tick += Timer1_Tick;
+        }
+
+
+        private void Timer1_Tick(object? sender, EventArgs e)
+        {
+            refreshButton.PerformClick();
+            lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -84,7 +95,10 @@ namespace EventsMonitoring
             dataGridView2.DataSource = new List<Hidden>();
             dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
 
-            var s = dataGridView1.Columns;
+            timer1.Stop();
+            timer1.Start();
+            lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+
             dataGridView1.Columns[0].Width = 140;
             dataGridView1.Columns[5].Width = 110;
             dataGridView1.Columns[3].Width = 230;
@@ -92,7 +106,6 @@ namespace EventsMonitoring
             dataGridView1.Columns[6].Width = 110;
             dataGridView1.Columns[2].Width = dataGridView1.Width - 140 - 110 - 230 - 230 - 110 - 200;
 
-            var ss = dataGridView1.Columns;
         }
 
 
@@ -108,6 +121,10 @@ namespace EventsMonitoring
 
             dataGridView2.DataSource = new List<Hidden>();
             dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
+
+            timer1.Stop();
+            timer1.Start();
+            lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
         }
 
 
@@ -357,6 +374,11 @@ namespace EventsMonitoring
                     {
                         // dataGridView1.DataSource = new List<Event>();
                         dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
+
+                        timer1.Stop();
+                        timer1.Start();
+                        lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+
                         dataGridView1.ClearSelection();
 
                         if (dataGridView1.RowCount <= 1)
@@ -442,6 +464,10 @@ namespace EventsMonitoring
                 sortIndex = -1;
                 dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
             }
+
+            timer1.Stop();
+            timer1.Start();
+            lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
         }
 
         private void statisticCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -465,6 +491,10 @@ namespace EventsMonitoring
             // dataGridView1.DataSource = new List<Event>();
             dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
             dataGridView1.ClearSelection();
+
+            timer1.Stop();
+            timer1.Start();
+            lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
 
 
             if (dataGridView1.RowCount <= 1)
@@ -492,6 +522,10 @@ namespace EventsMonitoring
             // dataGridView1.DataSource = new List<Event>();
             dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
             dataGridView1.ClearSelection();
+
+            timer1.Stop();
+            timer1.Start();
+            lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
 
 
             if (dataGridView1.RowCount <= 1)
@@ -578,6 +612,10 @@ namespace EventsMonitoring
                 dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
                 dataGridView1.ClearSelection();
 
+                timer1.Stop();
+                timer1.Start();
+                lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+
 
                 if (dataGridView1.RowCount <= 1)
                 {
@@ -603,6 +641,10 @@ namespace EventsMonitoring
                 // dataGridView1.DataSource = new List<Event>();
                 dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
                 dataGridView1.ClearSelection();
+
+                timer1.Stop();
+                timer1.Start();
+                lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
 
 
                 if (dataGridView1.RowCount <= 1)

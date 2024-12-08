@@ -31,12 +31,6 @@
             bookmakerBranchLabel = new Label();
             bookmakerTeamsLabel = new Label();
             dataGridView1 = new DataGridView();
-            MatchIDColumn = new DataGridViewTextBoxColumn();
-            SourceColumn = new DataGridViewTextBoxColumn();
-            StartTimeColumn = new DataGridViewTextBoxColumn();
-            BranchColumn = new DataGridViewTextBoxColumn();
-            Team1Column = new DataGridViewTextBoxColumn();
-            Team2Column = new DataGridViewTextBoxColumn();
             possibleMatchingsLabel = new Label();
             baltbetMatchIDLabel = new Label();
             baltbetMatchIDTextBox = new TextBox();
@@ -48,6 +42,13 @@
             panel1 = new Panel();
             panel2 = new Panel();
             panel3 = new Panel();
+            MatchIDColumn = new DataGridViewTextBoxColumn();
+            SourceColumn = new DataGridViewTextBoxColumn();
+            StartTimeColumn = new DataGridViewTextBoxColumn();
+            BranchColumn = new DataGridViewTextBoxColumn();
+            Team1Column = new DataGridViewTextBoxColumn();
+            Team2Column = new DataGridViewTextBoxColumn();
+            firstAppearColumn = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -80,7 +81,7 @@
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { MatchIDColumn, SourceColumn, StartTimeColumn, BranchColumn, Team1Column, Team2Column });
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { MatchIDColumn, SourceColumn, StartTimeColumn, BranchColumn, Team1Column, Team2Column, firstAppearColumn });
             dataGridView1.Location = new Point(67, 187);
             dataGridView1.MultiSelect = false;
             dataGridView1.Name = "dataGridView1";
@@ -90,57 +91,6 @@
             dataGridView1.Size = new Size(1405, 262);
             dataGridView1.TabIndex = 2;
             dataGridView1.CellMouseDoubleClick += dataGridView1_CellMouseDoubleClick;
-            // 
-            // MatchIDColumn
-            // 
-            MatchIDColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            MatchIDColumn.DataPropertyName = "matchID";
-            MatchIDColumn.HeaderText = "ID Матча";
-            MatchIDColumn.Name = "MatchIDColumn";
-            MatchIDColumn.ReadOnly = true;
-            // 
-            // SourceColumn
-            // 
-            SourceColumn.DataPropertyName = "status";
-            SourceColumn.HeaderText = "Примечание";
-            SourceColumn.Name = "SourceColumn";
-            SourceColumn.ReadOnly = true;
-            SourceColumn.Visible = false;
-            // 
-            // StartTimeColumn
-            // 
-            StartTimeColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            StartTimeColumn.DataPropertyName = "startTime";
-            StartTimeColumn.HeaderText = "Время начала";
-            StartTimeColumn.Name = "StartTimeColumn";
-            StartTimeColumn.ReadOnly = true;
-            StartTimeColumn.Width = 134;
-            // 
-            // BranchColumn
-            // 
-            BranchColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            BranchColumn.DataPropertyName = "branch";
-            BranchColumn.HeaderText = "Ветка";
-            BranchColumn.Name = "BranchColumn";
-            BranchColumn.ReadOnly = true;
-            // 
-            // Team1Column
-            // 
-            Team1Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            Team1Column.DataPropertyName = "team1";
-            Team1Column.HeaderText = "Команда 1";
-            Team1Column.Name = "Team1Column";
-            Team1Column.ReadOnly = true;
-            Team1Column.Width = 111;
-            // 
-            // Team2Column
-            // 
-            Team2Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            Team2Column.DataPropertyName = "team2";
-            Team2Column.HeaderText = "Команда 2";
-            Team2Column.Name = "Team2Column";
-            Team2Column.ReadOnly = true;
-            Team2Column.Width = 111;
             // 
             // possibleMatchingsLabel
             // 
@@ -253,6 +203,65 @@
             panel3.Size = new Size(1405, 194);
             panel3.TabIndex = 14;
             // 
+            // MatchIDColumn
+            // 
+            MatchIDColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            MatchIDColumn.DataPropertyName = "matchID";
+            MatchIDColumn.HeaderText = "ID Матча";
+            MatchIDColumn.Name = "MatchIDColumn";
+            MatchIDColumn.ReadOnly = true;
+            // 
+            // SourceColumn
+            // 
+            SourceColumn.DataPropertyName = "status";
+            SourceColumn.HeaderText = "Примечание";
+            SourceColumn.Name = "SourceColumn";
+            SourceColumn.ReadOnly = true;
+            SourceColumn.Visible = false;
+            // 
+            // StartTimeColumn
+            // 
+            StartTimeColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            StartTimeColumn.DataPropertyName = "startTime";
+            StartTimeColumn.HeaderText = "Время начала";
+            StartTimeColumn.Name = "StartTimeColumn";
+            StartTimeColumn.ReadOnly = true;
+            StartTimeColumn.Width = 134;
+            // 
+            // BranchColumn
+            // 
+            BranchColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            BranchColumn.DataPropertyName = "branch";
+            BranchColumn.HeaderText = "Ветка";
+            BranchColumn.Name = "BranchColumn";
+            BranchColumn.ReadOnly = true;
+            // 
+            // Team1Column
+            // 
+            Team1Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            Team1Column.DataPropertyName = "team1";
+            Team1Column.HeaderText = "Команда 1";
+            Team1Column.Name = "Team1Column";
+            Team1Column.ReadOnly = true;
+            Team1Column.Width = 111;
+            // 
+            // Team2Column
+            // 
+            Team2Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            Team2Column.DataPropertyName = "team2";
+            Team2Column.HeaderText = "Команда 2";
+            Team2Column.Name = "Team2Column";
+            Team2Column.ReadOnly = true;
+            Team2Column.Width = 111;
+            // 
+            // firstAppearColumn
+            // 
+            firstAppearColumn.DataPropertyName = "firstAppear";
+            firstAppearColumn.HeaderText = "Минут";
+            firstAppearColumn.Name = "firstAppearColumn";
+            firstAppearColumn.ReadOnly = true;
+            firstAppearColumn.Visible = false;
+            // 
             // MatchingForm
             // 
             AutoScaleDimensions = new SizeF(9F, 21F);
@@ -290,14 +299,15 @@
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.TextBox textBox1;
         private Button matchingFormQuestionButton;
+        private Panel panel1;
+        private Panel panel2;
+        private Panel panel3;
         private DataGridViewTextBoxColumn MatchIDColumn;
         private DataGridViewTextBoxColumn SourceColumn;
         private DataGridViewTextBoxColumn StartTimeColumn;
         private DataGridViewTextBoxColumn BranchColumn;
         private DataGridViewTextBoxColumn Team1Column;
         private DataGridViewTextBoxColumn Team2Column;
-        private Panel panel1;
-        private Panel panel2;
-        private Panel panel3;
+        private DataGridViewTextBoxColumn firstAppearColumn;
     }
 }

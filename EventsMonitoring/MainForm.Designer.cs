@@ -71,6 +71,7 @@
             FindBaltBetBranchToolStripMenuItem = new ToolStripMenuItem();
             hideEventToolStripMenuItem = new ToolStripMenuItem();
             panel4 = new Panel();
+            lastUpdateLabel = new Label();
             dataGridView1 = new DataGridView();
             SourceColumn = new DataGridViewTextBoxColumn();
             IDColumn = new DataGridViewTextBoxColumn();
@@ -80,6 +81,7 @@
             Team2Column = new DataGridViewTextBoxColumn();
             firstAppearColumn = new DataGridViewTextBoxColumn();
             panel2 = new Panel();
+            timer1 = new System.Windows.Forms.Timer(components);
             panel1.SuspendLayout();
             panel3.SuspendLayout();
             panel7.SuspendLayout();
@@ -404,7 +406,7 @@
             hudeMenuBarButton.FlatAppearance.BorderSize = 0;
             hudeMenuBarButton.FlatStyle = FlatStyle.Flat;
             hudeMenuBarButton.Image = Properties.Resources.settings;
-            hudeMenuBarButton.Location = new Point(0, 61);
+            hudeMenuBarButton.Location = new Point(0, 105);
             hudeMenuBarButton.Name = "hudeMenuBarButton";
             hudeMenuBarButton.Size = new Size(55, 55);
             hudeMenuBarButton.TabIndex = 7;
@@ -418,7 +420,7 @@
             mainFormQuestionButton.FlatStyle = FlatStyle.Flat;
             mainFormQuestionButton.Font = new Font("Segoe UI", 26.25F, FontStyle.Regular, GraphicsUnit.Point);
             mainFormQuestionButton.Image = Properties.Resources.help;
-            mainFormQuestionButton.Location = new Point(0, 122);
+            mainFormQuestionButton.Location = new Point(0, 166);
             mainFormQuestionButton.Name = "mainFormQuestionButton";
             mainFormQuestionButton.Size = new Size(55, 55);
             mainFormQuestionButton.TabIndex = 6;
@@ -430,6 +432,7 @@
             refreshButton.BackColor = SystemColors.Menu;
             refreshButton.FlatAppearance.BorderSize = 0;
             refreshButton.FlatStyle = FlatStyle.Flat;
+            refreshButton.ForeColor = SystemColors.ControlText;
             refreshButton.Image = Properties.Resources.update1;
             refreshButton.Location = new Point(0, 0);
             refreshButton.Name = "refreshButton";
@@ -503,13 +506,22 @@
             // panel4
             // 
             panel4.AutoSize = true;
+            panel4.Controls.Add(lastUpdateLabel);
             panel4.Controls.Add(mainFormQuestionButton);
             panel4.Controls.Add(refreshButton);
             panel4.Controls.Add(hudeMenuBarButton);
             panel4.Location = new Point(3, 0);
             panel4.Name = "panel4";
-            panel4.Size = new Size(58, 192);
+            panel4.Size = new Size(58, 224);
             panel4.TabIndex = 9;
+            // 
+            // lastUpdateLabel
+            // 
+            lastUpdateLabel.AutoSize = true;
+            lastUpdateLabel.Location = new Point(3, 60);
+            lastUpdateLabel.Name = "lastUpdateLabel";
+            lastUpdateLabel.Size = new Size(0, 21);
+            lastUpdateLabel.TabIndex = 8;
             // 
             // dataGridView1
             // 
@@ -585,20 +597,20 @@
             panel2.Controls.Add(panel1);
             panel2.Location = new Point(65, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1619, 861);
+            panel2.Size = new Size(1640, 861);
             panel2.TabIndex = 10;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
-            ClientSize = new Size(1684, 861);
+            ClientSize = new Size(1705, 861);
             Controls.Add(panel2);
             Controls.Add(panel4);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Monitoring Ver.1.14";
+            Text = "Monitoring Ver.1.15";
             FormClosing += MainForm_FormClosing;
             Load += MainForm_Load;
             panel1.ResumeLayout(false);
@@ -612,6 +624,7 @@
             timeIntervalGroupBox.PerformLayout();
             EventContextMenuStrip.ResumeLayout(false);
             panel4.ResumeLayout(false);
+            panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             panel2.ResumeLayout(false);
             ResumeLayout(false);
@@ -670,5 +683,7 @@
         private DataGridViewTextBoxColumn Team1Column;
         private DataGridViewTextBoxColumn Team2Column;
         private DataGridViewTextBoxColumn firstAppearColumn;
+        private System.Windows.Forms.Timer timer1;
+        private Label lastUpdateLabel;
     }
 }
