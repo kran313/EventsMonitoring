@@ -26,6 +26,7 @@ namespace EventsMonitoring
         public bool flag;
         public int sortIndex = -1;
         public string[] qwaszx;
+        public Dictionary<string, DateTime> firstTimeAppear;
 
         public MainForm()
         {
@@ -33,6 +34,7 @@ namespace EventsMonitoring
             hiddenMatches = new Dictionary<string, Event>();
             hiddenBranches = new List<string>();
             hiddenSports = new List<string>();
+            firstTimeAppear = new Dictionary<string, DateTime>();
             isLive = false;
             isStatistic = false;
             isExclusive = false;
@@ -82,12 +84,15 @@ namespace EventsMonitoring
             dataGridView2.DataSource = new List<Hidden>();
             dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
 
-
+            var s = dataGridView1.Columns;
             dataGridView1.Columns[0].Width = 140;
             dataGridView1.Columns[5].Width = 110;
             dataGridView1.Columns[3].Width = 230;
             dataGridView1.Columns[4].Width = 230;
-            dataGridView1.Columns[2].Width = 1300 - 140 - 110 - 230 - 230;
+            dataGridView1.Columns[6].Width = 110;
+            dataGridView1.Columns[2].Width = dataGridView1.Width - 140 - 110 - 230 - 230 - 110 - 200;
+
+            var ss = dataGridView1.Columns;
         }
 
 
@@ -123,13 +128,23 @@ namespace EventsMonitoring
 
                 flag = false;
             }
+            
 
 
             matchesToDisplay = FonbetMissingEvents.GetMatches(baltBetMatches, fonBetMatches, isExclusive);
+            foreach (var match in matchesToDisplay)
+            {
+                if (!firstTimeAppear.Keys.Contains(match.matchID))
+                {
+                    firstTimeAppear[match.matchID] = DateTime.Now;
+                }
+
+                match.firstAppear = (int)DateTime.Now.Subtract(firstTimeAppear[match.matchID]).TotalMinutes;
+            }
 
 
 
-            if (!(sportTypesCheckedListBox.CheckedItems.Contains("Все виды спорта") || sportTypesCheckedListBox.CheckedItems.Count == 0))
+                if (!(sportTypesCheckedListBox.CheckedItems.Contains("Все виды спорта") || sportTypesCheckedListBox.CheckedItems.Count == 0))
             {
                 matchesToDisplay = matchesToDisplay.Where(t => sportTypesCheckedListBox.CheckedItems.Contains(t.sport)).ToList();
             }

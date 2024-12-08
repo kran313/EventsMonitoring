@@ -15,6 +15,7 @@ namespace EventsMonitoring.CommonClasses
         public Team team1 { get; set; }
         public Team team2 { get; set; }
         public DateTime startTime { get; set; }
+        public int firstAppear { get; set; }
         public bool isStatistic;
         public string statistic;
         public string parent1ID;
@@ -46,6 +47,7 @@ namespace EventsMonitoring.CommonClasses
             this.parent1ID = parent1ID;
             this.parent2ID = parent2ID;
             linkedBaltBetMatchID = "";
+            firstAppear = 0;
         }
 
         //Betcity
@@ -62,6 +64,7 @@ namespace EventsMonitoring.CommonClasses
             this.parent2ID = parent2ID;
             this.status = status;
             linkedBaltBetMatchID = "";
+            firstAppear = 0;
         }
 
 
@@ -81,6 +84,7 @@ namespace EventsMonitoring.CommonClasses
             this.parent1ID = parent1ID;
             this.parent2ID = parent2ID;
             linkedBaltBetMatchID = "";
+            firstAppear = 0;
         }
 
         public DateTime UnixTimeStampToDateTime(long unixTimeStamp)

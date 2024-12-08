@@ -78,6 +78,7 @@
             BranchColumn = new DataGridViewTextBoxColumn();
             Team1Column = new DataGridViewTextBoxColumn();
             Team2Column = new DataGridViewTextBoxColumn();
+            firstAppearColumn = new DataGridViewTextBoxColumn();
             panel2 = new Panel();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
@@ -516,7 +517,7 @@
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { SourceColumn, IDColumn, StartTimeColumn, BranchColumn, Team1Column, Team2Column });
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { SourceColumn, IDColumn, StartTimeColumn, BranchColumn, Team1Column, Team2Column, firstAppearColumn });
             dataGridView1.Location = new Point(1395, 19);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowTemplate.Height = 25;
@@ -570,6 +571,13 @@
             Team2Column.Name = "Team2Column";
             Team2Column.ReadOnly = true;
             // 
+            // firstAppearColumn
+            // 
+            firstAppearColumn.DataPropertyName = "firstAppear";
+            firstAppearColumn.HeaderText = "Минут";
+            firstAppearColumn.Name = "firstAppearColumn";
+            firstAppearColumn.ReadOnly = true;
+            // 
             // panel2
             // 
             panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
@@ -577,20 +585,20 @@
             panel2.Controls.Add(panel1);
             panel2.Location = new Point(65, 0);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1419, 861);
+            panel2.Size = new Size(1619, 861);
             panel2.TabIndex = 10;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(96F, 96F);
             AutoScaleMode = AutoScaleMode.Dpi;
-            ClientSize = new Size(1484, 861);
+            ClientSize = new Size(1684, 861);
             Controls.Add(panel2);
             Controls.Add(panel4);
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Monitoring Ver.1.13";
+            Text = "Monitoring Ver.1.14";
             FormClosing += MainForm_FormClosing;
             Load += MainForm_Load;
             panel1.ResumeLayout(false);
@@ -640,12 +648,6 @@
         private Panel panel4;
         private DataGridView dataGridView1;
         private Panel panel2;
-        private DataGridViewTextBoxColumn SourceColumn;
-        private DataGridViewTextBoxColumn IDColumn;
-        private DataGridViewTextBoxColumn StartTimeColumn;
-        private DataGridViewTextBoxColumn BranchColumn;
-        private DataGridViewTextBoxColumn Team1Column;
-        private DataGridViewTextBoxColumn Team2Column;
         private Button button3;
         private Button button2;
         private Button button1;
@@ -661,5 +663,12 @@
         private DataGridViewCheckBoxColumn Column2;
         private ToolStripMenuItem SaveBranchNameToolStripMenuItem;
         private ToolStripMenuItem FindBaltBetBranchToolStripMenuItem;
+        private DataGridViewTextBoxColumn SourceColumn;
+        private DataGridViewTextBoxColumn IDColumn;
+        private DataGridViewTextBoxColumn StartTimeColumn;
+        private DataGridViewTextBoxColumn BranchColumn;
+        private DataGridViewTextBoxColumn Team1Column;
+        private DataGridViewTextBoxColumn Team2Column;
+        private DataGridViewTextBoxColumn firstAppearColumn;
     }
 }
