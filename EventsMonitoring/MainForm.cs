@@ -24,8 +24,8 @@ namespace EventsMonitoring
         public bool isStatistic;
         public bool isExclusive;
         public bool flag;
+        public bool timerFlag;
         public int sortIndex = -1;
-        public string[] qwaszx;
         public Dictionary<string, DateTime> firstTimeAppear;
 
         public MainForm()
@@ -39,18 +39,22 @@ namespace EventsMonitoring
             isStatistic = false;
             isExclusive = false;
             flag = false;
+            timerFlag = true;
             rememberedCheckedSportTypes = new List<string>();
 
             timer1.Enabled = true;
-            timer1.Interval = 1000 * 5 * 60;
+            timer1.Interval = 1000 * 1 * 60;
             timer1.Tick += Timer1_Tick;
         }
 
 
         private void Timer1_Tick(object? sender, EventArgs e)
         {
-            refreshButton.PerformClick();
-            lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+            if (timerFlag == true)
+            {
+                refreshButton.PerformClick();
+                lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -95,9 +99,13 @@ namespace EventsMonitoring
             dataGridView2.DataSource = new List<Hidden>();
             dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
 
-            timer1.Stop();
-            timer1.Start();
-            lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+            if (timerFlag == true)
+            {
+                timer1.Stop();
+                timer1.Start();
+                lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+            }
+
 
             dataGridView1.Columns[0].Width = 140;
             dataGridView1.Columns[5].Width = 110;
@@ -122,9 +130,12 @@ namespace EventsMonitoring
             dataGridView2.DataSource = new List<Hidden>();
             dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
 
-            timer1.Stop();
-            timer1.Start();
-            lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+            if (timerFlag == true)
+            {
+                timer1.Stop();
+                timer1.Start();
+                lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+            }
         }
 
 
@@ -145,7 +156,7 @@ namespace EventsMonitoring
 
                 flag = false;
             }
-            
+
 
 
             matchesToDisplay = FonbetMissingEvents.GetMatches(baltBetMatches, fonBetMatches, isExclusive);
@@ -161,7 +172,7 @@ namespace EventsMonitoring
 
 
 
-                if (!(sportTypesCheckedListBox.CheckedItems.Contains("Все виды спорта") || sportTypesCheckedListBox.CheckedItems.Count == 0))
+            if (!(sportTypesCheckedListBox.CheckedItems.Contains("Все виды спорта") || sportTypesCheckedListBox.CheckedItems.Count == 0))
             {
                 matchesToDisplay = matchesToDisplay.Where(t => sportTypesCheckedListBox.CheckedItems.Contains(t.sport)).ToList();
             }
@@ -202,8 +213,8 @@ namespace EventsMonitoring
             matchesToDisplayDubles.AddRange(matchesToDisplay);
 
             matchesToDisplayDubles = matchesToDisplayDubles.Where(
-                t => !hiddenMatches.Keys.Contains(t.matchID) && 
-                !hiddenBranches.Contains(t.branch.branchName) && 
+                t => !hiddenMatches.Keys.Contains(t.matchID) &&
+                !hiddenBranches.Contains(t.branch.branchName) &&
                 !hiddenSports.Contains(t.sport)
             ).ToList();
 
@@ -375,9 +386,12 @@ namespace EventsMonitoring
                         // dataGridView1.DataSource = new List<Event>();
                         dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
 
-                        timer1.Stop();
-                        timer1.Start();
-                        lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+                        if (timerFlag == true)
+                        {
+                            timer1.Stop();
+                            timer1.Start();
+                            lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+                        }
 
                         dataGridView1.ClearSelection();
 
@@ -465,9 +479,12 @@ namespace EventsMonitoring
                 dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
             }
 
-            timer1.Stop();
-            timer1.Start();
-            lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+            if (timerFlag == true)
+            {
+                timer1.Stop();
+                timer1.Start();
+                lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+            }
         }
 
         private void statisticCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -492,9 +509,12 @@ namespace EventsMonitoring
             dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
             dataGridView1.ClearSelection();
 
-            timer1.Stop();
-            timer1.Start();
-            lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+            if (timerFlag == true)
+            {
+                timer1.Stop();
+                timer1.Start();
+                lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+            }
 
 
             if (dataGridView1.RowCount <= 1)
@@ -523,9 +543,12 @@ namespace EventsMonitoring
             dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
             dataGridView1.ClearSelection();
 
-            timer1.Stop();
-            timer1.Start();
-            lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+            if (timerFlag == true)
+            {
+                timer1.Stop();
+                timer1.Start();
+                lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+            }
 
 
             if (dataGridView1.RowCount <= 1)
@@ -612,9 +635,12 @@ namespace EventsMonitoring
                 dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
                 dataGridView1.ClearSelection();
 
-                timer1.Stop();
-                timer1.Start();
-                lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+                if (timerFlag == true)
+                {
+                    timer1.Stop();
+                    timer1.Start();
+                    lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+                }
 
 
                 if (dataGridView1.RowCount <= 1)
@@ -642,9 +668,12 @@ namespace EventsMonitoring
                 dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
                 dataGridView1.ClearSelection();
 
-                timer1.Stop();
-                timer1.Start();
-                lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+                if (timerFlag == true)
+                {
+                    timer1.Stop();
+                    timer1.Start();
+                    lastUpdateLabel.Text = DateTime.Now.ToString("HH:mm");
+                }
 
 
                 if (dataGridView1.RowCount <= 1)
@@ -778,6 +807,23 @@ namespace EventsMonitoring
             else
             {
                 MessageBox.Show("Не удалось найти ветку");
+            }
+        }
+
+        private void timerCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            timer1.Enabled = !timer1.Enabled;
+
+            if (timer1.Enabled == true)
+            {
+                timerFlag = true;
+                timer1.Stop();
+                timer1.Start();
+            }
+            else
+            {
+                timerFlag = false;
+                timer1.Stop();
             }
         }
     }

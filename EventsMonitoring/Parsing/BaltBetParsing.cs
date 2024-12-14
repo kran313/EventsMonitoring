@@ -18,16 +18,24 @@ namespace FonbetMonitoring
         public static Branch branch;
         public static Event currentEvent;
 
-        //ghjgfj
+        
         public static List<BaltBetEvent> GetEvents(bool isLive)
         {
-            using (ZipWebClient wc = new ZipWebClient())
+            try
             {
-                string link = isLive ? "https://lineevent:7001/LiveEvent" : "https://lineevent:7001/lineevent";
+                using (ZipWebClient wc = new ZipWebClient())
+                {
+                    string link = isLive ? "https://lineevent:7001/LiveEvent" : "https://lineevent:7001/lineevent";
 
-                var jsonText = wc.DownloadString(link);
+                    var jsonText = wc.DownloadString(link);
 
-                return JsonConvert.DeserializeObject<List<BaltBetEvent>>(jsonText);
+                    return JsonConvert.DeserializeObject<List<BaltBetEvent>>(jsonText);
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Нужно попросить sd@baltbet.ru перезапустить сервис lineevent");
+                return new List<BaltBetEvent> { };
             }
         }
 

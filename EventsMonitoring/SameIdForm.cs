@@ -13,7 +13,7 @@ namespace EventsMonitoring
 {
     public partial class SameIdForm : Form
     {
-        private static string _connectionString = "data source=analytic.gkbaltbet.local;initial catalog=bbstats;" +
+        private static string _connectionString = "data source=agl-anal.gkbaltbet.local;initial catalog=bbstats;" +
                                                   "user Id=event_match;password=umbMzLQB3hKo69VG8F4N;Integrated Security=false;" +
                                                   "MultipleActiveResultSets=true;MultiSubnetFailover=True;TrustServerCertificate=true";
 

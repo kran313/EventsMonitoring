@@ -44,6 +44,7 @@
             button1 = new Button();
             button3 = new Button();
             lineLiveGroupBox = new GroupBox();
+            timerCheckBox = new CheckBox();
             statisticCheckBox = new CheckBox();
             liveRadioButton = new RadioButton();
             lineRadioButton = new RadioButton();
@@ -235,6 +236,7 @@
             // 
             // lineLiveGroupBox
             // 
+            lineLiveGroupBox.Controls.Add(timerCheckBox);
             lineLiveGroupBox.Controls.Add(statisticCheckBox);
             lineLiveGroupBox.Controls.Add(liveRadioButton);
             lineLiveGroupBox.Controls.Add(lineRadioButton);
@@ -244,10 +246,23 @@
             lineLiveGroupBox.TabIndex = 5;
             lineLiveGroupBox.TabStop = false;
             // 
+            // timerCheckBox
+            // 
+            timerCheckBox.AutoSize = true;
+            timerCheckBox.Checked = true;
+            timerCheckBox.CheckState = CheckState.Checked;
+            timerCheckBox.Location = new Point(400, 23);
+            timerCheckBox.Name = "timerCheckBox";
+            timerCheckBox.Size = new Size(149, 25);
+            timerCheckBox.TabIndex = 7;
+            timerCheckBox.Text = "Автообновление";
+            timerCheckBox.UseVisualStyleBackColor = true;
+            timerCheckBox.CheckedChanged += timerCheckBox_CheckedChanged;
+            // 
             // statisticCheckBox
             // 
             statisticCheckBox.AutoSize = true;
-            statisticCheckBox.Location = new Point(310, 23);
+            statisticCheckBox.Location = new Point(285, 23);
             statisticCheckBox.Name = "statisticCheckBox";
             statisticCheckBox.Size = new Size(109, 25);
             statisticCheckBox.TabIndex = 6;
@@ -610,7 +625,7 @@
             Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Monitoring Ver.1.15";
+            Text = "Monitoring Ver.1.16";
             FormClosing += MainForm_FormClosing;
             Load += MainForm_Load;
             panel1.ResumeLayout(false);
@@ -685,5 +700,6 @@
         private DataGridViewTextBoxColumn firstAppearColumn;
         private System.Windows.Forms.Timer timer1;
         private Label lastUpdateLabel;
+        private CheckBox timerCheckBox;
     }
 }
