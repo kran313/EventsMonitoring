@@ -43,7 +43,7 @@ namespace EventsMonitoring
             rememberedCheckedSportTypes = new List<string>();
 
             timer1.Enabled = true;
-            timer1.Interval = 1000 * 1 * 60;
+            timer1.Interval = 1000 * 5 * 60;
             timer1.Tick += Timer1_Tick;
         }
 
