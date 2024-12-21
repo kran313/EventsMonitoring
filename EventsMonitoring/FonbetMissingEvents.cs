@@ -24,6 +24,8 @@ namespace FonbetMonitoring
             var baltBetMatchesStatistics = baltBetMatchesSource.Values.Where(t => t.isStatistic).ToList();
             var fonBetMatchesStatistics = fonBetMatchesSource.Values.Where(t => t.isStatistic).ToList();
 
+            var linkedBranches = MatchingDatabase.GetMatchingsBranches();
+
             var matchesToDisplay = new List<Event>();
 
 
@@ -57,6 +59,20 @@ namespace FonbetMonitoring
                                 {
                                     fonbetMatch.status = "Ок";
                                     fonbetMatch.linkedBaltBetMatchID = baltbetMatch.matchID;
+
+                                    if (linkedBranches.ContainsKey(fonbetMatch.branch.branchId) && linkedBranches[fonbetMatch.branch.branchId] == baltbetMatch.branch.branchId)
+                                    {
+                                    }
+                                    else
+                                    {
+                                        MatchingDatabase.AddMatchingBranches(
+                                            fonbetMatch.sport,
+                                            fonbetMatch.branch.branchId, baltbetMatch.branch.branchId,
+                                            fonbetMatch.branch.branchName, baltbetMatch.branch.branchName,
+                                            whoAdd: "auto"
+                                            );
+                                    }
+
                                     break;
                                 }
                                 else if (
@@ -65,6 +81,20 @@ namespace FonbetMonitoring
                                 {
                                     fonbetMatch.status = "Ок";
                                     fonbetMatch.linkedBaltBetMatchID = baltbetMatch.matchID;
+
+                                    if (linkedBranches.ContainsKey(fonbetMatch.branch.branchId) && linkedBranches[fonbetMatch.branch.branchId] == baltbetMatch.branch.branchId)
+                                    {
+                                    }
+                                    else
+                                    {
+                                        MatchingDatabase.AddMatchingBranches(
+                                            fonbetMatch.sport,
+                                            fonbetMatch.branch.branchId, baltbetMatch.branch.branchId,
+                                            fonbetMatch.branch.branchName, baltbetMatch.branch.branchName,
+                                            whoAdd: "auto"
+                                            );
+                                    }
+
                                     break;
                                 }
 

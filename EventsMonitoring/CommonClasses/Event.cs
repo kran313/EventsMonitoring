@@ -16,6 +16,8 @@ namespace EventsMonitoring.CommonClasses
         public Team team2 { get; set; }
         public DateTime startTime { get; set; }
         public int firstAppear { get; set; }
+        public string source {  get; set; }
+        public string multiparsing { get; set; }
         public bool isStatistic;
         public string statistic;
         public string parent1ID;
@@ -29,7 +31,8 @@ namespace EventsMonitoring.CommonClasses
 
         //FonBet
         public Event(string id, string sport, Branch branch, Team team1, Team team2, long startTime, string sportId, string name, bool place, 
-                     int level, bool isStatistic = false, string statistic = "", string parent1ID = "", string parent2ID = "", string status = "")
+                     int level, bool isStatistic = false, string statistic = "", string parent1ID = "", string parent2ID = "", string status = "",
+                     string source = "", string multiparsing = "")
         {
             matchID = id;
             this.sport = sport;
@@ -48,10 +51,13 @@ namespace EventsMonitoring.CommonClasses
             this.parent2ID = parent2ID;
             linkedBaltBetMatchID = "";
             firstAppear = 0;
+            this.source = source;
+            this.multiparsing = multiparsing;
         }
 
         //Betcity
-        public Event(string id, string sport, Branch branch, Team team1, Team team2, long startTime, bool isStatistic = false, string parent1ID = "", string parent2ID = "", string status = "")
+        public Event(string id, string sport, Branch branch, Team team1, Team team2, long startTime, bool isStatistic = false, 
+            string parent1ID = "", string parent2ID = "", string status = "", string source = "", string multiparsing = "")
         {
             matchID = id;
             this.sport = sport;
@@ -65,12 +71,15 @@ namespace EventsMonitoring.CommonClasses
             this.status = status;
             linkedBaltBetMatchID = "";
             firstAppear = 0;
+            this.source = source;
+            this.multiparsing = multiparsing;
         }
 
 
         //BaltBet
         public Event(string id, string sport, Branch branch, Team team1, Team team2, DateTime startTime, bool isStatistic = false,
-                     string statistic = "", string parent1ID = "", string parent2ID = "", string status = "")
+                     string statistic = "", string parent1ID = "", string parent2ID = "", string status = "", 
+                     string source = "", string multiparsing = "")
         {
             matchID = id;
             this.sport = sport;
@@ -85,6 +94,8 @@ namespace EventsMonitoring.CommonClasses
             this.parent2ID = parent2ID;
             linkedBaltBetMatchID = "";
             firstAppear = 0;
+            this.source = source;
+            this.multiparsing = multiparsing;
         }
 
         public DateTime UnixTimeStampToDateTime(long unixTimeStamp)

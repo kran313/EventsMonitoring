@@ -49,6 +49,8 @@
             Team1Column = new DataGridViewTextBoxColumn();
             Team2Column = new DataGridViewTextBoxColumn();
             firstAppearColumn = new DataGridViewTextBoxColumn();
+            Источник = new DataGridViewTextBoxColumn();
+            Мультипарсинг = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -81,7 +83,7 @@
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { MatchIDColumn, SourceColumn, StartTimeColumn, BranchColumn, Team1Column, Team2Column, firstAppearColumn });
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { MatchIDColumn, SourceColumn, StartTimeColumn, BranchColumn, Team1Column, Team2Column, firstAppearColumn, Источник, Мультипарсинг });
             dataGridView1.Location = new Point(67, 187);
             dataGridView1.MultiSelect = false;
             dataGridView1.Name = "dataGridView1";
@@ -262,6 +264,22 @@
             firstAppearColumn.ReadOnly = true;
             firstAppearColumn.Visible = false;
             // 
+            // Источник
+            // 
+            Источник.DataPropertyName = "source";
+            Источник.HeaderText = "Source";
+            Источник.Name = "Источник";
+            Источник.ReadOnly = true;
+            Источник.Visible = false;
+            // 
+            // Мультипарсинг
+            // 
+            Мультипарсинг.DataPropertyName = "multiparsing";
+            Мультипарсинг.HeaderText = "Multiparsing";
+            Мультипарсинг.Name = "Мультипарсинг";
+            Мультипарсинг.ReadOnly = true;
+            Мультипарсинг.Visible = false;
+            // 
             // MatchingForm
             // 
             AutoScaleDimensions = new SizeF(9F, 21F);
@@ -309,5 +327,7 @@
         private DataGridViewTextBoxColumn Team1Column;
         private DataGridViewTextBoxColumn Team2Column;
         private DataGridViewTextBoxColumn firstAppearColumn;
+        private DataGridViewTextBoxColumn Источник;
+        private DataGridViewTextBoxColumn Мультипарсинг;
     }
 }

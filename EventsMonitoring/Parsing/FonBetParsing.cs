@@ -13,6 +13,7 @@ using System.Xml.Serialization;
 using System.Threading.Channels;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Text.RegularExpressions;
+using EventsMonitoring;
 
 namespace FonbetMonitoring
 {
@@ -72,11 +73,15 @@ namespace FonbetMonitoring
             var LiveForbiddenStrings = ForbiddenSubStrings.GetForbiddenStrings("Live");
             var fonbetSportNames = ForbiddenSubStrings.GetFonbetSportNames();
 
+            var branchesLinks = MatchingDatabase.GetMatchingsBranches();
+            var multiparsingSource = MatchingDatabase.GetMultiparsingSource();
+
+
             foreach (var item in fonBetEvents.events)
             {
                 string sport = sportFonBet[sportFonBet[item.sportId].parentId].name;
 
-
+                string multiparsing = "";
                 string branch;
                 Team? teamHome = null;
                 Team? teamAway = null;
@@ -133,6 +138,12 @@ namespace FonbetMonitoring
 
                 if (level == 1)
                 {
+                    if (branchesLinks.ContainsKey(item.sportId) && multiparsingSource.ContainsKey(branchesLinks[item.sportId]))
+                    {
+                        multiparsing = multiparsingSource[branchesLinks[item.sportId]];
+                    }
+
+
                     allFonbetMatches[item.id] = new Event(
                         item.id, 
                         sport, 
@@ -147,7 +158,9 @@ namespace FonbetMonitoring
                         item.level == 1 ? false : true,
                         "",
                         "",
-                        "Fonbet"
+                        "Fonbet",
+                        source: "Fonbet",
+                        multiparsing: multiparsing
                         );
                 }
                 else
@@ -175,6 +188,10 @@ namespace FonbetMonitoring
                     }
 
 
+                    if (branchesLinks.ContainsKey(item.sportId) && multiparsingSource.ContainsKey(branchesLinks[item.sportId]))
+                    {
+                        multiparsing = multiparsingSource[branchesLinks[item.sportId]];
+                    }
 
                     allFonbetMatches[item.id] = new Event(
                         item.id,
@@ -191,7 +208,9 @@ namespace FonbetMonitoring
                         statistic,
                         qwerty.team1Id,
                         qwerty.team2Id,
-                        "Fonbet"
+                        "Fonbet",
+                        source: "Fonbet",
+                        multiparsing: multiparsing
                         );
                 }
 

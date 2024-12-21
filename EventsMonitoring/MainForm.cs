@@ -130,6 +130,7 @@ namespace EventsMonitoring
             dataGridView2.DataSource = new List<Hidden>();
             dataGridView1.DataSource = GetMatchesToDisplay(isLive, sortIndex, isStatistic, isExclusive);
 
+
             if (timerFlag == true)
             {
                 timer1.Stop();

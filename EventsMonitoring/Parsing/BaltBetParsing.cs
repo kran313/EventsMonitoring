@@ -97,7 +97,7 @@ namespace FonbetMonitoring
 
                     if (isStatistic || (!isStatistic && !statistic))
                     {
-                        currentEvent = new Event(match.eventId, match.sport, branch, team1, team2, match.startTime, statistic, "Baltbet");
+                        currentEvent = new Event(match.eventId, match.sport, branch, team1, team2, match.startTime, statistic, "Baltbet", source: "Baltbet");
                     }
                     else
                     {
@@ -119,9 +119,8 @@ namespace FonbetMonitoring
                                 var timeDifference = Math.Abs((int)currentEvent.startTime.Subtract(matchEvent.startTime).TotalMinutes);
 
                                 if ((isLive && timeDifference < 10) ||
-                                    (!isLive && timeDifference < 10 && new List<string> { "Дартс", "Шахматы", "Шары", "Снукер", "Киберспорт", "Настольный теннис" }.Contains(match.sport)) ||
                                     (!isLive && timeDifference < 60 * 24 * 2 && match.sport == "Футбол") ||
-                                    (!isLive && timeDifference < 60 * 12 && !new List<string> { "Дартс", "Шахматы", "Шары", "Снукер", "Киберспорт", "Настольный теннис", "Футбол" }.Contains(match.sport)) && 
+                                    (!isLive && timeDifference < 60 * 12 && !new List<string> { "Дартс", "Шахматы", "Шары", "Снукер", "Киберспорт", "Настольный теннис", "Футбол", "Биатлон" }.Contains(match.sport)) && 
                                     (currentEvent.isStatistic == matchEvent.isStatistic))
                                 {
                                     currentEvent.status = "Дубль";

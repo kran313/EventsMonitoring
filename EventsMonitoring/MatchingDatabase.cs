@@ -77,6 +77,35 @@ namespace EventsMonitoring
         }
 
 
+        public static Dictionary<string, string> GetMultiparsingSource()
+        {
+            _sqlExpression = $"SELECT * FROM multiparsingSource";
+
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(_sqlExpression, connection);
+                    var reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        _pairs[reader.GetString(0)] = reader.GetString(1);
+                    }
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Database crashed! Try again later.");
+                    throw new Exception("Database crashed! Try again later.");
+                }
+
+            }
+            return _pairs;
+        }
+
+
         public static void AddMatchingTeams(string sport, string team1Id, string team2Id, string team1Name, string team2Name)
         {
             var userName = SystemInformation.UserName + ";" + Environment.MachineName;
@@ -111,9 +140,18 @@ namespace EventsMonitoring
         }
 
 
-        public static void AddMatchingBranches(string sport, string branch1Id, string branch2Id, string branch1Name, string branch2Name)
+        public static void AddMatchingBranches(string sport, string branch1Id, string branch2Id, string branch1Name, string branch2Name, string whoAdd = "")
         {
-            var userName = SystemInformation.UserName + ";" + Environment.MachineName;
+            string userName = "";
+            if (whoAdd == "")
+            {
+                userName = SystemInformation.UserName + ";" + Environment.MachineName;
+            }
+            else
+            {
+                userName = whoAdd;
+            }
+
             var date = DateTime.Now;
             var matchings = GetMatchingsBranches();
 
